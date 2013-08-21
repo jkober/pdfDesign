@@ -1,0 +1,25 @@
+{
+    "name": "jkober/design",
+    "type": "symfony-bundle",
+    "description": "permite diseñar pdf  en forma grafica",
+    "keywords": ["pdf", "design"],
+    "homepage": "https://github.com/jkober",
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Design": ""
+        }
+    },
+    "target-dir": "Design/DesignBundle",
+    "config": {
+        "process-timeout": 600
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "quepasa\\aDonde::veoXXX"
+        ]
+    }
+    
+}
