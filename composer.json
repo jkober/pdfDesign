@@ -1,5 +1,5 @@
 {
-    "name": "jkober/design",
+    "name": "jkober/PdfDesign",
     "type": "symfony-bundle",
     "description": "permite diseñar pdf  en forma grafica",
     "keywords": ["pdf", "design"],
@@ -16,10 +16,4 @@
     "config": {
         "process-timeout": 600
     },
-    "scripts": {
-        "post-install-cmd": [
-            "quepasa\\aDonde::veoXXX"
-        ]
-    }
-    
 }
