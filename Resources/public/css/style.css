@@ -1,0 +1,43 @@
+.saveAsBtn {
+    background-image: url(../img/ext/toolbar/SaveAll.ico) !important;
+    
+}
+.addBtn {
+    background-image: url(../img/ext/add.png) !important;
+}
+.openBtn {
+    background-image: url(../img/ext/toolbar/Open.ico) !important;
+}
+.dropBtn {
+    background-image: url(../img/ext/toolbar/No.ico) !important;
+}
+.saveBtn {
+    background-image: url(../img/ext/toolbar/Save.ico) !important;
+}
+.printBtn {
+    background-image: url(../img/ext/toolbar/Print.ico) !important;
+}
+
+.previewBtn {
+    background-image: url(../img/ext/toolbar/Preview.ico) !important;
+}
+
+.settingBtn {
+    background-image: url(../img/ext/toolbar/PegeSetup.ico) !important;
+}
+.zoomBtn {
+    background-image: url(../img/ext/toolbar/Zoom.ico ) !important;
+}
+
+.editBtn {
+    background-image: url(../img/ext/edit.gif) !important;
+}
+.revisarMediacionBtn{
+    background-image: url(../img/ext/details.gif) !important;
+}
+.refreshBtn {
+    background-image: url(../img/ext/refresh.gif) !important;
+}
+.cancelarMedBtn {
+    background-image: url(../img/ext/toolbar/delete.png) !important;
+}

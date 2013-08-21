@@ -1,0 +1,13 @@
+services:
+    Design.PhpGenPdfDb:
+        class: Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb
+        arguments: [ @doctrine.orm.entity_manager ]
+    Design.PhpGenPdf:
+        class: Design\DesignBundle\Services\PdfExterno3\PhpGenPdfControll
+        arguments: [%kernel.root_dir%,@Design.PhpGenPdfDb]
+    Design.PhpGenGraf:
+        class: Design\DesignBundle\Services\PdfExterno3\PhpGenGraf
+    Design.PhpGenSqlDef:
+        class: Design\DesignBundle\Services\PdfExterno3\PhpGenDefinitionSql
+        arguments: [ @Design.PhpGenPdfDb ]
+        

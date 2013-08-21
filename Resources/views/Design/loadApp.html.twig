@@ -1,0 +1,141 @@
+{%set FixExtJs42 = true %}
+{% set app_base_dir = 'bundles/app/' %}
+{% set app_base_Ext = 'bundles/design/library/ext-4.1.1a/' %}
+{% if FixExtJs42 %}
+{% set app_base_Ext = 'bundles/design/library/ext-4.2.0.663/' %}
+{% endif %}
+{% set app_base_jQ = 'bundles/design/library/jquery/' %}
+{% set app_base_library = 'bundles/design/library/' %}
+{% set design_dir   = 'bundles/design/' %}
+{% block menuPortada %}{% endblock %}
+{% block cuerpoPortada %}
+<!-- Tags  para motores de busqueda -->
+<title>Sistemas</title>
+{% if FixExtJs42 %}
+	<link rel="stylesheet" type="text/css"          href="{{ asset(app_base_Ext ~ 'resources/ext-theme-neptune/ext-theme-neptune-all.css')}}" />
+{% else %}	
+	<link rel="stylesheet" type="text/css"          href="{{ asset(app_base_Ext ~ 'resources/css/ext-all.css')}}" />
+{% endif %}
+<link rel="stylesheet" type="text/css"          href="{{ asset(design_dir   ~ 'css/style.css')}}" />
+<link   type="text/css"                         href="{{ asset(app_base_jQ ~ 'ui-lightness/jquery-ui-1.8.18.custom.css')}}" rel="stylesheet"/>
+<link rel="stylesheet"          type="text/css" href="{{ asset(design_dir   ~ 'js/design/mzExt/CodeMirror-2.2/lib/codemirror.css')}}" />
+<link rel="stylesheet"          type="text/css" href="{{ asset(design_dir   ~ 'js/design/mzExt/CodeMirror-2.2/theme/rubyblue.css')}}" />
+<script type="text/javascript"  charset="utf-8"  src="{{ asset(app_base_Ext ~ 'ext-all.js')}}"></script>
+{% if FixExtJs42 %}
+	<script type="text/javascript"  charset="utf-8"  src="{{ asset(app_base_Ext ~ 'ext-theme-neptune.js')}}"></script>
+    <script type="text/javascript"  charset="utf-8"  src="{{ asset(app_base_Ext ~ 'file-header.js')}}"></script>
+{% endif %}
+<script type="text/javascript"  src = "{{ asset(app_base_library ~ 'ext-extend.js')}}"></script>
+<script type="text/javascript"  src = "{{ asset(app_base_Ext ~ 'locale/ext-lang-es.js')}}"></script>
+<script type="text/javascript"  src = "{{ asset(app_base_jQ ~ 'jquery-min.js')}}"></script>
+<script type="text/javascript"  src = "{{ asset(app_base_jQ ~ 'classy.js')}}"></script>
+<script type="text/javascript"  src = "{{ asset(app_base_jQ ~ 'jquery-ui-custom.min.js')}}"></script>
+<script type="text/javascript"  src = "{{ asset(app_base_jQ ~ 'jquery.json-2.2.min.js')}}"></script>
+<script type="text/javascript"  src = "{{ asset(design_dir   ~ 'js/jquery/JQAjax.js')}}"></script>
+
+<style type="text/css">
+.x-tip-form-invalid, .x-tip-body-form-invalid {
+    width: 150px !important;
+}
+.x-tip {
+    width: auto !important;
+}
+.x-tip-body {
+    width: auto !important;
+}
+.x-tip-body span {
+    width: auto !important;
+}
+        .drag {
+            position: absolute;
+            border: 1px solid #89B;
+            background: #BCE;
+            height: 58px;
+            width: 58px;
+            cursor: move;
+            top: 120px;
+        }
+        .selected {
+            background-color: #ECB;
+            border-color: #B98;
+        }        
+        .MyElement{
+            /*background: red;*/
+        }
+        .MyJK{
+            background: red;
+            color:red;
+        }
+
+
+        div .ui-selecting
+        {
+            background: green;
+        }
+
+        div .ui-selected
+        {
+            background: red;
+            color: white;
+        }
+
+        #selectable
+        {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 60%;
+        }
+
+        .selectable div
+        {
+            margin: 3px;
+            padding: 1px;
+            float: left;
+            width: 80px;
+            height: 30px;
+            font-size: 1em;
+            text-align: center;
+        }
+    </style>         
+
+    <script>
+window.onbeforeunload = function (e) {          
+		return "Desea Salir del Sistema"
+};
+        Ext.data.Connection.async   = false;
+        Ext.Loader.syncModeEnabled  = true;
+        Ext.Loader.setConfig({
+                enabled : true
+//	disableCaching : false
+                });
+        Ext.Loader.setVersion("{{ "now"|date("Ymd-i") }}");
+        //Ext.Loader.setVersion("V-a3");
+        Ext.Loader.setPath({
+                    'Ajax' 			: "{{ asset(design_dir)}}js/design/app/ajax",
+                    'Ext.ux'		: "{{ asset(app_base_Ext)}}ux/",
+                    'Extensiones'           : "{{ asset(design_dir)}}js/design/extensiones",
+                    'Extras'		: "{{ asset(design_dir)}}js/extras",
+                    'AppDesign'		: "{{ asset(design_dir)}}js/design/app",
+                    'AppDesignBase'		: "{{ asset(design_dir)}}js/design",
+                    'kc.pdfStruc'           : "{{ asset(design_dir)}}js/design/app/controller/design/pdf"
+            })
+         //-----------------------------------------------------------------
+         kcPatch        = new Object();
+         kc             = new Object();
+		 {%if FixExtJs42%}
+			kc.FixExtJs42  = true;
+		 {% else %}
+		 kc.FixExtJs42  = false;
+		 {% endif %}
+         //-----------------------------------------------------------------
+         kcPatch.fonts  = {{fonts| raw}};
+         kcPatch.appDir = "{{ asset(design_dir)}}";
+         kcPatch.appWeb = "{{ asset('bundles')}}/";
+         //-----------------------------------------------------------------
+         Ext.require("AppDesignBase.AppDesign");
+         //-----------------------------------------------------------------
+        </script>
+        <script                         src = "{{ asset(design_dir   ~ 'js/design/mzExt/CodeMirror-2.2/lib/codemirror.js')}}"></script>
+        <script                         src = "{{ asset(design_dir   ~ 'js/design/mzExt/src/Ext.ux.form.field.CodeMirror.js')}}"></script>
+{% endblock %}
