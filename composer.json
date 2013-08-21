@@ -15,5 +15,5 @@
     "target-dir": "Design/DesignBundle",
     "config": {
         "process-timeout": 600
-    },
+    }
 }
