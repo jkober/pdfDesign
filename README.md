@@ -4,7 +4,9 @@ Orientado a realizar diseñar reportes de forma dinamica.
 Instalacion:
 ============
 composer require jkober/design
+
 Nos preguntara
+
 Please provide a version constraint for the jkober/design requirement: dev-master
 
 
