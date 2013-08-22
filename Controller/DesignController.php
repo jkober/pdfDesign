@@ -45,24 +45,24 @@ class DesignController extends Controller {
         return $sal;
     }
     public function abrirListarAction($bkp) {
-        /** @var $finder Symfony\Component\Finder\Finder */
-        $finder = new Finder();
+        $connRep = $this->getDoctrine()->getConnection("pdfReport");
         if ($bkp == "false") {
-            $finder->files()
-                    ->in(dirname(__DIR__) . "/report/")
-                    ->exclude("bkp");
+            $rep = $connRep->fetchAll("SELECT 0 as bkp, rep_id as id,rep_name as name ,rep_date FROM reportes  order by rep_name");
         } else {
-            $finder->files()->in(dirname(__DIR__) . "/report/bkp");
+            $rep = $connRep->fetchAll("SELECT 1 as bkp,rep_idH as id,rep_name || '_' || rep_date as name FROM reportesH order by rep_name,rep_idH");
         }
         //----------------------------------------------------------------------
         $toOpen = array();
         $toOpen["data"] = array();
         $toOpen["data"]["success"] = true;
         $toOpen["data"]["def"] = array();
-        foreach ($finder as $file) {
+        
+        foreach ($rep as $repor) {
             //------------------------------------------------------------------
-            $f = (object) array();
-            $f->fileName = str_replace("\\", "/", $file->getRelativePathname());
+            $f              = (object) array();
+            $f->fileName    = $repor["name"];
+            $f->id          = $repor["id"];
+            $f->bkp         = $repor["bkp"];
             $toOpen["data"]["def"][] = $f;
             //------------------------------------------------------------------
         }
@@ -84,56 +84,52 @@ class DesignController extends Controller {
         $sal->data->result  = false;
         $sal->data->success = false;
         $sal->data->mensaje = "";
-        //----------------------------------------------------------------------
-        try {
-            //------------------------------------------------------------------
-            $fs                 = new Filesystem();
-            $dirBase            = dirname(__DIR__) . "/report/";
-            //------------------------------------------------------------------
-            if ($fs->exists($dirBase . $json->reportExtras->name)) {
-                $fecha  = date("U");
-                $dirBkp = $dirBase . "bkp";
-                if (! $fs->exists($dirBkp)){
-                    $fs->mkdir($dirBkp, 0777);
-                }
-                //--------------------------------------------------------------
-                $dirBkp .="/";
-                //--------------------------------------------------------------
-                if (! $fs->exists($dirBkp . $json->reportExtras->name)) {
-                    $fs->mkdir($dirBkp . $json->reportExtras->name, 0777);
-                }
-                //--------------------------------------------------------------
-                $fileSal    = $dirBkp . $json->reportExtras->name . "/" . $json->reportExtras->name . $fecha;
-                $fileData   = $this->getRequest()->request->get('json');
-                //--------------------------------------------------------------
-                if (function_exists('gzcompress')) {
-                    $fileData=gzcompress($this->getRequest()->request->get('json'));
-                }
-                //--------------------------------------------------------------
-                if ( @file_put_contents($fileSal, $fileData ) === false  ) {
-                    $sal->data->mensaje = "\nError no tipoficado al guardar en el Directorio Reporte";
-                    if (! is_null($error)) {
-                        $sal->data->mensaje = "\n".$error['message'];
-                    }
-                }
-                //--------------------------------------------------------------
-            }
-            if ( @file_put_contents(dirname(__DIR__) . "/report/" . $json->reportExtras->name, $this->getRequest()->request->get('json')) === false ){
-                $sal->data->mensaje = "\nError no tipoficado al guardar en el Directorio Reporte";
-                if (! is_null($error)) {
-                    $sal->data->mensaje = "\n".$error['message'];
-                }
+        $name = $json->reportExtras->name;
+        try{
+            $connRep = $this->getDoctrine()->getConnection("pdfReport");
+            $rep = $connRep->fetchAll("SELECT * FROM reportes where rep_name = '" . $name . "'");
+            if ( count($rep) == 0 ) {
+                //------------------------------------------------------------------
+                $ssql = "insert into reportes (rep_id,rep_name,rep_data,rep_date ) values (null,:rep_name,:rep_data, :rep_date)";
+                //------------------------------------------------------------------
+                $stmt =$connRep->prepare($ssql);
+                $stmt->bindValue("rep_name",$name);
+                $stmt->bindValue("rep_data",$this->getRequest()->request->get('json'));
+                $stmt->bindValue("rep_date",date("Y-m-d H:i:s"));
+                $stmt->execute();
+                //------------------------------------------------------------------
+                $rep = $connRep->fetchAll("SELECT * FROM reportes where rep_name = '" . $name . "'");
+                //------------------------------------------------------------------
+                $ssql = "insert into reportesH select null,* from reportes where rep_id=:rep_id";
+                $stmt =$connRep->prepare($ssql);
+                $stmt->bindValue("rep_id",$rep[0]["rep_id"]);
+                $stmt->execute();
+                //------------------------------------------------------------------
             }else{
-                $sal->data->success = true;
-                $sal->data->result  = true;
+                //------------------------------------------------------------------            
+                $ssql = "insert into reportesH select null,* from reportes where rep_id=:rep_id";
+                $stmt =$connRep->prepare($ssql);
+                $stmt->bindValue("rep_id",$rep[0]["rep_id"]);
+                $stmt->execute();
+                //------------------------------------------------------------------
+                $ssql = "update reportes set rep_data = :rep_data, rep_date=:rep_date where rep_id=:rep_id";
+                $stmt =$connRep->prepare($ssql);
+                $stmt->bindValue("rep_id",$rep[0]["rep_id"]);
+                $stmt->bindValue("rep_data",$this->getRequest()->request->get('json'));
+                $stmt->bindValue("rep_date",date("Y-m-d H:i:s"));
+                $stmt->execute();
+                //------------------------------------------------------------------
             }
-        } catch (IOException $e) {
+            $sal->data->success = true;
+            $sal->data->result  = true;
+        }catch(\Exception $e) {
             $sal->data->mensaje = "\n".$e->getMessage();
         }
         return array("data"=>$sal);
-
     }
+        //----------------------------------------------------------------------
     public function reporteAbrirAction() {
+        $connRep = $this->getDoctrine()->getConnection("pdfReport");
         $data               = (object) array();
         $data->success      = false;
         $data->data         = (object) array();
@@ -142,13 +138,13 @@ class DesignController extends Controller {
         try{
             //------------------------------------------------------------------
             $json                   = json_decode($this->getRequest()->request->get('json'));
-            $data->data->result    = file_get_contents(dirname(__DIR__) . "/report/" . $json->name);
-            //------------------------------------------------------------------
-            if ( substr($json->name, 0, 4) == "bkp/" ) {
-                if ( function_exists('gzuncompress') ) {
-                     $data->data->result = gzuncompressa( $data->data->result);
-                }
+            if ($json->bkp == 1) {
+                $rep = $connRep->fetchAll("SELECT * FROM reportesH where rep_idH = " . $json->id );
+            }else{
+                $rep = $connRep->fetchAll("SELECT * FROM reportes where rep_id = " . $json->id );
             }
+            //------------------------------------------------------------------
+            $data->data->result = $rep[0]["rep_data"];
             //------------------------------------------------------------------
             $data->success      = true;
             $data->data->success= true;
@@ -292,5 +288,117 @@ class DesignController extends Controller {
     public function loadAppAction() {
         return array("fonts" => json_encode($this->getFont()));
     }
+    /**
+     * depreciada
+     * @return 
+     */
+    public function reporteGuardarActionInFile() {
+        //----------------------------------------------------------------------
+        $json               = json_decode($this->getRequest()->request->get('json'));
+        //----------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        $sal                = (object)array();
+        $sal->success       = true;
+        $sal->data          = (object)array();
+        $sal->data->result  = false;
+        $sal->data->success = false;
+        $sal->data->mensaje = "";
+        //----------------------------------------------------------------------
+        try {
+            //------------------------------------------------------------------
+            $fs                 = new Filesystem();
+            $dirBase            = dirname(__DIR__) . "/report/";
+            //------------------------------------------------------------------
+            if ($fs->exists($dirBase . $json->reportExtras->name)) {
+                $fecha  = date("U");
+                $dirBkp = $dirBase . "bkp";
+                if (! $fs->exists($dirBkp)){
+                    $fs->mkdir($dirBkp, 0777);
+                }
+                //--------------------------------------------------------------
+                $dirBkp .="/";
+                //--------------------------------------------------------------
+                if (! $fs->exists($dirBkp . $json->reportExtras->name)) {
+                    $fs->mkdir($dirBkp . $json->reportExtras->name, 0777);
+                }
+                //--------------------------------------------------------------
+                $fileSal    = $dirBkp . $json->reportExtras->name . "/" . $json->reportExtras->name . $fecha;
+                $fileData   = $this->getRequest()->request->get('json');
+                //--------------------------------------------------------------
+                if (function_exists('gzcompress')) {
+                    $fileData=gzcompress($this->getRequest()->request->get('json'));
+                }
+                //--------------------------------------------------------------
+                if ( @file_put_contents($fileSal, $fileData ) === false  ) {
+                    $sal->data->mensaje = "\nError no tipoficado al guardar en el Directorio Reporte";
+                    if (! is_null($error)) {
+                        $sal->data->mensaje = "\n".$error['message'];
+                    }
+                }
+                //--------------------------------------------------------------
+            }
+            if ( @file_put_contents(dirname(__DIR__) . "/report/" . $json->reportExtras->name, $this->getRequest()->request->get('json')) === false ){
+                $sal->data->mensaje = "\nError no tipoficado al guardar en el Directorio Reporte";
+                if (! is_null($error)) {
+                    $sal->data->mensaje = "\n".$error['message'];
+                }
+            }else{
+                $sal->data->success = true;
+                $sal->data->result  = true;
+            }
+        } catch (IOException $e) {
+            $sal->data->mensaje = "\n".$e->getMessage();
+        }
+        return array("data"=>$sal);
+
+    }
+      public function abrirListarActionInFile($bkp) {
+        /** @var $finder Symfony\Component\Finder\Finder */
+        $finder = new Finder();
+        if ($bkp == "false") {
+            $finder->files()
+                    ->in(dirname(__DIR__) . "/report/")
+                    ->exclude("bkp");
+        } else {
+            $finder->files()->in(dirname(__DIR__) . "/report/bkp");
+        }
+        //----------------------------------------------------------------------
+        $toOpen = array();
+        $toOpen["data"] = array();
+        $toOpen["data"]["success"] = true;
+        $toOpen["data"]["def"] = array();
+        foreach ($finder as $file) {
+            //------------------------------------------------------------------
+            $f = (object) array();
+            $f->fileName = str_replace("\\", "/", $file->getRelativePathname());
+            $toOpen["data"]["def"][] = $f;
+            //------------------------------------------------------------------
+        }
+        return $toOpen;
+    }
+      public function reporteAbrirActionInFile() {
+        $data               = (object) array();
+        $data->success      = false;
+        $data->data         = (object) array();
+        $data->data->result = "";
+        $data->data->success= false;
+        try{
+            //------------------------------------------------------------------
+            $json                   = json_decode($this->getRequest()->request->get('json'));
+            $data->data->result    = file_get_contents(dirname(__DIR__) . "/report/" . $json->name);
+            //------------------------------------------------------------------
+            if ( substr($json->name, 0, 4) == "bkp/" ) {
+                if ( function_exists('gzuncompress') ) {
+                     $data->data->result = gzuncompressa( $data->data->result);
+                }
+            }
+            //------------------------------------------------------------------
+            $data->success      = true;
+            $data->data->success= true;
+            //------------------------------------------------------------------
+        }catch (Exception $e) {}
+        return array("data" => $data);
+    }
+
 }
 ?>

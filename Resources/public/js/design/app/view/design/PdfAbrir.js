@@ -1,6 +1,6 @@
 var firstGridStore = Ext.create('Ext.data.Store', {
 		storeId:'st.pdfAbrir',
-	    fields : ['fileName'],
+	    fields : ['fileName','id','bkp'],
         data: []
     });
 

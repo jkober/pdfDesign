@@ -29,7 +29,7 @@ Ext.define("AppDesign.controller.design.event.MenuEvent", {
 		c.show()
 		return true
 	},
-	menuEventAbr : function(txt) {
+	menuEventAbr : function(txt,id,bkp) {
 		// ------------------------------------------------------------------------------------------
 		var elemento = this.pdfStruc.refView[0]
 		elemento.parentNode.removeChild(elemento);
@@ -38,7 +38,9 @@ Ext.define("AppDesign.controller.design.event.MenuEvent", {
 		Ajax.MyAjax.get().setAction("ReporteAbrir");
 		// ------------------------------------------------------------------------------------------
 		Ajax.MyAjax.get().setJson(Ext.encode({
-					name : txt
+					name : txt,
+                                        id: id,
+                                        bkp:bkp
 				}));
 		// ------------------------------------------------------------------------------------------
 		var result = Ajax.MyAjax.get().getInfo();
