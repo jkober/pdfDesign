@@ -1,7 +1,7 @@
 pdfDesign
 =========
 Orientado a realizar diseñar reportes de forma dinamica.
-instalacion:
+Instalacion:
 ============
 composer require jkober/design
 Nos preguntara
