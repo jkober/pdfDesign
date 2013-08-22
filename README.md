@@ -12,17 +12,18 @@ Please provide a version constraint for the jkober/design requirement: dev-maste
 
 luego agregar en:
 "AppKernel.php"
-            ,new Design\DesignBundle\DesignBundle()
+
+    ,new Design\DesignBundle\DesignBundle()
 
 para que funcione en principio tiene que tener una conexcion a base de datos definida.
 
 para ir finalizando en routing.yml
 
-DesignBundle:
+Codigo:
 
-    resource: "@DesignBundle/Resources/config/routing.yml"
-    
-    prefix:   /designer
+    DesignBundle:
+        resource: "@DesignBundle/Resources/config/routing.yml"
+        prefix:   /designer
     
     
 Esto puede ser cualquier cosa    
