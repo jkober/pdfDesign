@@ -19,8 +19,11 @@ para que funcione en principio tiene que tener una conexcion a base de datos def
 para ir finalizando en routing.yml
 
 DesignBundle:
+
     resource: "@DesignBundle/Resources/config/routing.yml"
+    
     prefix:   /designer
+    
     
 Esto puede ser cualquier cosa    
       prefix:   /designer    
