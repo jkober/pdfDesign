@@ -3,7 +3,7 @@ Ext.define('AppDesign.view.design.TableEditHeadRow', {
 	alias : "widget.TableEditHeadRow",
 	bodyPadding : 5,
 	width : 420,
-	height : 400,
+	height : 500,
 	layout : {
 		type : 'hbox',
 		align : 'stretch',
