@@ -78,6 +78,11 @@ class PhpGenPdfControll {
         $cont = $json;
         //----------------------------------------------------------------------
         $sql = $cont->reportExtras->sql;
+        if(stristr($sql, 'select ') === FALSE) {
+            $sql =" select * from $sql ";
+        }
+        
+        
         if (is_array($obj)) {
             foreach ($obj as $k => $v) {
                 $sql = str_replace("{" . $v->name . "}", $v->value, $sql);
