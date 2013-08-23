@@ -1,5 +1,5 @@
 {
-    "name": "jkober/PdfDesign",
+    "name": "jkober/pdfDesign",
     "type": "symfony-bundle",
     "description": "permite diseñar pdf  en forma grafica",
     "keywords": ["pdf", "design"],
