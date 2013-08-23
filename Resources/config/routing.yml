@@ -47,3 +47,7 @@ Design_app:
 Design_ingreso:
     pattern:  /design
     defaults: { _controller: DesignBundle:Design:loadApp }
+    
+Design_ingreso2:
+    pattern:  /
+    defaults: { _controller: DesignBundle:Design:loadApp }    
