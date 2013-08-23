@@ -91,7 +91,7 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 		me.storeReset.loadData(arr)
 		me.items = [{
 			xtype : "form",
-			layaut : "anchor",
+			layout : 'vbox',
 			height : 400,
 			defaults : {
 				xtype : 'textfield',
@@ -156,7 +156,8 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 						labelSeparator : ' ',
 						showModes : false,
 						fieldLabel : 'Code',
-						anchor : '100%',
+                                                width:550,
+						anchor : '100% 100%',
 						editorHeight : 200,
 						theme : "rubyblue",
 
