@@ -32,7 +32,7 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 	closable : false,
 
 	title : "Actualizar Total Field",
-	width : 580,
+	width : 700,
 	buttons : [{
 				text : 'Guardar',
 				itemId : "guardar"
@@ -92,6 +92,7 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 		me.items = [{
 			xtype : "form",
 			layout : 'vbox',
+                        bodyPadding:5,
 			height : 400,
 			defaults : {
 				xtype : 'textfield',
@@ -156,7 +157,7 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 						labelSeparator : ' ',
 						showModes : false,
 						fieldLabel : 'Code',
-                                                width:550,
+                                                width:650,
 						anchor : '100% 100%',
 						editorHeight : 200,
 						theme : "rubyblue",

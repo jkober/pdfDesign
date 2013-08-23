@@ -36,9 +36,11 @@ class PhpGenDefinitionSql {
         }
         //----------------------------------------------------------------------
         // aca falta agregar los parametros extras para que sean reemplazados
-        $error=false;
-        $sqlLite=false;
-        $sqlLiteTable=false;
+        //----------------------------------------------------------------------
+        $error          = false;//----------------------------------------------
+        $sqlLite        = false;//----------------------------------------------
+        $sqlLiteTable   = false;//----------------------------------------------
+        //----------------------------------------------------------------------
         try {
             $sqlTempo = "create temporary table veoEstruc {$json->ssql}";
             $db->ejecute($sqlTempo);
