@@ -122,22 +122,23 @@ class PhpGenDefinitionSql {
 
                 if (isset($f[3])) {
                     if (strpos($f[3], ",") === false) {
-                        $_TableDefinition[$i]->extra->max_length    = $f[3];
+                        if ($F =="TEXT") {
+                            $f[1] ="varchar";
+                        }
+                        $_TableDefinition[$i]->extra->max_length    = (integer) $f[3];
                         $_TableDefinition[$i]->extra->decimal       = 0;
                     } else {
                         $aux = explode(",", $f[3]);
-                        $_TableDefinition[$i]->extra->max_length    = $aux[0];
-                        $_TableDefinition[$i]->extra->decimal       = $aux[1];
+                        $_TableDefinition[$i]->extra->max_length    =  (integer) $aux[0];
+                        $_TableDefinition[$i]->extra->decimal       =  (integer) $aux[1];
                     }
                 } else {
                     $_TableDefinition[$i]->extra->max_length        = 6;
                     $_TableDefinition[$i]->extra->decimal           = 0;
                 }
-                //------------------------------------------------------------------
+                //--------------------------------------------------------------
                 $_TableDefinition[$i]->extra->type                  = $f[1];
-                
-                
-                
+                //--------------------------------------------------------------
             }else{
                 $_TableDefinition[$i]->name                     = $row["Field"];
                 $_TableDefinition[$i]->nameDisp                 = $row["Field"] . "-> " . $row["Type"];
