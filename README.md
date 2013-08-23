@@ -15,11 +15,13 @@ http://jquery.com/
 
 Instalacion:
 ============
-composer require jkober/design
+
+    composer require jkober/design
 
 Nos preguntara
 
-Please provide a version constraint for the jkober/design requirement: dev-master
+    Please provide a version constraint for the jkober/design requirement: 
+    debemos poner: >dev-master<
 
 
 luego agregar en:
