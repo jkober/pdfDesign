@@ -108,6 +108,10 @@ class PhpGenDefinitionSql {
                 //$_TableDefinition[$i]->extra->extra             = $row["Extra"];
                 $_TableDefinition[$i]->extra->extra             = "";
                 preg_match('/^([^ (]+)(\((.+)\))?([ ](.+))?$/u', $row['type'], $f);
+                if ( $row['type'] == "") {
+                    $f[1] ="varchar";
+                    $f[3] =40;
+                }
                 $F = strtoupper($f[1]);
                 if ($F == "REAL" ) {
                     $F = "DECIMAL";
