@@ -147,6 +147,154 @@ Ext.define('kc.HeadRow', {
 				return me.mixins.field.setValue.call(me, values);
 			}
 		});
+	
+Ext.define('Ext.form.field.openWin', {
+    extend: 'Ext.form.field.Picker',
+    editable: true,
+    hideTrigger: true,
+    pickerOffset: [ 0, -24 ],
+    listeners: {
+        focus: function( fld, e, opts ) {
+            fld.expand();
+        },
+		blur:function(fld,e,opts){
+		var me = this
+		return me.getPicker().meValue
+		//console.debug(me)
+		}
+    },
+	pase:false,
+	getValue:function(){
+		var me=this
+		return me.getPicker().meValue
+	},
+	setValue : function(value) {
+			var me = this;
+			if (value !=undefined){
+				var boton =me.getPicker()
+				if (value.name!=undefined) {
+					me.meVal = value
+					boton.setText(value.name!=""?me.vTrue:me.vFalse)
+				}else{
+					boton.setText(me.vFalse)
+				}
+			}
+	},
+	
+	setValue_ : function(value) {
+		var me = this;
+		var boton =me.getPicker()
+		if (value != undefined) {
+			if (Ext.isObject(value)) {
+				if (value.name != undefined) {
+					me.meVal = value
+				}
+				boton.setText(me.vTrue)
+				
+			}else{
+				boton.setText(me.vFalse)
+			}
+		}else{
+			boton.setText(me.vFalse)
+		}
+		var values = this.values
+		me.setRawValue(me.valueToRaw(values));
+		return me.mixins.field.setValue.call(me, values);
+	},
+		
+	
+	
+	meVal : null,
+    createPicker: function() {
+        var me = this
+        return Ext.create('Ext.button.Button', {
+            text: 'ss',
+            bodypadding:5,
+			bodyPadding:8,
+            pickerField: me,
+            ownerCt: me.ownerCt,
+            renderTo: document.body,
+            floating: true,
+			meValue:null,
+			handler:function(){
+				var me =this
+				
+				Ext.create("Ext.window.Window", {
+							modal : true,
+							closable : false,
+							floating: true,
+							title : me.values,
+							items : [{
+										xtype : 'TableEditSourceCodePrintIf',
+										pickerField : me,
+										propName : me.pickerField.propName,
+										mePrope : me.pickerField.mePrope,
+										meVal : me.pickerField.meVal
+									}]
+						}).show()
+				}
+				
+        })            
+    }
+});
+
+
+	
+Ext.define('Ext.form.field.boolean', {
+    extend: 'Ext.form.field.Picker',
+    editable: true,
+    hideTrigger: true,
+    pickerOffset: [ 0, -24 ],
+    listeners: {
+        focus: function( fld, e, opts ) {
+            fld.expand();
+        },
+		blur:function(fld,e,opts){
+			var me = this
+			return me.getPicker().meValue
+			//console.debug(me)
+		}
+    },
+	pase:false,
+	getValue:function(){
+		var me=this
+		return me.getPicker().meValue
+	},
+	setValue : function(value) {
+			var me = this;
+			if (value !=undefined){
+				var boton =me.getPicker()
+				boton.meValue=value
+				boton.setText(value==true?me.vTrue:me.vFalse)
+			}
+	},
+	
+    createPicker: function() {
+        var me = this
+        return Ext.create('Ext.button.Button', {
+            text: 'ss',
+            bodypadding:5,
+			bodyPadding:8,
+            pickerField: me,
+            ownerCt: me.ownerCt,
+            renderTo: document.body,
+            floating: true,
+			meValue:null,
+			handler:function(){
+				var me =this
+				if ( me.meValue==true ){
+					me.meValue=false
+					}else{
+					me.meValue=true
+					}
+					me.pickerField.fireEvent("blur")
+			}
+        })            
+    }
+});
+		
+		
+		
 Ext.define('kc.SourceCode', {
 			extend : 'Ext.form.field.Picker',
 			requires : ["AppDesign.view.design.TableEditSourceCode"],

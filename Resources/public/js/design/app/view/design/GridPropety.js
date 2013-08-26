@@ -157,206 +157,115 @@ Ext.define("AppDesign.view.design.GridPropety", {
     initComponent : function() {
         var me = this
         me.customEditors = {
-            BackGround : Ext.create('Ext.form.field.ComboBoxColor', {
-                editable : false
-            }),
-            BorderColor : Ext.create('Ext.form.field.ComboBoxColor', {
-                editable : false
-            }),
-            GroupBorderColor : Ext.create('Ext.form.field.ComboBoxColor', {
-                editable : false
-            }),
-            FillColorRow : Ext.create('Ext.form.field.ComboBoxColor', {
-                editable : false
-            }),
-            FontFamily : Ext.create('Ext.form.field.ComboBoxFont', {
-                editable : false
-            }),
-            FontAlign : Ext.create('Ext.form.field.ComboBoxFontAlign', {
-                editable : false
-            }),
-            FontColor : Ext.create('Ext.form.field.ComboBoxColor', {
-                editable : false
-            }),
-            FormatType : Ext.create('Ext.form.field.ComboBoxMask', {
-                editable : false
-            }),
-            FontSize : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            PositionTop : Ext.create('Ext.form.field.NumberPostition'),
-            PositionLeft : Ext.create('Ext.form.field.NumberPostition'),
-            PositionWidth : Ext.create('Ext.form.field.NumberPostition'),
-            PositionHeight : Ext.create('Ext.form.field.NumberPostition'),
-            MarginLeft : Ext.create('Ext.form.field.NumberPostition'),
-            MarginTop : Ext.create('Ext.form.field.NumberPostition'),
-            MarginRight : Ext.create('Ext.form.field.NumberPostition'),
-            MarginBottom : Ext.create('Ext.form.field.NumberPostition'),
-            Height : Ext.create('Ext.form.field.NumberPostition'),
-            DataSource : Ext.create('Ext.form.field.ComboBoxDataSource', {
-                editable : false
-            }),
-            BorderType : Ext.create('Ext.form.field.ComboBoxBorder', {
-                editable : false
-            }),
-            GroupBorderType : Ext.create('Ext.form.field.ComboBoxBorder', {
-                editable : false
-            }),
-            LTypeObj : Ext.create('Ext.form.field.DisplayTypeO'),
-			
-            GroupFontFamily : Ext.create('Ext.form.field.ComboBoxFont', {
-                editable : false
-            }),
-            GroupFontAlign : Ext.create('Ext.form.field.ComboBoxFontAlign', {
-                editable : false
-            }),
-            GroupFontColor : Ext.create('Ext.form.field.ComboBoxColor', {
-                editable : false
-            }),
-            GroupFontSize : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-			
-			
-			
-            PageOrienta : Ext.create('Ext.form.field.comboPageOrienta', {
-                editable : false
-            }),
-            TableHeightH : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            TableHeightF : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            TableHeightR : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            TableHead : Ext.create('kc.HeadRow', {
-                footTable : false,
-                headTable : true,
-                values : "Modificar Columns"
-            }),
-            TableRow : Ext.create('kc.HeadRow', {
-                footTable : false,
-                headTable : false,
-                values : "Modificar Filas"
-            }),
-            TableFoot : Ext.create('kc.HeadRow', {
-                footTable : true,
-                headTable : false,
-                values : "Modificar Footer"
-            }),
-            SourceName : Ext.create('kc.SourceName'),
-            SourceCode : Ext.create('kc.SourceCode', {
-                mePrope : me
-            }),
-            PrintIf : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me,
-                propName : 'PrintIf'
-            }),
-            ProcesaFoot : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me,
-                propName : 'ProcesaFoot'
-            }),
-            PrintHead : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me,
-                propName : 'PrintHead'
-            }),
-            PageBrakBefore : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me,
-                propName : 'PageBrakBefore'
-            }),
-            PageBrakAfter : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me,
-                propName : 'PageBrakAfter'
-            }),
-            TableInit : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me
-            }),
-            TableAfterRead : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me
-            }),
-            TableBeforeRead : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me
-            }),
-            TableFinishRead : Ext.create('kc.SourceCodePrintIf', {
-                mePrope : me
-            }),
-            Sources : Ext.create('kc.TableSource', {
-                headTable : true,
-                values : "Modificar Origen De Datos"
-            }),
-            LabelRotacion : Ext.create('Ext.form.field.ComboBoxRotacion', {
-                editable : false
-            }),
-
-            GroupTopIgualar : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            GroupLeftIgualar : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            GroupWidthIgualar : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            GroupHeightIgualar : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            GroupHeightIgualar : Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 1
-            }),
-            CodigoBarraWid :Ext.create('Ext.form.field.NumberPostition', {
-                minValue : 0.006 ,
-                maxValue:2
-            }),
-
-            PageType : Ext.create('Ext.form.field.comboPageType')
+            GroupFontUnderLine:Ext.create('Ext.form.field.boolean',  {vTrue:'Sacar subrayado',            vFalse:'Subrayar'                   }),
+            GroupFontBold     : Ext.create('Ext.form.field.boolean', {vTrue:'Cambiar a Normal',           vFalse:'Cambiar a Bold'             }),
+            GroupFontItalic   : Ext.create('Ext.form.field.boolean', {vTrue:'Sacar Cursiva',              vFalse:'Poner Cursiva'              }),
+            FontBold          : Ext.create('Ext.form.field.boolean', {vTrue:'Cambiar a Normal',           vFalse:'Cambiar a Bold'             }),
+            FontUnderLine     : Ext.create('Ext.form.field.boolean', {vTrue:'Sacar subrayado',            vFalse:'Subrayar'                   }),
+            FontItalic        : Ext.create('Ext.form.field.boolean', {vTrue:'Sacar Cursiva',              vFalse:'Poner Cursiva'              }),
+            MultiLine         : Ext.create('Ext.form.field.boolean', {vTrue:'Sacar Multi Line',           vFalse:'Poner Multi Line'           }),
+            CodigoBarraCalc   : Ext.create('Ext.form.field.boolean', {vTrue:'Calcular Ancho Codigo Barra',vFalse:'Calcular Ancho Codigo Barra'}),
+            GraficPrevious    : Ext.create('Ext.form.field.boolean', {vTrue:'Previsualizar',              vFalse:'Previsualizar'              }),
+            PrintIfEmpyReg    : Ext.create('Ext.form.field.boolean', {vTrue:'Poner No print',             vFalse:'Sacar No print'             }),
+            PrintIf        : Ext.create('Ext.form.field.openWin',{vTrue:'Evalua si imprime',          vFalse:'imprime por defecto', mePrope : me, propName : 'PrintIf'       }),
+            ProcesaFoot    : Ext.create('Ext.form.field.openWin',{vTrue:'Evalua si procesa',          vFalse:'procesa por defecto', mePrope : me, propName : 'ProcesaFoot'   }),
+            PrintHead      : Ext.create('Ext.form.field.openWin',{vTrue:'Evalua si imprime',          vFalse:'imprime por defecto', mePrope : me, propName : 'PrintHead'     }),
+            PageBrakBefore : Ext.create('Ext.form.field.openWin',{vTrue:'Evalua si salta de Pagina',  vFalse:'no salto de pagina',  mePrope : me, propName : 'PageBrakBefore'}),
+            PageBrakAfter  : Ext.create('Ext.form.field.openWin',{vTrue:'Evalua si salta de Pagina',  vFalse:'no salto de pagina',  mePrope : me, propName : 'PageBrakAfter' }),
+            TableInit      : Ext.create('Ext.form.field.openWin',{vTrue:'Procesa informacion en init',vFalse:'no procesa',          mePrope : me                             }),
+            TableAfterRead : Ext.create('Ext.form.field.openWin',{vTrue:'evento despues de leer',     vFalse:'no realiza nada',     mePrope : me                             }),
+            TableBeforeRead: Ext.create('Ext.form.field.openWin',{vTrue:'evento antes leer',          vFalse:'no realiza nada',     mePrope : me                             }),
+            TableFinishRead: Ext.create('Ext.form.field.openWin',{vTrue:'termina de leer',            vFalse:'no realiza nada',     mePrope : me                             }),
+            BackGround       : Ext.create('Ext.form.field.ComboBoxColor',       {                editable : false            }),
+            BorderColor      : Ext.create('Ext.form.field.ComboBoxColor',       {                editable : false            }),
+            GroupBorderColor : Ext.create('Ext.form.field.ComboBoxColor',       {                editable : false            }),
+            FillColorRow     : Ext.create('Ext.form.field.ComboBoxColor',       {                editable : false            }),
+            FontFamily       : Ext.create('Ext.form.field.ComboBoxFont',        {                editable : false            }),
+            FontAlign        : Ext.create('Ext.form.field.ComboBoxFontAlign',   {                editable : false            }),
+            FontColor        : Ext.create('Ext.form.field.ComboBoxColor',       {                editable : false            }),
+            FormatType       : Ext.create('Ext.form.field.ComboBoxMask',        {                editable : false            }),
+            FontSize         : Ext.create('Ext.form.field.NumberPostition',     {                minValue : 1                }),
+            PositionTop      : Ext.create('Ext.form.field.NumberPostition'),
+            PositionLeft     : Ext.create('Ext.form.field.NumberPostition'),
+            PositionWidth    : Ext.create('Ext.form.field.NumberPostition'),
+            PositionHeight   : Ext.create('Ext.form.field.NumberPostition'),
+            MarginLeft       : Ext.create('Ext.form.field.NumberPostition'),
+            MarginTop        : Ext.create('Ext.form.field.NumberPostition'),
+            MarginRight      : Ext.create('Ext.form.field.NumberPostition'),
+            MarginBottom     : Ext.create('Ext.form.field.NumberPostition'),
+            Height           : Ext.create('Ext.form.field.NumberPostition'),
+            DataSource       : Ext.create('Ext.form.field.ComboBoxDataSource',  {                editable : false            }),
+            BorderType       : Ext.create('Ext.form.field.ComboBoxBorder',      {                editable : false            }),
+            GroupBorderType  : Ext.create('Ext.form.field.ComboBoxBorder',      {                editable : false            }),
+            LTypeObj         : Ext.create('Ext.form.field.DisplayTypeO'),
+            GroupFontFamily  : Ext.create('Ext.form.field.ComboBoxFont',        {                editable : false            }),
+            GroupFontAlign   : Ext.create('Ext.form.field.ComboBoxFontAlign',   {                editable : false            }),
+            GroupFontColor   : Ext.create('Ext.form.field.ComboBoxColor',       {                editable : false            }),
+            GroupFontSize    : Ext.create('Ext.form.field.NumberPostition',     {                minValue : 1                }),
+            PageOrienta      : Ext.create('Ext.form.field.comboPageOrienta',    {                editable : false            }),
+            TableHeightH     : Ext.create('Ext.form.field.NumberPostition',     {                minValue : 1                }),
+            TableHeightF     : Ext.create('Ext.form.field.NumberPostition',     {                minValue : 1                }),
+            TableHeightR     : Ext.create('Ext.form.field.NumberPostition',     {                minValue : 1                }),
+            TableHead         : Ext.create('kc.HeadRow',     {  footTable : false,  headTable : true,     values : "Modificar Columns"         }),
+            TableRow          : Ext.create('kc.HeadRow',     {  footTable : false,  headTable : false,    values : "Modificar Filas"           }),
+            TableFoot         : Ext.create('kc.HeadRow',     {  footTable : true,   headTable : false,    values : "Modificar Footer"          }),
+            Sources           : Ext.create('kc.TableSource', {  headTable : true,   values : "Modificar Origen De Datos"                       }),
+            SourceCode        : Ext.create('kc.SourceCode',                   {                mePrope : me            }),
+            LabelRotacion     : Ext.create('Ext.form.field.ComboBoxRotacion', {                editable : false        }),
+            GroupTopIgualar   : Ext.create('Ext.form.field.NumberPostition',  {                minValue : 1            }),
+            GroupLeftIgualar  : Ext.create('Ext.form.field.NumberPostition',  {                minValue : 1            }),
+            GroupWidthIgualar : Ext.create('Ext.form.field.NumberPostition',  {                minValue : 1            }),
+            GroupHeightIgualar: Ext.create('Ext.form.field.NumberPostition',  {                minValue : 1            }),
+            GroupHeightIgualar: Ext.create('Ext.form.field.NumberPostition',  {                minValue : 1            }),
+            CodigoBarraWid    : Ext.create('Ext.form.field.NumberPostition',  {  minValue : 0.006 ,  maxValue:2 }),
+            SourceName        : Ext.create('kc.SourceName'),
+            PageType          : Ext.create('Ext.form.field.comboPageType')
         }
         me.helpMe = {
-            FormatMask : "Si es Numero es la cantidad de digitos ej.: 0,1,2.Y si es Fecha d/m/Y",
-            TableInit : "Ocurre antes de leer. aqui se pueden crear array para usar Sum Count Avg. que seran procesador en el after read y mostrados en el finish table. ",
-            TableAfterRead : "Ocurre inmediatamente despues de leer el registro",
-            TableBeforeRead : "Ocurre inmediatamente antes de leer el registro",
-            TableFinishRead : "Ocurre al finalizar la tabla. aqui se puede agregar una nueva row de totales o demas cosas, puede ser muy util",
-            PageBrakBefore : "leer Salto de pagina Antes de imprimir la Seccion, si no se especifica nada no salta, ojo en el Head y Footer. podria traer problemas inesperados",
-            PageBrakAfter : "leer Salto de pagina Despues de imprimir la Seccion, si no se especifica nada no salta, ojo en el Head y Footer. podria traer problemas inesperados",
-            GroupTop : "Si es +(Positivo) Suma a todos los objetos Seleccionas y si es -(Negativo) se lo resta.",
-            GroupLeft : "Si es +(Positivo) Suma a todos los objetos Seleccionas y si es -(Negativo) se lo resta.",
-            GroupWidth : "Si es +(Positivo) Suma a todos los objetos Seleccionas y si es -(Negativo) se lo resta.",
-            GroupHeight : "Si es +(Positivo) Suma a todos los objetos Seleccionas y si es -(Negativo) se lo resta.",
-            GroupTopIgualar : "Iguala Top de todos los objetos",
-            GroupLeftIgualar : "Iguala Left de todos los objetos",
+            FormatMask        : "Si es Numero es la cantidad de digitos ej.: 0,1,2.Y si es Fecha d/m/Y",
+            TableInit         : "Ocurre antes de leer. aqui se pueden crear array para usar Sum Count Avg. que seran procesador en el after read y mostrados en el finish table. ",
+            TableAfterRead    : "Ocurre inmediatamente despues de leer el registro",
+            TableBeforeRead   : "Ocurre inmediatamente antes de leer el registro",
+            TableFinishRead   : "Ocurre al finalizar la tabla. aqui se puede agregar una nueva row de totales o demas cosas, puede ser muy util",
+            PageBrakBefore    : "leer Salto de pagina Antes de imprimir la Seccion, si no se especifica nada no salta, ojo en el Head y Footer. podria traer problemas inesperados",
+            PageBrakAfter     : "leer Salto de pagina Despues de imprimir la Seccion, si no se especifica nada no salta, ojo en el Head y Footer. podria traer problemas inesperados",
+            GroupTop          : "Si es +(Positivo) Suma a todos los objetos Seleccionas y si es -(Negativo) se lo resta.",
+            GroupLeft         : "Si es +(Positivo) Suma a todos los objetos Seleccionas y si es -(Negativo) se lo resta.",
+            GroupWidth        : "Si es +(Positivo) Suma a todos los objetos Seleccionas y si es -(Negativo) se lo resta.",
+            GroupHeight       : "Si es +(Positivo) Suma a todos los objetos Seleccionas y si es -(Negativo) se lo resta.",
+            GroupTopIgualar   : "Iguala Top de todos los objetos",
+            GroupLeftIgualar  : "Iguala Left de todos los objetos",
             GroupWidthIgualar : "Iguala Width de todos los objetos",
-            GroupHeightIgualar : "Iguala Height de todos los objetos",
-            PrintIf : "Si no se especifica nada se imprime por defecto. Si se especifica codigo debe retornar true o false. True ->NO Imprime ; False ->Imprime",
-            CodigoBarra:"0-Normal 1-Code 39"
+            GroupHeightIgualar: "Iguala Height de todos los objetos",
+            PrintIf           : "Si no se especifica nada se imprime por defecto. Si se especifica codigo debe retornar true o false. True ->NO Imprime ; False ->Imprime",
+            CodigoBarra       : "0-Normal 1-Code 39"
         }
         me.customExclude = {
-            refView : true,
-            refParent : true,
-            TabletCount : true,
-            Items : true,
-            ItemsArrange : true,
-            ItemsCount : true,
-            TotalFields : true,
-            GroupBy : true,
-            Child : true,
-            Group : true,
-            reportExtras : true,
-            refIndiceInterno : true,
-            ExpressionDef : true,
-            ImagenEx : true,
-            selectionGroup:true,
-            Document:true
+            refView         : true,
+            refParent       : true,
+            TabletCount     : true,
+            Items           : true,
+            ItemsArrange    : true,
+            ItemsCount      : true,
+            TotalFields     : true,
+            GroupBy         : true,
+            Child           : true,
+            Group           : true,
+            reportExtras    : true,
+            refIndiceInterno: true,
+            ExpressionDef   : true,
+            ImagenEx        : true,
+            selectionGroup  : true,
+            Document        : true
         }
         me.customReadOnly = {
-            typeSection : true,
-            TypeObj : true,
-            fileName : true,
-            TypeImagen : true,
-            idSections : true,
-            TableWidth : true,
-            TableHeight : true,
+            typeSection    : true,
+            TypeObj        : true,
+            fileName       : true,
+            TypeImagen     : true,
+            idSections     : true,
+            TableWidth     : true,
+            TableHeight    : true,
             TotalFieldName : true
         }
         // ------------------------------------------------------------------------------------------
