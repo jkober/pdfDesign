@@ -58,10 +58,13 @@ una vez que tenemos la carpeta ubicada ( ejemplo app/data/liteDbReportes.db )
 
 Agregamos al final del archivo
 
-    app/config/parameters.yml
+    app/config/parameters.yml.dist
         databasePdfRep_driver: pdo_sqlite
         databasePdfRep_name: ak.db
         databasePdfRep_path: data/liteDbReportes.db
+        
+    luego ejecutamos comoser update 
+esto sirve para que copie los datos al prameters.yml
 y en el archivo 
 
     app/config/config.yml localizamos 
