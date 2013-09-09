@@ -248,12 +248,12 @@ Ext.define('Ext.form.field.boolean', {
     listeners: {
         focus: function( fld, e, opts ) {
             fld.expand();
-        },
+        }/*,
 		blur:function(fld,e,opts){
 			var me = this
 			return me.getPicker().meValue
 			//console.debug(me)
-		}
+		}*/
     },
 	pase:false,
 	getValue:function(){
