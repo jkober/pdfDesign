@@ -94,5 +94,17 @@ lo unico que debemos respetar es el nombre de la coneccion
 
     pdfReport
 
+otra forma de configurar la base es mandarla al directorio 
 
-    
+    src
+           charset:  UTF8
+            pdfReport:
+                driver:   %databasePdfRep_driver%
+                dbname:   %databasePdfRep_name%
+                charset:  UTF8
+                path:     ../src/%databasePdfRep_path%    
+
+Esto localiza la base en proyecto/src/data/liteDbReportes.db
+
+    Recordar que el directorio y el arhivo deben tener permiso para escritura.
+    tambien puede ser cambiado a mysql.
