@@ -100,16 +100,16 @@ class DesignController extends Controller {
                 //------------------------------------------------------------------
                 $rep = $connRep->fetchAll("SELECT * FROM reportes where rep_name = '" . $name . "'");
                 //------------------------------------------------------------------
-                $ssql = "insert into reportesH select null,* from reportes where rep_id=:rep_id";
+                $ssql = "insert into reportesH select null,reportes.* from reportes where rep_id=:rep_id";
                 $stmt =$connRep->prepare($ssql);
                 $stmt->bindValue("rep_id",$rep[0]["rep_id"]);
                 $stmt->execute();
                 //------------------------------------------------------------------
             }else{
                 //------------------------------------------------------------------            
-                $ssql = "insert into reportesH select null,* from reportes where rep_id=:rep_id";
+                $ssql = "insert into reportesH select null,reportes.* from reportes where rep_id= :rep_id ";
                 $stmt =$connRep->prepare($ssql);
-                $stmt->bindValue("rep_id",$rep[0]["rep_id"]);
+                $stmt->bindValue("rep_id", intval($rep[0]["rep_id"]));
                 $stmt->execute();
                 //------------------------------------------------------------------
                 $ssql = "update reportes set rep_data = :rep_data, rep_date=:rep_date where rep_id=:rep_id";
