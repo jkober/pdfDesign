@@ -1,10 +1,11 @@
 services:
     Design.PhpGenPdfDb:
         class: Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb
-        arguments: [ @doctrine.orm.entity_manager ]
+        arguments: [@doctrine.dbal.default_connection ]
+#        arguments: [@doctrine.orm.entity_manager ]
     Design.PhpGenPdf:
         class: Design\DesignBundle\Services\PdfExterno3\PhpGenPdfControll
-        arguments: [%kernel.root_dir%,@Design.PhpGenPdfDb]
+        arguments: [%kernel.root_dir%,@doctrine.dbal.default_connection,@doctrine.dbal.pdfReport_connection]
     Design.PhpGenGraf:
         class: Design\DesignBundle\Services\PdfExterno3\PhpGenGraf
     Design.PhpGenSqlDef:

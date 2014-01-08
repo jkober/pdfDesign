@@ -9,9 +9,14 @@ use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfRecordSet as RecordSet;
 class PhpGenPdfControll {
 
     protected static $rootDir = "";
-
-    function __construct($rootDir="") {
+    protected static $db=null;
+    function __construct($rootDir="",$db=null,$db2=null) {
         self::$rootDir = dirname($rootDir) . "/web/";
+        
+        $dbs = new PhpGenPdfDb($db);
+        $dbs = new PhpGenPdfDb($db2,"design");
+        
+        self::$db=Db::getConexion("design");
     }
     public static function imprimirV3($name, $obj = null) {
         $baseDir=dirname(dirname(dirname(__DIR__)))."/comercial/";
@@ -133,7 +138,22 @@ class PhpGenPdfControll {
         return $genPdf->creo($rs,"mm",true);
     }
     
-    
+    public  function getPdfSymfony($name,$obj=null){
+        
+        $connRep = self::$db;//->getConexion("ded");//->getConnection("pdfReport");
+        try{
+            //------------------------------------------------------------------
+            $rep = $connRep->query("SELECT * FROM reportes where rep_name = '{$name}' " )->fetchAll();
+            return self::imprimirFromDesign(json_decode($rep[0]["rep_data"]),$obj);
+            
+            //------------------------------------------------------------------
+            //$repo = $rep[0]["rep_data"];
+            //------------------------------------------------------------------
+            //------------------------------------------------------------------
+        }catch (\Exception $e) {
+            throw new \Exception("12","Error generando reporte");
+        }
+    }
     private static function version3symfo($objPdf, $rs, $name = "") {
         //echo memory_get_usage() / 1048576 ."\n";
         $genPdf = new PhpGenPdf($objPdf);
