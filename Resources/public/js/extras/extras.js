@@ -1,3 +1,7 @@
+window.showModalDialog  = function(url) {
+    window.open(url, '_blank');
+}
+
 Ext.namespace("Extras.extras")
 jQuery.noConflict(); 
 
