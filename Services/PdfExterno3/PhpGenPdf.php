@@ -10,6 +10,7 @@ if (!defined("_EBarra")) {
 }
 
 class PhpGenPdf {
+    public static $returnInBase64 = false;
     //--------------------------------------------------------------------------
     protected $isUtf8 = true;
     public $objExtraSection=null;
@@ -1003,28 +1004,34 @@ class PhpGenPdf {
         }
         $fdoc = new PhpGenPdfFooterDocu($this->pageDocum->Footer);
         $fdoc->write($this);
-
-        //----------------------------------------------------------------------
-        if ($usaTmpFile) {
-            $sale = \TmpGen::getNameFile(usr_id, $this->nameReport, "pdf");
-            $this->pdf->Output($sale->getFile(), "F");
+        if ( self::$returnInBase64 == true ) {
+            $aux = $this->pdf->Output("sale","s");
             //---------------------------------------------------------------------------------
             $this->pdf->Close();
-            //---------------------------------------------------------------------------------
-            $this->fileSale = $sale->getInternet();
-            //---------------------------------------------------------------------------------
-            return $this->fileSale;
-            
+            return base64_encode($aux);
         }else{
-            $nameY = date("U") . ".pdf";
-            $file = $this->dirSalida . "tmp/" . $nameY;
-            $this->pdf->Output($file, "F");
             //----------------------------------------------------------------------
-            $this->pdf->Close();
-            //----------------------------------------------------------------------
-            $this->fileSale = $nameY; //$file; //$sale->getInternet();
-            //----------------------------------------------------------------------
-            return $this->fileSale;
+            if ($usaTmpFile) {
+                $sale = \TmpGen::getNameFile(usr_id, $this->nameReport, "pdf");
+                $this->pdf->Output($sale->getFile(), "F");
+                //---------------------------------------------------------------------------------
+                $this->pdf->Close();
+                //---------------------------------------------------------------------------------
+                $this->fileSale = $sale->getInternet();
+                //---------------------------------------------------------------------------------
+                return $this->fileSale;
+
+            }else{
+                $nameY = date("U") . ".pdf";
+                $file = $this->dirSalida . "tmp/" . $nameY;
+                $this->pdf->Output($file, "F");
+                //----------------------------------------------------------------------
+                $this->pdf->Close();
+                //----------------------------------------------------------------------
+                $this->fileSale = $nameY; //$file; //$sale->getInternet();
+                //----------------------------------------------------------------------
+                return $this->fileSale;
+            }
         }
     }
     /**
