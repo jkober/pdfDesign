@@ -82,7 +82,7 @@ class PhpGenPdfControll {
         }
     }
 
-    public static function imprimirFromDesign($json, $obj = null) {
+    public static function imprimirFromDesign($json, $obj = null,$rs=null) {
         $cont = $json;
         //----------------------------------------------------------------------
         $sql = $cont->reportExtras->sql;
@@ -96,10 +96,10 @@ class PhpGenPdfControll {
                 $sql = str_replace("{" . $v->name . "}", $v->value, $sql);
             }
         }
-        //if ($rs == null) {
-        $rs = new RecordSet($sql);
-        $rs->setResultAsociativo();
-        //}
+        if ($rs == null) {
+            $rs = new RecordSet($sql);
+            $rs->setResultAsociativo();
+        }
         //----------------------------------------------------------------------
         try {
             return self::version3symfo($cont, $rs); //, $rs, $name);
@@ -141,13 +141,13 @@ class PhpGenPdfControll {
         return $genPdf->creo($rs,"mm",true);
     }
     
-    public  function getPdfSymfony($name,$obj=null){
+    public  function getPdfSymfony($name,$obj=null,$rs=null){
         
         $connRep = self::$db;//->getConexion("ded");//->getConnection("pdfReport");
         try{
             //------------------------------------------------------------------
             $rep = $connRep->query("SELECT * FROM reportes where rep_name = '{$name}' " )->fetchAll();
-            return self::imprimirFromDesign(json_decode($rep[0]["rep_data"]),$obj);
+            return self::imprimirFromDesign(json_decode($rep[0]["rep_data"]),$obj,$rs);
             
             //------------------------------------------------------------------
             //$repo = $rep[0]["rep_data"];
