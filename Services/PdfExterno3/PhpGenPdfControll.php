@@ -7,9 +7,12 @@ use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb as Db;
 use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfRecordSet as RecordSet;
 
 class PhpGenPdfControll {
-
+    protected static $returnInBase64= false;
     protected static $rootDir = "";
     protected static $db=null;
+    public static function setReturnInBase64() {
+        self::$returnInBase64=true;
+    }
     function __construct($rootDir="",$db=null,$db2=null) {
         self::$rootDir = dirname($rootDir) . "/web/";
         
@@ -159,6 +162,7 @@ class PhpGenPdfControll {
         $genPdf = new PhpGenPdf($objPdf);
         $genPdf->setDirRoot(self::$rootDir);
         $genPdf->setNameReportSal($name);
+        $genPdf::$returnInBase64=self::$returnInBase64;
         return $genPdf->creo($rs);
         //$cc = $genPdf->creo($rs);
         //echo memory_get_usage() / 1048576 ."\n";
