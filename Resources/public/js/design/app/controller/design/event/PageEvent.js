@@ -118,6 +118,11 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
 		var dom = me.el.dom
 		if ( kc.FixExtJs42 ) { 
 			dom = me.el.dom.firstChild;
+			try{
+				 var cc = dom.firstChild.firstChild;
+				cc.style="hidden=hidden";
+			}catch (e){}
+			
 		}
 		// -------------------------------------------------------------
 		this.pageRef = dom;
