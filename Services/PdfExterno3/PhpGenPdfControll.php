@@ -140,7 +140,42 @@ class PhpGenPdfControll {
         //$genPdf->setIsUtf8(false);
         return $genPdf->creo($rs,"mm",true);
     }
-    
+
+    public  function getPdfSymfony2019($name,$filter){
+
+        $connRep = self::$db;//->getConexion("ded");//->getConnection("pdfReport");
+        try{
+            //------------------------------------------------------------------
+            $rep = $connRep->query("SELECT * FROM reportes where rep_name = '{$name}' " )->fetchAll();
+//            return self::imprimirFromDesign(json_decode($rep[0]["rep_data"]),$obj,$rs);
+            $cont = json_decode($rep[0]["rep_data"]);
+            //----------------------------------------------------------------------
+            $sql = $cont->reportExtras->sql;
+
+            if(stristr($sql, 'select ') === FALSE) {
+                throw new \Exception("Falta Select");
+
+                return false;
+                //$sql =" select * from $sql ";
+            }
+            $rs = new RecordSet($sql,$filter);
+            $rs->setResultAsociativo();
+            //----------------------------------------------------------------------------------------------------------
+            try {
+                return self::version3symfo($cont, $rs); //, $rs, $name);
+            } catch (Exceptions $e) {
+                throw $e;
+            }
+            //----------------------------------------------------------------------------------------------------------
+        }catch (\Exception $e) {
+            //----------------------------------------------------------------------------------------------------------
+            throw $e;
+            //----------------------------------------------------------------------------------------------------------
+            //throw new \Exception("12","Error generando reporte");
+        }
+    }
+
+
     public  function getPdfSymfony($name,$obj=null,$rs=null){
         
         $connRep = self::$db;//->getConexion("ded");//->getConnection("pdfReport");
@@ -154,7 +189,8 @@ class PhpGenPdfControll {
             //------------------------------------------------------------------
             //------------------------------------------------------------------
         }catch (\Exception $e) {
-            throw new \Exception("12","Error generando reporte");
+            throw $e;
+            //throw new \Exception("12","Error generando reporte");
         }
     }
     private static function version3symfo($objPdf, $rs, $name = "") {
