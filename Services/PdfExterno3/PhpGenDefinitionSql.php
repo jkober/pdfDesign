@@ -31,7 +31,12 @@ class PhpGenDefinitionSql {
         //----------------------------------------------------------------------
         if (is_array($json->extras)) {
             foreach ($json->extras as $v) {
-                $json->ssql = str_replace("{" . $v->name . "}", $v->value, $json->ssql);
+                if ( substr($v->name,0,1) == ":"){
+                    $json->ssql = str_replace("" . $v->name . "", $v->value, $json->ssql);
+
+                }else {
+                    $json->ssql = str_replace("{" . $v->name . "}", $v->value, $json->ssql);
+                }
             }
         }
         //----------------------------------------------------------------------
