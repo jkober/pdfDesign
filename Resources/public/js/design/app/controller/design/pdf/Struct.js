@@ -220,6 +220,7 @@ kc.pdfStruc.PdfPage = {
 		field : [],
 		param : {}
 	},
+    wherecondicional:"y aca sera",
 	refView : null,
 	MarginTop : 10,
 	MarginLeft : 10,

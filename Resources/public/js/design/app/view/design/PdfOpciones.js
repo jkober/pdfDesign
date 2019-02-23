@@ -20,7 +20,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
 	closable : false,
 
 	title : "Configurar Opciones del Reporte",
-	width : 580,
+	width : 700,
 	// ----------------------------------------------------------------------------------------------
 	buttons : [{
 				text : 'Guardar',
@@ -252,7 +252,36 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
 
 						fieldLabel : "Rotación"
 					}]
-		}]
+		},{
+                xtype : "fieldset",
+                title : "Procesar where",
+                autoHeight : true,
+                defaults : {
+                    labelAlign : 'right',
+                    allowBlank : false,
+                    labelWidth : 50,
+                    align : 'left'
+                },
+                items : [
+                    {
+                        itemId : "formula",
+                        name : 'wherecondicional',
+                        xtype : 'codemirror',
+                        pathModes : kcPatch.appDir + 'js/design/mzExt/CodeMirror-2.2/mode',
+                        pathExtensions : kcPatch.appDir + 'js/design/mzExt/CodeMirror-2.2/lib/util',
+                        labelSeparator : ' ',
+                        showModes : false,
+                        fieldLabel : 'Code',
+                        width:100,
+                        anchor : '100% 100%',
+                        editorHeight : 300,
+                        theme : "rubyblue",
+
+                        mode : 'text/x-php',
+                        readOnly : false
+                    }
+                	]
+            }]
 		me.items = [{
 					xtype : "form",
 					height : 400,
