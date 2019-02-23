@@ -89,15 +89,59 @@ class PhpGenPdfControll {
         if(stristr($sql, 'select ') === FALSE) {
             $sql =" select * from $sql ";
         }
-        
-        
-        if (is_array($obj)) {
-            foreach ($obj as $k => $v) {
-                $sql = str_replace("{" . $v->name . "}", $v->value, $sql);
+        if ($json->wherecondicional != "" ) {
+            $parametrosX = array();
+            if (is_array($obj)) {
+                foreach ($obj as $v) {
+                    if (substr($v->name, 0, 1) == ":") {
+                        $parametrosX[$v->name] = $v->value;
+                    }
+                }
+            }
+            $FunctionVuelo = create_function('$p', $json->wherecondicional);
+            $returns = $FunctionVuelo($parametrosX);
+            if (is_array($returns) && count($returns) > 0) {
+                $a = implode(",", $returns);
+                $pattern = '/:[a-z0-9]*/';
+                preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
+                if (isset($m[0])) {
+                    $cc = array_flip($m[0]);
+
+                    foreach ($cc as $k => $v) {
+                        if (!isset($parametrosX[$k])) {
+                            throw new \Exception("Falta un parametro {$k}");
+                        }
+                    }
+                    preg_match_all($pattern, $sql, $m, PREG_PATTERN_ORDER);
+                    if (isset($m[0])) {
+                        $cc1 = array_flip($m[0]);
+                    } else {
+                        $cc1 = array();
+                    }
+
+                    foreach ($parametrosX as $k => $v) {
+                        if (!isset($cc[$k])) {
+                            if (!isset($cc1[$k])) {
+                                unset($parametrosX[$k]);
+                            }
+                        }
+                    }
+                }
+                foreach ($returns as $k => $v ) {
+                    $sql = str_replace("{$k}", $v, $sql);
+                }
+            }
+        }else {
+            $parametrosX = array();
+            if (is_array($obj)) {
+                foreach ($obj as $k => $v) {
+                    $parametrosX[$v->name] = $v->value;
+                    //$sql = str_replace("{" . $v->name . "}", $v->value, $sql);
+                }
             }
         }
         if ($rs == null) {
-            $rs = new RecordSet($sql);
+            $rs = new RecordSet($sql,$parametrosX);
             $rs->setResultAsociativo();
         }
         //----------------------------------------------------------------------
@@ -143,27 +187,59 @@ class PhpGenPdfControll {
 
     public  function getPdfSymfony2019($name,$filter){
 
-        $connRep = self::$db;//->getConexion("ded");//->getConnection("pdfReport");
+        $connRep = self::$db;
         try{
             //------------------------------------------------------------------
             $rep = $connRep->query("SELECT * FROM reportes where rep_name = '{$name}' " )->fetchAll();
-//            return self::imprimirFromDesign(json_decode($rep[0]["rep_data"]),$obj,$rs);
             $cont = json_decode($rep[0]["rep_data"]);
             //----------------------------------------------------------------------
             $sql = $cont->reportExtras->sql;
 
             if(stristr($sql, 'select ') === FALSE) {
                 throw new \Exception("Falta Select");
-
                 return false;
-                //$sql =" select * from $sql ";
             }
+            //----------------------------------------------------------------------------------------------------------
+            if ($cont->wherecondicional != "" ) {
+                $FunctionVuelo = create_function('$p', $cont->wherecondicional);
+                $returns = $FunctionVuelo($filter);
+                if (is_array($returns) && count($returns) > 0) {
+                    $a = implode(",", $returns);
+                    $pattern = '/:[a-z0-9]*/';
+                    preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
+                    if (isset($m[0])) {
+                        $cc = array_flip($m[0]);
+                        foreach ($cc as $k => $v) {
+                            if (!isset($filter[$k])) {
+                                throw new \Exception("Falta un parametro {$k}");
+                            }
+                        }
+                        preg_match_all($pattern, $sql, $m, PREG_PATTERN_ORDER);
+                        if (isset($m[0])) {
+                            $cc1 = array_flip($m[0]);
+                        } else {
+                            $cc1 = array();
+                        }
+                        foreach ($filter as $k => $v) {
+                            if (!isset($cc[$k])) {
+                                if (!isset($cc1[$k])) {
+                                    unset($filter[$k]);
+                                }
+                            }
+                        }
+                    }
+                    foreach ($returns as $k => $v ) {
+                        $sql = str_replace("{$k}", $v, $sql);
+                    }
+                }
+            }
+            //----------------------------------------------------------------------------------------------------------
             $rs = new RecordSet($sql,$filter);
             $rs->setResultAsociativo();
             //----------------------------------------------------------------------------------------------------------
             try {
-                return self::version3symfo($cont, $rs); //, $rs, $name);
-            } catch (Exceptions $e) {
+                return self::version3symfo($cont, $rs);
+            }catch (Exceptions $e) {
                 throw $e;
             }
             //----------------------------------------------------------------------------------------------------------
@@ -171,11 +247,8 @@ class PhpGenPdfControll {
             //----------------------------------------------------------------------------------------------------------
             throw $e;
             //----------------------------------------------------------------------------------------------------------
-            //throw new \Exception("12","Error generando reporte");
         }
     }
-
-
     public  function getPdfSymfony($name,$obj=null,$rs=null){
         
         $connRep = self::$db;//->getConexion("ded");//->getConnection("pdfReport");

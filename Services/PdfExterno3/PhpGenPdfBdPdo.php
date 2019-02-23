@@ -66,6 +66,23 @@ class PhpGenPdfBdPdo {
         }
         return $this->rowAfect;
     }
+    /**
+     * Ejecuta una query
+     * @param string $ssql Query a ejecutar
+     * @param bool  $manejadorDeErrorAutomatico por default toma la conf de la coneccion.
+     * @return  string retorna la cantidad de registros afectados
+     */
+    function ejecuteParams($ssql, $params) {
+        $this->guardoUltimasSql($ssql);
+        try {
+            $e = $this->conn->prepare($ssql);
+            $e->execute($params);
+//            $this->lastInsertId = $this->conn->lastInsertId();
+        } catch (Exception $e) {
+            $this->manejadorErrores($e);
+        }
+        return $this->rowAfect;
+    }
 
     /**
      * Selecciona la DB

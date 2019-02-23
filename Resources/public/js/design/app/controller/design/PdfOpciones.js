@@ -65,7 +65,11 @@ Ext.define('AppDesign.controller.design.PdfOpciones', {
 		for (var i = 0 ;i<grid.store.data.getCount();i++ ) {
 			win.pdfStruc.reportExtras.param.push(grid.store.proxy.writer.getRecordData(grid.store.data.getAt(i)))
 		}
-        win.pdfStruc.wherecondicional 		= values.wherecondicional;
+		if ( values.wherecondicional == undefined ){
+            win.pdfStruc.wherecondicional 		= win.items.getAt(0).items.getAt(0).items.getAt(3).items.getAt(1).value;
+		}else {
+            win.pdfStruc.wherecondicional 		= values.wherecondicional;
+        }
 
 		win.pdfStruc.reportExtras.bdName= values.bdName;
 		win.pdfStruc.MarginBottom 		= values.MarginBottom;

@@ -19,23 +19,69 @@ class PhpGenDefinitionSql {
         $this->db =$db;
     }
     public function get($json){
-        //$db=$this->db;
+        //--------------------------------------------------------------------------------------------------------------
         $db=PhpGenPdfDb::getConexion();
+        //--------------------------------------------------------------------------------------------------------------
         if (trim($json->bdName) != "") {
-            //$db->exec("use " . $json->bdName);
             $db->ejecute("use " . $json->bdName);
         }
-        //----------------------------------------------------------------------
-        //$db->BEGIN();
+        //--------------------------------------------------------------------------------------------------------------
         $db->beginTransaction();
-        //----------------------------------------------------------------------
-        if (is_array($json->extras)) {
-            foreach ($json->extras as $v) {
-                if ( substr($v->name,0,1) == ":"){
-                    $json->ssql = str_replace("" . $v->name . "", $v->value, $json->ssql);
+        //--------------------------------------------------------------------------------------------------------------
+        if ($json->where != "" ) {
+            $parametrosX = array();
+            if (is_array($json->extras)) {
+                foreach ($json->extras as $v) {
+                    if (substr($v->name, 0, 1) == ":") {
+                        $parametrosX[$v->name] = $v->value;
+                    }
+                }
+            }
+            $FunctionVuelo = create_function('$p', $json->where);
+            $returns = $FunctionVuelo($parametrosX);
+            if (is_array($returns) && count($returns)>0 )  {
+                $a= implode(",", $returns);
+                $subject = "abcdef";
+                $pattern = '/:[a-z0-9]*/';
+                preg_match_all($pattern, $a, $m,PREG_PATTERN_ORDER);
+                if ( isset($m[0])) {
+                    $cc = array_flip($m[0]);
 
-                }else {
-                    $json->ssql = str_replace("{" . $v->name . "}", $v->value, $json->ssql);
+                    foreach ( $cc as $k => $v ){
+                        if ( ! isset($parametrosX[$k]) ) {
+                            throw new \Exception("Falta un parametro {$k}");
+                        }
+                    }
+                    preg_match_all($pattern, $json->ssql, $m,PREG_PATTERN_ORDER);
+                    if ( isset($m[0])) {
+                        $cc1 = array_flip($m[0]);
+                    }else {
+                        $cc1=array();
+                    }
+
+                    foreach ( $parametrosX as $k => $v ){
+                        if ( ! isset($cc[$k]) ) {
+                            if ( ! isset($cc1[$k]) ) {
+                                unset($parametrosX[$k]);
+                            }
+                        }
+                    }
+                }
+                foreach ($returns as $k => $v ) {
+                    $json->ssql = str_replace("{$k}", $v, $json->ssql);
+                }
+
+            }
+        }else {
+            //----------------------------------------------------------------------
+            if (is_array($json->extras)) {
+                foreach ($json->extras as $v) {
+                    if (substr($v->name, 0, 1) == ":") {
+                        $json->ssql = str_replace("" . $v->name . "", $v->value, $json->ssql);
+
+                    } else {
+                        $json->ssql = str_replace("{" . $v->name . "}", $v->value, $json->ssql);
+                    }
                 }
             }
         }
@@ -47,8 +93,9 @@ class PhpGenDefinitionSql {
         $sqlLiteTable   = false;//----------------------------------------------
         //----------------------------------------------------------------------
         try {
-            $sqlTempo = "create temporary table veoEstruc {$json->ssql}";
-            $db->ejecute($sqlTempo);
+            $sqlTempo = "create temporary table veoEstruc {$json->ssql} limit 0,0";
+            $db->ejecuteParams($sqlTempo,$parametrosX);
+            //$db->ejecute($sqlTempo);
         }catch (\Exception $e1){
             $error=true;
         }

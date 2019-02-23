@@ -207,6 +207,7 @@ kc.pdfStruc.PdfGroup.Header.typeSection = "head"
 kc.pdfStruc.PdfGroup.Body.typeSection = "body"
 kc.pdfStruc.PdfGroup.Footer.typeSection = "footer"
 // ------------------------------------------------------------------------------
+// esta es la base del reporte
 kc.pdfStruc.PdfPage = {
 	reportExtras : {
 		name : null,
@@ -220,7 +221,7 @@ kc.pdfStruc.PdfPage = {
 		field : [],
 		param : {}
 	},
-    wherecondicional:"y aca sera",
+    wherecondicional:"",
 	refView : null,
 	MarginTop : 10,
 	MarginLeft : 10,

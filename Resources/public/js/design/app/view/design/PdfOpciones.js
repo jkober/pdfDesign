@@ -264,6 +264,11 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
                 },
                 items : [
                     {
+                        value : 'Parametros $p[:xx], :xx = valor de entrada de filtro . Debera retornar array ejemplo: array("%%where1%%"=>"tableName.id = :id or tableName.name=:nombre <br>" ',
+                        xtype : 'displayfield',
+                        labelSeparator : ' '
+                    },
+                    {
                         itemId : "formula",
                         name : 'wherecondicional',
                         xtype : 'codemirror',
@@ -274,7 +279,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
                         fieldLabel : 'Code',
                         width:100,
                         anchor : '100% 100%',
-                        editorHeight : 300,
+                        editorHeight : 250,
                         theme : "rubyblue",
 
                         mode : 'text/x-php',

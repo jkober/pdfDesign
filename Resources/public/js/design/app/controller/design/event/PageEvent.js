@@ -29,6 +29,10 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
 	pageSqlUpdate : function(e) {
 		// -------------------------------------------------------------
 		var sql     = this.getSql().getValue();
+        var wherecondicional = "";
+		if (this.pdfStruc.wherecondicional != undefined ) {
+            wherecondicional = this.pdfStruc.wherecondicional;
+		}
 		var extras  = this.pdfStruc.reportExtras.param;
 		// -------------------------------------------------------------
 		if (Ext.util.Format.trim(sql) == "") {
@@ -41,6 +45,7 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
 		// -------------------------------------------------------------
 		Ajax.MyAjax.get().setJson(Ext.encode({
 					ssql : sql,
+					where: wherecondicional,
 					extras : extras,
 					bdName : this.pdfStruc.reportExtras.bdName
 				}));
