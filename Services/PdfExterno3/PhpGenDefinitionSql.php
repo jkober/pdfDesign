@@ -46,7 +46,6 @@ class PhpGenDefinitionSql {
                     }
                 }
                 $a= implode(",", $returns);
-                $subject = "abcdef";
                 $pattern = '/:[a-z0-9]*/';
                 preg_match_all($pattern, $a, $m,PREG_PATTERN_ORDER);
                 if ( isset($m[0])) {
@@ -78,6 +77,7 @@ class PhpGenDefinitionSql {
 
             }
         }else {
+            $parametrosX=array();
             //----------------------------------------------------------------------
             if (is_array($json->extras)) {
                 foreach ($json->extras as $v) {
