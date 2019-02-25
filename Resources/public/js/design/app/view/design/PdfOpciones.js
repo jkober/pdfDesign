@@ -264,7 +264,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
                 },
                 items : [
                     {
-                        value : 'Parametros $p[:xx], :xx = valor de entrada de filtro . Debera retornar array ejemplo: array("%%where1%%"=>"tableName.id = :id or tableName.name=:nombre <br>" ',
+                        value : 'Parametros $p[:xx], :xx = valor de entrada de filtro . Debera retornar array ejemplo: array("$w1$"=>"tableName.id = :id or tableName.name=:nombre" <br> opcionalmente pude devolver otro elemento del array("Sql"=>"select cc from xxxxx" << esta sera la nueva sql a ejecutar) " ',
                         xtype : 'displayfield',
                         labelSeparator : ' '
                     },

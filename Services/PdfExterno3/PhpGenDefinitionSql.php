@@ -40,6 +40,11 @@ class PhpGenDefinitionSql {
             $FunctionVuelo = create_function('$p', $json->where);
             $returns = $FunctionVuelo($parametrosX);
             if (is_array($returns) && count($returns)>0 )  {
+                if ( isset($returns["Sql"])){
+                    if ( trim($returns["Sql"])!="") {
+                        $json->ssql=$returns["Sql"];
+                    }
+                }
                 $a= implode(",", $returns);
                 $subject = "abcdef";
                 $pattern = '/:[a-z0-9]*/';

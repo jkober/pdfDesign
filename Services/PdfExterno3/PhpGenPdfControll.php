@@ -101,6 +101,12 @@ class PhpGenPdfControll {
             $FunctionVuelo = create_function('$p', $json->wherecondicional);
             $returns = $FunctionVuelo($parametrosX);
             if (is_array($returns) && count($returns) > 0) {
+                if ( isset($returns["Sql"])){
+                    if ( trim($returns["Sql"])!="") {
+                        $sql=$returns["Sql"];
+                    }
+                }
+
                 $a = implode(",", $returns);
                 $pattern = '/:[a-z0-9]*/';
                 preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
@@ -204,22 +210,32 @@ class PhpGenPdfControll {
                 $FunctionVuelo = create_function('$p', $cont->wherecondicional);
                 $returns = $FunctionVuelo($filter);
                 if (is_array($returns) && count($returns) > 0) {
+                    if ( isset($returns["Sql"])){
+                        if ( trim($returns["Sql"])!="") {
+                            $sql=$returns["Sql"];
+                        }
+                    }
+                    //--------------------------------------------------------------------------------------------------
                     $a = implode(",", $returns);
                     $pattern = '/:[a-z0-9]*/';
                     preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
+                    //--------------------------------------------------------------------------------------------------
                     if (isset($m[0])) {
+                        //----------------------------------------------------------------------------------------------
                         $cc = array_flip($m[0]);
                         foreach ($cc as $k => $v) {
                             if (!isset($filter[$k])) {
                                 throw new \Exception("Falta un parametro {$k}");
                             }
                         }
+                        //----------------------------------------------------------------------------------------------
                         preg_match_all($pattern, $sql, $m, PREG_PATTERN_ORDER);
                         if (isset($m[0])) {
                             $cc1 = array_flip($m[0]);
                         } else {
                             $cc1 = array();
                         }
+                        //----------------------------------------------------------------------------------------------
                         foreach ($filter as $k => $v) {
                             if (!isset($cc[$k])) {
                                 if (!isset($cc1[$k])) {
@@ -227,6 +243,7 @@ class PhpGenPdfControll {
                                 }
                             }
                         }
+                        //----------------------------------------------------------------------------------------------
                     }
                     foreach ($returns as $k => $v ) {
                         $sql = str_replace("{$k}", $v, $sql);
