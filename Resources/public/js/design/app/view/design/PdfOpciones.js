@@ -159,6 +159,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
 						selModel : {
 							selType : 'cellmodel'
 						},
+                		singleSelect:true,
 						plugins : [me.editing],
 
 						store : Ext.data.StoreManager
@@ -187,6 +188,8 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
 												text : 'Agregar Parametro'
 											}, {
 												xtype : 'button',
+												scope : me,
+                                        		handler : me.dropParam,
 												iconCls : 'dropBtn',
 												text : 'Borrar Parametro'
 											}]
@@ -311,5 +314,31 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
 					row : 0,
 					column : 0
 				});
-	}
+	},
+    dropParam : function() {
+        var model;
+        var selection;
+        //----------------------------------------------------------------------
+        try {
+            model = this.editing.grid.getSelectionModel();
+            selection = model.getSelection();
+        } catch (e) {
+            return true;
+        }
+        //----------------------------------------------------------------------
+        if ( selection.length==0 ) {
+        	alert("Debe seleccionar un item para borrar")
+            return true;
+        }
+        if (selection.length > 0) {
+            for (var i = 0; i < selection.length; i++) {
+            	if (confirm("Desea borrar este campo:"+ selection[i].get("name"))) {
+                    this.storeRef.remove(selection[i]);
+                    this.storeRef.sync();
+                }
+            }
+        }
+
+    }
+
 });
