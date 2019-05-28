@@ -144,7 +144,7 @@ class PhpGenDefinitionSql {
         }
         //$recordSet          = $db->executeQuery("SHOW FIELDS FROM veoEstruc ");
         //----------------------------------------------------------------------
-        $_TableDefinition   = "";
+        $_TableDefinition   = array();
         $i                  = 0;
         //----------------------------------------------------------------------
         while ($row = $recordSet->fetch()) {

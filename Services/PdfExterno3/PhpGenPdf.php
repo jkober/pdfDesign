@@ -857,6 +857,7 @@ class PhpGenPdf {
                         }
                     }
                 } else {
+                    $this->groupAux = array();
                     foreach ($this->group as $k => $v) {
                         $this->groupAux[$k] = $this->reg[$k];
                     }
