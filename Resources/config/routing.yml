@@ -1,53 +1,53 @@
-Design_reportGetGrafic:  
-    pattern:  /design/reporte/getGrafic
+Design_reportGetGrafic:
+    path:  /design/reporte/getGrafic
     defaults: { _controller: DesignBundle:Design:getGrafic }
     requirements:
-        _method: POST
+        _methods: POST
 
-Design_reportListar:  
-    pattern:  /design/reporte/AbrirListar/{bkp}
+Design_reportListar:
+    path:  /design/reporte/AbrirListar/{bkp}
     defaults: { _controller: DesignBundle:Design:abrirListar ,bkp: false}
     requirements:
         bkp: false|true
-        _method: POST
-Design_reportAbrir:  
-    pattern:  /design/reporte/ReporteAbrir
+        _methods: POST
+Design_reportAbrir:
+    path:  /design/reporte/ReporteAbrir
     defaults: { _controller: DesignBundle:Design:reporteAbrir }
     requirements:
-        _method: POST
-Design_reportSave:  
-    pattern:  /design/reporte/ReporteGuardar
+        _methods: POST
+Design_reportSave:
+    path:  /design/reporte/ReporteGuardar
     defaults: { _controller: DesignBundle:Design:reporteGuardar }
     requirements:
-        _method: POST
+        _methods: POST
 Design_reporteVer:
-    pattern:  /design/reporte/ReporteVer
+    path:  /design/reporte/ReporteVer
     defaults: { _controller: DesignBundle:Design:reporteVer }
     requirements:
-        _method: POST
+        _methods: POST
 Design_imagenListar:
-    pattern:  /design/imagen/listar 
+    path:  /design/imagen/listar
     defaults: { _controller: DesignBundle:Design:imagenListar }
     requirements:
-        _method: POST
+        _methods: POST
 Design_ProcesarSql:
-    pattern:  /design/sql/ProcesarSql
+    path:  /design/sql/ProcesarSql
     defaults: { _controller: DesignBundle:Design:procesarSql }
     requirements:
-        _method: POST
+        _methods: POST
 Design_getFont:
-    pattern:  /design/font/getFont
+    path:  /design/font/getFont
     defaults: { _controller: DesignBundle:Design:getFont }
     requirements:
-        _method: POST
+        _methods: POST
         
 Design_app:
-    pattern:  /design/{controler}
+    path:  /design/{controler}
     defaults: { _controller: DesignBundle:Design:design }
 Design_ingreso:
-    pattern:  /design
+    path:  /design
     defaults: { _controller: DesignBundle:Design:loadApp }
     
 Design_ingreso2:
-    pattern:  /
+    path:  /
     defaults: { _controller: DesignBundle:Design:loadApp }    

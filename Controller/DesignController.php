@@ -12,9 +12,15 @@ use Symfony\Component\Filesystem\Exception\IOException;
 /**
  * Description of DesignController
  * @author JKober
- * @Template("DesignBundle:Design:json.json.twig")
+ * @Template("DesignBundle:design:json.json.twig")
  */
 class DesignController extends Controller {
+    public function getRequest()
+    {
+
+        return $this->container->get('request_stack')->getCurrentRequest();
+    }
+
     public function getGraficAction() {
         //----------------------------------------------------------------------
         $obj = json_decode($this->getRequest()->request->get('json'))->json;
