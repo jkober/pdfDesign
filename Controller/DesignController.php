@@ -10,7 +10,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
 /**
- * Description of DesignController
+ * Description of DesignController dfdf
  * @author JKober
  * @Template("DesignBundle:design:json.json.twig")
  */
