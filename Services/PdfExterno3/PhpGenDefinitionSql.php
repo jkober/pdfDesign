@@ -52,8 +52,10 @@ class PhpGenDefinitionSql {
                     $cc = array_flip($m[0]);
 
                     foreach ( $cc as $k => $v ){
-                        if ( ! isset($parametrosX[$k]) ) {
-                            throw new \Exception("Falta un parametro {$k}");
+                        if ( $k != ":") {
+                            if (!isset($parametrosX[$k])) {
+                                throw new \Exception("Falta un parametro {$k}");
+                            }
                         }
                     }
                     preg_match_all($pattern, $json->ssql, $m,PREG_PATTERN_ORDER);
