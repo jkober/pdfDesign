@@ -108,7 +108,7 @@ class PhpGenPdfControll {
                 }
 
                 $a = implode(",", $returns);
-                $pattern = '/:[a-z0-9]*/';
+                $pattern = '/:[a-z0-9]{2,30}/';
                 preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
                 if (isset($m[0])) {
                     $cc = array_flip($m[0]);
@@ -219,7 +219,7 @@ class PhpGenPdfControll {
                     }
                     //--------------------------------------------------------------------------------------------------
                     $a = implode(",", $returns);
-                    $pattern = '/:[a-z0-9]*/';
+                    $pattern = '/:[a-z0-9]{2,30}/';
                     preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
                     //--------------------------------------------------------------------------------------------------
                     if (isset($m[0])) {
