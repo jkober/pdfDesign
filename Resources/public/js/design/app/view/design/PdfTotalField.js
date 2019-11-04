@@ -144,7 +144,7 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 						store : "fieldJkReset",
 						queryMode : 'local'
 					}, {
-						value : 'Formula ($$->Total) ($@->Field) ($PdfGen->PdfObject)',
+						value : 'Formula ($$->Total) ($@->Field) ($GenPdf->PdfObject)',
 						xtype : 'displayfield',
 						labelSeparator : ' '
 					},

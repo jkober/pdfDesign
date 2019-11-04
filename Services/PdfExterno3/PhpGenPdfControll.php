@@ -89,6 +89,7 @@ class PhpGenPdfControll {
         if(stristr($sql, 'select ') === FALSE) {
             $sql =" select * from $sql ";
         }
+        $tituloDefine= new \StdClass();
         if ($json->wherecondicional != "" ) {
             $parametrosX = array();
             if (is_array($obj)) {
@@ -98,8 +99,9 @@ class PhpGenPdfControll {
                     }
                 }
             }
-            $FunctionVuelo = create_function('$p', $json->wherecondicional);
-            $returns = $FunctionVuelo($parametrosX);
+
+            $FunctionVuelo = create_function('$p,$titulo', $json->wherecondicional);
+            $returns = $FunctionVuelo($parametrosX,$tituloDefine);
             if (is_array($returns) && count($returns) > 0) {
                 if ( isset($returns["Sql"])){
                     if ( trim($returns["Sql"])!="") {
@@ -154,7 +156,7 @@ class PhpGenPdfControll {
         }
         //----------------------------------------------------------------------
         try {
-            return self::version3symfo($cont, $rs); //, $rs, $name);
+            return self::version3symfo($cont, $rs,"",$tituloDefine); //, $rs, $name);
         } catch (Exceptions $e) {
             echo $e->getMessage();
             exit;
@@ -196,6 +198,7 @@ class PhpGenPdfControll {
     public  function getPdfSymfony2019($name,$filter){
 
         $connRep = self::$db;
+        $tituloDefine= new \StdClass();
         try{
             //------------------------------------------------------------------
             $rep = $connRep->query("SELECT * FROM reportes where rep_name = '{$name}' " )->fetchAll();
@@ -209,8 +212,8 @@ class PhpGenPdfControll {
             }
             //----------------------------------------------------------------------------------------------------------
             if ($cont->wherecondicional != "" ) {
-                $FunctionVuelo = create_function('$p', $cont->wherecondicional);
-                $returns = $FunctionVuelo($filter);
+                $FunctionVuelo = create_function('$p,$titulo', $cont->wherecondicional);
+                $returns = $FunctionVuelo($filter,$tituloDefine);
                 if (is_array($returns) && count($returns) > 0) {
                     if ( isset($returns["Sql"])){
                         if ( trim($returns["Sql"])!="") {
@@ -257,7 +260,7 @@ class PhpGenPdfControll {
             $rs->setResultAsociativo();
             //----------------------------------------------------------------------------------------------------------
             try {
-                return self::version3symfo($cont, $rs);
+                return self::version3symfo($cont, $rs,"",$tituloDefine);
             }catch (Exceptions $e) {
                 throw $e;
             }
@@ -285,13 +288,18 @@ class PhpGenPdfControll {
             //throw new \Exception("12","Error generando reporte");
         }
     }
-    private static function version3symfo($objPdf, $rs, $name = "") {
+    private static function version3symfo($objPdf, $rs, $name = "",$tituloDefine=null) {
         //echo memory_get_usage() / 1048576 ."\n";
-        $genPdf = new PhpGenPdf($objPdf);
+        //--------------------------------------------------------------------------------------------------------------
+        $genPdf = new PhpGenPdf($objPdf,$tituloDefine);
+        //--------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------
         $genPdf->setDirRoot(self::$rootDir);
         $genPdf->setNameReportSal($name);
         $genPdf::$returnInBase64=self::$returnInBase64;
+        //--------------------------------------------------------------------------------------------------------------
         return $genPdf->creo($rs);
+        //--------------------------------------------------------------------------------------------------------------
         //$cc = $genPdf->creo($rs);
         //echo memory_get_usage() / 1048576 ."\n";
         //return $cc;

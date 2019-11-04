@@ -34,6 +34,13 @@ class PhpGenPdf {
     protected $pageDocum;
     protected $NameReportSal = "";
     protected $totalFieldRef = array();
+    protected $tituloDefine  = null;
+    public function setTituloDefine($tituloDefine=null) {
+        $this->tituloDefine = $tituloDefine;
+    }
+    public function getTitulos() {
+        return $this->tituloDefine;
+    }
     //--------------------------------------------------------------------------
     /** @var RecordSet */
     protected $RecordSet = "";
@@ -721,7 +728,8 @@ class PhpGenPdf {
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    public function __construct($estruc) {
+    public function __construct($estruc,$titulo=null) {
+        $this->setTituloDefine($titulo);
         $this->nameReport = $estruc->reportExtras->name;
         //----------------------------------------------------------------------
         $tieneGrupos = false;
