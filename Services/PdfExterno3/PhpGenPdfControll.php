@@ -15,10 +15,10 @@ class PhpGenPdfControll {
     }
     function __construct($rootDir="",$db=null,$db2=null) {
         self::$rootDir = dirname($rootDir) . "/web/";
-        
+
         $dbs = new PhpGenPdfDb($db);
         $dbs = new PhpGenPdfDb($db2,"design");
-        
+
         self::$db=Db::getConexion("design");
     }
     public static function imprimirV3($name, $obj = null) {
@@ -48,7 +48,7 @@ class PhpGenPdfControll {
             echo $e->getMessage();
             exit;
         }
-        
+
     }
     public static function getPdf($name, $extras = null) {
         $file = "report/" . $name;
@@ -111,7 +111,7 @@ class PhpGenPdfControll {
 
                 $a = implode(",", $returns);
                 $pattern = '/:[a-z0-9]{2,30}/';
-                $pattern = '/:[a-z0-9_A-Z]{2,30}/';
+                $pattern = '/:[a-z_A-Z]+[a-z-0-9_A-Z]{1,30}/';
                 preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
                 if (isset($m[0])) {
                     $cc = array_flip($m[0]);
@@ -167,27 +167,27 @@ class PhpGenPdfControll {
     private static function version3Local($objPdf, $rs, $name = "") {
         /*
         ojo falta incluir las librerias para el manejo del tcppdf
-        
+
         */
-		importClass("PdfExterno3.PdfGenLeoRecordTable"	,F);
-		importClass("PdfExterno3.PhpGenPdf"		,F);
-		importClass("PdfExterno3.PhpGenPdfSections"	,F);
-		importClass("PdfExterno3.VariableStream"	,F);
-		importClass("PdfExterno3.fpdf17/FPDF"	,F);
-		importClass("PdfExterno3.PdfGenRotate"	,F);
-		importClass("PdfExterno3.PhpGenPdfFPDF"		,F);
-		importClass("PdfExterno3.PhpGenPdfLibrary"	,F);
-		importClass("PdfExterno3.PhpGenPdfBody"		,F);
-		//importClass("PdfExterno3.PhpGenPdfDbLocal"		,F);
-		importClass("PdfExterno3.PhpGenPdfFooter"	,F);
-		importClass("PdfExterno3.PhpGenPdfFooterDocu"	,F);
-		importClass("PdfExterno3.PhpGenPdfHead"		,F);
-		importClass("PdfExterno3.PhpGenPdfHeadDocu"	,F);
-                importClass("ClassAux.TmpGen"			,F);
+        importClass("PdfExterno3.PdfGenLeoRecordTable"	,F);
+        importClass("PdfExterno3.PhpGenPdf"		,F);
+        importClass("PdfExterno3.PhpGenPdfSections"	,F);
+        importClass("PdfExterno3.VariableStream"	,F);
+        importClass("PdfExterno3.fpdf17/FPDF"	,F);
+        importClass("PdfExterno3.PdfGenRotate"	,F);
+        importClass("PdfExterno3.PhpGenPdfFPDF"		,F);
+        importClass("PdfExterno3.PhpGenPdfLibrary"	,F);
+        importClass("PdfExterno3.PhpGenPdfBody"		,F);
+        //importClass("PdfExterno3.PhpGenPdfDbLocal"		,F);
+        importClass("PdfExterno3.PhpGenPdfFooter"	,F);
+        importClass("PdfExterno3.PhpGenPdfFooterDocu"	,F);
+        importClass("PdfExterno3.PhpGenPdfHead"		,F);
+        importClass("PdfExterno3.PhpGenPdfHeadDocu"	,F);
+        importClass("ClassAux.TmpGen"			,F);
 
 //		importClass("PdfExterno3.PhpGenPdfRecordSet"	,F);
-                
-                
+
+
         $genPdf = new PhpGenPdf($objPdf);
         $genPdf->setDirRoot(\Path::getServer(A)."img/" );
         $genPdf->setDirSalida(\Path::getServer(B));
@@ -225,6 +225,7 @@ class PhpGenPdfControll {
                     $a = implode(",", $returns);
                     $pattern = '/:[a-z0-9]{2,30}/';
                     $pattern = '/:[a-z0-9_A-Z]{2,30}/';
+                    $pattern = '/:[a-z_A-Z]+[a-z-0-9_A-Z]{1,30}/';
                     preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
                     //--------------------------------------------------------------------------------------------------
                     if (isset($m[0])) {
@@ -274,13 +275,13 @@ class PhpGenPdfControll {
         }
     }
     public  function getPdfSymfony($name,$obj=null,$rs=null){
-        
+
         $connRep = self::$db;//->getConexion("ded");//->getConnection("pdfReport");
         try{
             //------------------------------------------------------------------
             $rep = $connRep->query("SELECT * FROM reportes where rep_name = '{$name}' " )->fetchAll();
             return self::imprimirFromDesign(json_decode($rep[0]["rep_data"]),$obj,$rs);
-            
+
             //------------------------------------------------------------------
             //$repo = $rep[0]["rep_data"];
             //------------------------------------------------------------------
@@ -306,7 +307,7 @@ class PhpGenPdfControll {
         //echo memory_get_usage() / 1048576 ."\n";
         //return $cc;
 
-        
+
     }
 
 }
