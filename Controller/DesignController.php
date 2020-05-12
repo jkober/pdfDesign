@@ -290,7 +290,7 @@ class DesignController extends Controller {
         }
         return $salida;
     }
-    /** @Template() */
+    /** @Template("DesignBundle:design:load_app.html.twig") */
     public function loadAppAction() {
         return array("fonts" => json_encode($this->getFont()));
     }
