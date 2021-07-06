@@ -9,6 +9,7 @@ use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfFPDF as fromImportClass;
 //------------------------------------------------------------------------------
 //use Design\DesignBundle\Services\PdfExterno3\PdfGenRotate;
 class PhpGenPdfLibrary extends fromImportClass {
+    use PdfTags;
     protected $isUtf8=true;
     var $fromTcpdf=true;
     var $phpGenPdfHead;
