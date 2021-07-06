@@ -496,6 +496,7 @@ class PhpGenPdf {
         }
         //----------------------------------------------------------------------
     }
+    public $_print_in_formula=false;
     public function printCodeBarra($obj, $top, $left){
         $this->setPageIfSalt($obj, $top, $left);
         $this->pdf->Code39($this->pdf->GetX(), $this->pdf->GetY(),$obj->Text);
@@ -548,9 +549,18 @@ class PhpGenPdf {
                     if ($ob->Type == "Formula") {
                         try {
                             //$f = $this->FunctionVuelo[$obj->FieldName]($this->reg, $this->Fagre, $this); //$this->Fagre[$obj->FieldName];
-                            $f = $this->FunctionVuelo[$obj->TotalFieldName]($this->reg, $this->Fagre, $this); //$this->Fagre[$obj->FieldName];
+                            $this->_print_in_formula = false;
+                            $f = $this->FunctionVuelo[$obj->TotalFieldName]($this->reg, $this->Fagre, $this,$obj); //$this->Fagre[$obj->FieldName];
                             $f = $this->pdfFormat($obj, $f);
-                            return $this->printPdfLabel($obj, $f, $top, $left);
+                            if ( $this->_print_in_formula == true ) {
+                                if ( is_numeric($f) ) {
+                                    return $f;
+                                }else{
+                                    return $this->getPdf()->getY();
+                                }
+                            } else {
+                                return $this->printPdfLabel($obj, $f, $top, $left);
+                            }
                         } catch (Exceptions $e) {
                             print_r($e);
                         }
@@ -573,7 +583,7 @@ class PhpGenPdf {
                     if ($obj->Type == "Formula") {
                         //if ($obj->Type == "formula") {
                         try {
-                            $f = $this->FunctionVuelo[$obj->FieldName]($this->reg, $this->Fagre, $this); //$this->Fagre[$obj->FieldName];
+                            $f = $this->FunctionVuelo[$obj->FieldName]($this->reg, $this->Fagre, $this,$obj); //$this->Fagre[$obj->FieldName];
                             $f = $this->pdfFormat($obj, $f);
                             return $this->printPdfLabel($obj, $f, $top, $left);
                         } catch (Exceptions $e) {
@@ -757,7 +767,7 @@ class PhpGenPdf {
                                 $funcion->Expression = str_replace($v, "\$pdfReg[\"" . substr($v, 2) . "\"]", $funcion->Expression);
                             }
                         }
-                        $this->FunctionVuelo[$funcion->FieldName] = create_function('$pdfReg,$Fagre,$GenPdf', $funcion->Expression);
+                        $this->FunctionVuelo[$funcion->FieldName] = create_function('$pdfReg,$Fagre,$GenPdf,$obj=null', $funcion->Expression);
                     }
                 }
             } else {
@@ -782,7 +792,7 @@ class PhpGenPdf {
                                 $funcion->Expression = str_replace($v, "\$pdfReg[\"" . substr($v, 2) . "\"]", $funcion->Expression);
                             }
                         }
-                        $this->FunctionVuelo[$funcion->FieldName] = create_function('$pdfReg,$Fagre,$GenPdf', $funcion->Expression);
+                        $this->FunctionVuelo[$funcion->FieldName] = create_function('$pdfReg,$Fagre,$GenPdf,$obj=null', $funcion->Expression);
                     }
                 }
 
