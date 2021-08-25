@@ -238,7 +238,8 @@ Ext.define("AppDesign.view.design.GridPropety", {
             GroupWidthIgualar : "Iguala Width de todos los objetos",
             GroupHeightIgualar: "Iguala Height de todos los objetos",
             PrintIf           : "Si no se especifica nada se imprime por defecto. Si se especifica codigo debe retornar true o false. True ->NO Imprime ; False ->Imprime",
-            CodigoBarra       : "0-Normal 1-Code 39"
+            CodigoBarra       : "0-Normal 1-Code 39 2-Codigo i25 3-i25 + label 4-Qr",
+            CodigoBarraWid    : "Cod.39 (0.6) en i25 -> es la altura de la barra"
         }
         me.customExclude = {
             refView         : true,
@@ -679,7 +680,7 @@ Ext.define("AppDesign.view.design.GridPropety", {
 			
         }
         if (cant!=null ) {
-            aux=kc.pdfStruc.getWidhtCodeBarra(cant,this.objectPdf.my.CodigoBarraWid,this.objectPdf.my.CodigoBarraWid)
+            aux=kc.pdfStruc.getWidhtCodeBarra(cant,this.objectPdf.my.CodigoBarraWid,this.objectPdf.my.CodigoBarraWid,this.objectPdf.my.CodigoBarra,this.objectPdf.my.Text)
             if ( confirm("Actualiza el Ancho a :" + aux + " mm") ) {
                 this.objectPdf.my.PositionWidth=aux
                 this.setPositionWidthDiv(this.objectPdf.my.PositionWidth)

@@ -10,6 +10,7 @@ use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfFPDF as fromImportClass;
 //use Design\DesignBundle\Services\PdfExterno3\PdfGenRotate;
 class PhpGenPdfLibrary extends fromImportClass {
     use PdfTags;
+    use PdfQrTrait;
     protected $isUtf8=true;
     var $fromTcpdf=true;
     var $phpGenPdfHead;
@@ -17,6 +18,77 @@ class PhpGenPdfLibrary extends fromImportClass {
     var $phpGenPdfFooter;
     var $impresoDocuemntHead = false;
     var $impresoDocuemntFooter = false;
+    //---------------------- i 2 en 5 inicio
+    function i25($xpos, $ypos, $code, $basewidth=1, $height=10){
+
+        $wide = $basewidth;
+        $_xpos = $xpos;
+        $narrow = $basewidth / 3 ;
+
+        // wide/narrow codes for the digits
+        $barChar['0'] = 'nnwwn';
+        $barChar['1'] = 'wnnnw';
+        $barChar['2'] = 'nwnnw';
+        $barChar['3'] = 'wwnnn';
+        $barChar['4'] = 'nnwnw';
+        $barChar['5'] = 'wnwnn';
+        $barChar['6'] = 'nwwnn';
+        $barChar['7'] = 'nnnww';
+        $barChar['8'] = 'wnnwn';
+        $barChar['9'] = 'nwnwn';
+        $barChar['A'] = 'nn';
+        $barChar['Z'] = 'wn';
+
+        // add leading zero if code-length is odd
+        if(strlen($code) % 2 != 0){
+            $code = $code.'0';
+        }
+
+        //$this->Text($xpos, $ypos + $height + 4, $code);
+        $this->SetFillColor(0);
+        $invalid=false;
+        // add start and stop codes
+        $code = 'AA'.strtolower($code).'ZA';
+
+        for($i=0; $i<strlen($code); $i=$i+2){
+            // choose next pair of digits
+            $charBar = $code[$i];
+            $charSpace = $code[$i+1];
+            // check whether it is a valid digit
+            if(!isset($barChar[$charBar])){
+                $invalid=true;
+                $charBar=0;
+            }
+            if(!isset($barChar[$charSpace])){
+                $invalid=true;
+                $charSpace=0;
+            }
+            // create a wide/narrow-sequence (first digit=bars, second digit=spaces)
+            $seq = '';
+            for($s=0; $s<strlen($barChar[$charBar]); $s++){
+                $seq .= $barChar[$charBar][$s] . $barChar[$charSpace][$s];
+            }
+            for($bar=0; $bar<strlen($seq); $bar++){
+                // set lineWidth depending on value
+                if($seq[$bar] == 'n'){
+                    $lineWidth = $narrow;
+                }else{
+                    $lineWidth = $wide;
+                }
+                // draw every second value, because the second digit of the pair is represented by the spaces
+                if($bar % 2 == 0){
+                    $this->Rect($xpos, $ypos, $lineWidth, $height, 'F');
+                }
+                $xpos += $lineWidth;
+            }
+
+        }
+        if ( $invalid) {
+            $this->Text($_xpos, $ypos , "Codigo Invalido");
+        }
+        return $xpos;
+    }
+    //---------------------- i 2 en 5 fin
     public function getH() {
         return $this->h;
     }

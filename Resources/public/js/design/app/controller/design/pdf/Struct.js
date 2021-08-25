@@ -37,17 +37,27 @@ kc.pdfStruc.GetRotacion = function(div, width, rotacion) {
 	}
 }
 kc.pdfStrucRefActiva = null
-kc.pdfStruc.getWidhtCodeBarra = function(cantidadCaracteres, x, c) {
-	c = c / 10;
-	x = x / 10
-	if (x > 1.0) {
-		x = x * .001;
+kc.pdfStruc.getWidhtCodeBarra = function(cantidadCaracteres, x, c,codigo,code) {
+	if ( codigo != 2 && codigo != 3 ) {
+		c = c / 10;
+		x = x / 10
+		if (x > 1.0) {
+			x = x * .001;
+		}
+		var i = ((cantidadCaracteres + 2) * (3 * c + 7) - 1) * x;
+		if (i <= 0) {
+			i = "";
+		}
+		return parseInt(i * 2.54 * 10)
+	}else{
+		let wide = x;
+		let narrow = x / 3 ;
+		if (code.length  % 2 != 0){
+			code = code + '0';
+		}
+		let xpos = ( narrow * 4) + (( 3 * code.length ) * narrow) + (( 2 * code.length ) * wide)  + wide+ (narrow * 3)
+		return Math.round(xpos);
 	}
-	var i = ((cantidadCaracteres + 2) * (3 * c + 7) - 1) * x;
-	if (i <= 0) {
-		i = "";
-	}
-	return parseInt(i * 2.54 * 10)
 }
 kc.pdfStruc.factorRelacionPx = {
 	fr : null,

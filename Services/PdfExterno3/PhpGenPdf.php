@@ -414,22 +414,50 @@ class PhpGenPdf {
         }
         $conCodigo=false;
         if (isset($obj->CodigoBarra) ) {
-            if ( $obj->CodigoBarra > 0 ) {
-                $this->pdf->SetFillColor(0,0,0);
-                $auxNX= $this->pdf->Code39($auxX  ,$auxY,$textCb,true,false,0.6,$obj->PositionHeight );
-                $wN= $auxX - $this->pdf->getX();
-                $wN= $auxNX -$auxX + 4;
-                $conCodigo=true;
+            if ( $obj->CodigoBarra >0 ) {
+                if ( $obj->CodigoBarra == 1 ) {
+                    $this->pdf->SetFillColor(0, 0, 0);
+                    $auxNX = $this->pdf->Code39($auxX, $auxY, $textCb, true, false, $obj->CodigoBarraWid, $obj->PositionHeight);
+                    $wN = $auxX - $this->pdf->getX();
+                    $wN = $auxNX - $auxX + 4;
+                    $conCodigo = true;
+                }elseif ($obj->CodigoBarra == 2 ) {
+                    $this->pdf->SetFillColor(0, 0, 0);
+                    $auxNX = $this->pdf->i25($auxX, $auxY,$textCb,$obj->CodigoBarraWid,$obj->PositionHeight);
+                    $wN = $auxX - $this->pdf->getX();
+                    $wN = $auxNX - $auxX;
+                    $conCodigo = true;
+                }elseif ($obj->CodigoBarra == 3 ) {
+                    $this->pdf->SetFillColor(0, 0, 0);
+                    $auxNX = $this->pdf->i25($auxX, $auxY,$textCb,$obj->CodigoBarraWid, intval($obj->PositionHeight / 2) );
+                    $wN = $auxX - $this->pdf->getX();
+                    $wN = $auxNX - $auxX ;
+                    $text = $textCb;
+                    $conCodigo = true;
+                }elseif ($obj->CodigoBarra == 4 ) {
+                    $this->pdf->SetFillColor(0,0,0);
+                    $this->pdf->write2DBarcode("prueba", 'QRCODE,H', $auxX, $auxY, $obj->PositionWidth);
+
+                }
             }
         }
-
         if ($obj->MultiLine == false) {
             if ($obj->FontAlign == "J") {
                 $obj->FontAlign = "L";
             }
             $fill = ($obj->BackGround->R == "999" && $obj->BackGround->G == "999" && $obj->BackGround->B == "999" ) ? false : true;
+            if ( $conCodigo  ) {
+                if  ( $obj->CodigoBarra == 3 ) {
 
-            $this->pdf->Cell($conCodigo?$wN:$obj->PositionWidth, $obj->PositionHeight, $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
+                    $this->pdf->setY($this->pdf->getY() + intval($obj->PositionHeight / 2) + 1  );
+                    $this->pdf->setX($auxX);
+                    $this->pdf->Cell($wN, intval($obj->PositionHeight / 2), $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
+                }else {
+                    $this->pdf->Cell($conCodigo ? $wN : $obj->PositionWidth, $obj->PositionHeight, $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
+                }
+            }else{
+                $this->pdf->Cell($obj->PositionWidth, $obj->PositionHeight, $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
+            }
             $this->pdf->SetY($this->pdf->GetY() + $obj->PositionHeight);
         } else {
             $fill = ($obj->BackGround->R == "999" && $obj->BackGround->G == "999" && $obj->BackGround->B == "999" ) ? false : true;
