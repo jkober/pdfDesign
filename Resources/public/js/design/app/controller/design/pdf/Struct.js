@@ -509,6 +509,7 @@ kc.pdfStruc.loadStruc = function(defaults) {
 		Text : 'Empy Label',
 		MultiLine : false,
 		CodigoBarra : 0,
+		CodigoBarraH : 'H',
 		CodigoBarraWid : 0.6,
 		CodigoBarraCalc : false
 
@@ -568,7 +569,11 @@ kc.pdfStruc.loadStruc = function(defaults) {
 		FormatMask : '',
 		FormatType : '',
 		MultiLine : false,
-		CodigoBarra : 0
+		CodigoBarra : 0,
+		CodigoBarraH : 'H',
+		CodigoBarraWid : 0.6,
+		CodigoBarraCalc : false
+
 
 	}
 	// ------------------------------------------------------------------------------
@@ -594,7 +599,10 @@ kc.pdfStruc.loadStruc = function(defaults) {
 		FormatMask : '',
 		FormatType : '',
 		TotalFieldName : '',
-		CodigoBarra : 0
+		CodigoBarra : 0,
+		CodigoBarraH : 'H',
+		CodigoBarraWid : 0.6,
+		CodigoBarraCalc : false
 
 	}
 	// ------------------------------------------------------------------------------

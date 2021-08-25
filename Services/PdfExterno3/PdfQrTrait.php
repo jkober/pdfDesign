@@ -35,7 +35,7 @@ trait PdfQrTrait
      */
     public function write2DBarcode($code, $type, $x = '', $y = '', $w = '', $h = '', $style = '', $align = '', $distort = false)
     {
-        $barcodeobj = new QRcode($code, "H");
+        $barcodeobj = new QRcode($code, $type);
         $arrcode = $barcodeobj->getBarcodeArray();
         if (($arrcode === false) OR empty($arrcode) OR !isset($arrcode['num_rows']) OR ($arrcode['num_rows'] == 0) OR !isset($arrcode['num_cols']) OR ($arrcode['num_cols'] == 0)) {
             $this->Error('Error in 2D barcode string');

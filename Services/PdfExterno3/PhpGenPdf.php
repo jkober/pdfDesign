@@ -436,7 +436,12 @@ class PhpGenPdf {
                     $conCodigo = true;
                 }elseif ($obj->CodigoBarra == 4 ) {
                     $this->pdf->SetFillColor(0,0,0);
-                    $this->pdf->write2DBarcode("prueba", 'QRCODE,H', $auxX, $auxY, $obj->PositionWidth);
+                    if ( property_exists($obj,"CodigoBarraH") ) {
+                        $this->pdf->write2DBarcode($textCb, strtoupper( $obj->CodigoBarraH), $auxX, $auxY, $obj->PositionWidth);
+                    }else{
+                        $this->pdf->write2DBarcode($textCb, 'H', $auxX, $auxY, $obj->PositionWidth);
+
+                    }
 
                 }
             }
