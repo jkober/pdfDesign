@@ -309,6 +309,103 @@ class PhpGenPdfControll {
 
 
     }
+    public  function getPdfSymfony2020($name,$filter,$extrasToPdfGen){
+
+        $connRep = self::$db;
+        $tituloDefine= new \StdClass();
+        try{
+            //------------------------------------------------------------------
+            $rep = $connRep->query("SELECT * FROM reportes where rep_name = '{$name}' " )->fetchAll();
+            $cont = json_decode($rep[0]["rep_data"]);
+            //----------------------------------------------------------------------
+            $sql = $cont->reportExtras->sql;
+
+            if(stristr($sql, 'select ') === FALSE) {
+                throw new \Exception("Falta Select");
+                return false;
+            }
+            //----------------------------------------------------------------------------------------------------------
+            if ($cont->wherecondicional != "" ) {
+                $FunctionVuelo = create_function('$p,$titulo', $cont->wherecondicional);
+                $returns = $FunctionVuelo($filter,$tituloDefine);
+                if (is_array($returns) && count($returns) > 0) {
+                    if ( isset($returns["Sql"])){
+                        if ( trim($returns["Sql"])!="") {
+                            $sql=$returns["Sql"];
+                        }
+                    }
+                    //--------------------------------------------------------------------------------------------------
+                    $a = implode(",", $returns);
+                    $pattern = '/:[a-z0-9]{2,30}/';
+                    $pattern = '/:[a-z0-9_A-Z]{2,30}/';
+                    $pattern = '/:[a-z_A-Z]+[a-z-0-9_A-Z]{1,30}/';
+                    preg_match_all($pattern, $a, $m, PREG_PATTERN_ORDER);
+                    //--------------------------------------------------------------------------------------------------
+                    if (isset($m[0])) {
+                        //----------------------------------------------------------------------------------------------
+                        $cc = array_flip($m[0]);
+                        foreach ($cc as $k => $v) {
+                            if (!isset($filter[$k])) {
+                                throw new \Exception("Falta un parametro {$k}");
+                            }
+                        }
+                        //----------------------------------------------------------------------------------------------
+                        preg_match_all($pattern, $sql, $m, PREG_PATTERN_ORDER);
+                        if (isset($m[0])) {
+                            $cc1 = array_flip($m[0]);
+                        } else {
+                            $cc1 = array();
+                        }
+                        //----------------------------------------------------------------------------------------------
+                        foreach ($filter as $k => $v) {
+                            if (!isset($cc[$k])) {
+                                if (!isset($cc1[$k])) {
+                                    unset($filter[$k]);
+                                }
+                            }
+                        }
+                        //----------------------------------------------------------------------------------------------
+                    }
+                    foreach ($returns as $k => $v ) {
+                        $sql = str_replace("{$k}", $v, $sql);
+                    }
+                }
+            }
+            //----------------------------------------------------------------------------------------------------------
+            $rs = new RecordSet($sql,$filter);
+            $rs->setResultAsociativo();
+            //----------------------------------------------------------------------------------------------------------
+            try {
+                return self::version3symfo2020($cont, $rs,"",$tituloDefine,$extrasToPdfGen);
+            }catch (Exceptions $e) {
+                throw $e;
+            }
+            //----------------------------------------------------------------------------------------------------------
+        }catch (\Exception $e) {
+            //----------------------------------------------------------------------------------------------------------
+            throw $e;
+            //----------------------------------------------------------------------------------------------------------
+        }
+    }
+    private static function version3symfo2020($objPdf, $rs, $name = "",$tituloDefine=null,$extrasToPdfGen=null) {
+        //echo memory_get_usage() / 1048576 ."\n";
+        //--------------------------------------------------------------------------------------------------------------
+        $genPdf = new PhpGenPdf($objPdf,$tituloDefine);
+        $genPdf->pdfGenExtras = $extrasToPdfGen;
+        //--------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------
+        $genPdf->setDirRoot(self::$rootDir);
+        $genPdf->setNameReportSal($name);
+        $genPdf::$returnInBase64=self::$returnInBase64;
+        //--------------------------------------------------------------------------------------------------------------
+        return $genPdf->creo($rs);
+        //--------------------------------------------------------------------------------------------------------------
+        //$cc = $genPdf->creo($rs);
+        //echo memory_get_usage() / 1048576 ."\n";
+        //return $cc;
+
+
+    }
 
 }
 
