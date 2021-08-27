@@ -200,6 +200,41 @@ Ext.define('AppDesign.controller.design.PdfDesign', {
     //------------------------------------------------------------------------------------------
     },
     dropGrdTotalField:function(){
-        alert("Falta Implementar");
+
+        //----------------------------------------------------------------------
+        var model;
+        var selection;
+        var grd = this.getGridTotal();
+        //----------------------------------------------------------------------
+        try {
+            model = grd.getSelectionModel()
+            selection = model.getSelection();
+        } catch (e) {
+            return true;
+        }
+        //----------------------------------------------------------------------
+        /** @type Array() */
+        //----------------------------------------------------------------------
+        if ( selection.length==0 ) {
+            return true;
+        }
+        //----------------------------------------------------------------------
+        if ( selection.length==0 ) {
+            alert("Debe seleccionar un item para borrar")
+            return true;
+        }
+        if (selection.length > 0) {
+            for (var i = 0; i < selection.length; i++) {
+                if (confirm("Desea borrar este campo:"+ selection[i].get("FieldName") + "\n Tenga en cuenta que si el total field esta referenciado en algun lado, va a generar problemas.")) {
+                    let aa = selection[i].get("FieldName");
+                    this.storeFieldTotal.remove(selection[i]);
+                    this.storeFieldTotal.sync();
+                    delete this.pdfStruc.TotalFields[aa];
+                }
+            }
+        }
+
+
+
     }
 });

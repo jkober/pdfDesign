@@ -32,7 +32,7 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 	closable : false,
 
 	title : "Actualizar Total Field",
-	width : 700,
+	width : '95%',
 	buttons : [{
 				text : 'Guardar',
 				itemId : "guardar"
@@ -100,7 +100,18 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 				allowBlank : false,
 				labelAlign : 'right'
 			},
-			items : [{
+			items : [
+				{
+					xtype : "form",
+					layout : 'hbox',
+					defaults : {
+						xtype : 'textfield',
+						fieldLabel : ' ',
+						allowBlank : false,
+						labelAlign : 'right'
+					},
+				items: [
+				{
 						fieldLabel : 'Name',
 						name : 'FieldName',
 						itemId : 'FieldName'
@@ -143,7 +154,7 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 						forceSelection : true,
 						store : "fieldJkReset",
 						queryMode : 'local'
-					}, {
+					}]}, {
 						value : 'Formula ($$->Total) ($@->Field) ($GenPdf->PdfObject) ' +
 							' ($GenPdf->_print_in_formula = true;) equivale a que la formula maneja la impresion cuando es agregada',
 						xtype : 'displayfield',
@@ -158,9 +169,9 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 						labelSeparator : ' ',
 						showModes : false,
 						fieldLabel : 'Code',
-                                                width:650,
+                                                width:'100%',
 						anchor : '100% 100%',
-						editorHeight : 200,
+						editorHeight : 400,
 						theme : "rubyblue",
 
 						mode : 'text/x-php',
@@ -174,11 +185,17 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 			var form = me.items.getAt(0).getForm();
 			form.loadRecord(me.recordRef)
 			form = this.items.getAt(0)
-			me.items.getAt(0).items.get("tipo").setReadOnly(true)
-			me.items.getAt(0).items.get("FieldName").setReadOnly(true)
-			form.items.get("reset").setValue(this.recordRef.get("Reset"))
-			form.items.get("basadoEn").setValue(this.recordRef.get("FieldSummarizeAux"))
-			form.items.get("tipo").setValue(this.recordRef.get("Type"))
+			//me.items.getAt(0).items.get("tipo").setReadOnly(true)
+			//me.items.getAt(0).items.get("FieldName").setReadOnly(true)
+			//form.items.get("reset").setValue(this.recordRef.get("Reset"))
+			//form.items.get("basadoEn").setValue(this.recordRef.get("FieldSummarizeAux"))
+			//form.items.get("tipo").setValue(this.recordRef.get("Type"))
+
+			me.items.getAt(0).items.getAt(0).items.get("tipo").setReadOnly(true);
+			me.items.getAt(0).items.getAt(0).items.get("FieldName").setReadOnly(true)
+			me.items.getAt(0).items.getAt(0).items.get("reset").setValue(this.recordRef.get("Reset"))
+			me.items.getAt(0).items.getAt(0).items.get("basadoEn").setValue(this.recordRef.get("FieldSummarizeAux"))
+			me.items.getAt(0).items.getAt(0).items.get("tipo").setValue(this.recordRef.get("Type"))
 			if ( this.recordRef.get("Type") =="Formula") {
 				form.items.get("formula").setReadOnly(true)
 			}
@@ -200,9 +217,11 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 	},
 	_changTipo : function(ref, newValue, oldValue) {
 		//------------------------------------------------------------------------------------------
-		var basado = this.items.getAt(0).items.get("basadoEn")
+		//var basado = this.items.getAt(0).items.get("basadoEn");
+		//var reset = this.items.getAt(0).items.get("reset")
+		var basado =this.items.getAt(0).items.getAt(0).items.get("basadoEn")
 		var formula = this.items.getAt(0).items.get("formula")
-		var reset = this.items.getAt(0).items.get("reset")
+		var reset = this.items.getAt(0).items.getAt(0).items.get("reset")
 		//------------------------------------------------------------------------------------------
 		basado.setReadOnly(true)
 		formula.setReadOnly(true)
