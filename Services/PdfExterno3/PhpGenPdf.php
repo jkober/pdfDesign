@@ -400,8 +400,8 @@ class PhpGenPdf {
             if ( $rota>0){
                 $pdf->StartTransform();
                 if ( $rota == 90 ) {
-                    $this->pdf->SetY($this->pdf->GetY()+ $obj->PositionLeft );
-                    $this->pdf->SetX($this->pdf->GetX()+ $obj->PositionWidth );
+                    $this->pdf->SetY($this->pdf->GetY() + $obj->PositionWidth);
+                    $this->pdf->SetX($this->pdf->GetX() +  $obj->PositionLeft   );
                 }elseif ($rota ==180){
                     $this->pdf->SetY($this->pdf->GetY()+  $obj->PositionHeight );
                     $this->pdf->SetX($this->pdf->GetX() +  $obj->PositionLeft  + $obj->PositionWidth);

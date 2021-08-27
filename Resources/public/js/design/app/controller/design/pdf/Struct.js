@@ -33,14 +33,15 @@ kc.pdfStruc.GetRotacion = function(div, width,height, rotacion) {
 		div.css(vP + "transform-origin-y", "0%");
 	} else {
 		if ( rota > 0) {
-			let width2;
+			let x=0; let y=0;
 			if (rota == 180 ) {
-				width2 = 0;
-			}else {
-				width2 = (width - height) / 2;
+				x=y= 0;
+			}else{
+				x=(width - height) / 2 ;
+				y=(width - height) / 2 ;
 			}
 			let xx = "translateX(-{0}mm) translateY({1}mm) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(-{2}deg)";
-			div.css(vP + "transform", xx.rc_format(width2,width2,rota) );
+			div.css(vP + "transform", xx.rc_format(x,y,rota) );
 		}
 	}
 }
