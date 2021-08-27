@@ -144,7 +144,8 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 						store : "fieldJkReset",
 						queryMode : 'local'
 					}, {
-						value : 'Formula ($$->Total) ($@->Field) ($GenPdf->PdfObject)',
+						value : 'Formula ($$->Total) ($@->Field) ($GenPdf->PdfObject) ' +
+							' ($GenPdf->_print_in_formula = true;) equivale a que la formula maneja la impresion cuando es agregada',
 						xtype : 'displayfield',
 						labelSeparator : ' '
 					},
