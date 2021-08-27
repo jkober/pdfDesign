@@ -29,8 +29,8 @@ kc.pdfStruc.GetRotacion = function(div, width,height, rotacion) {
 				.css(
 						vP + "transform",
 						"translateX(0mm) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)");
-		div.css(vP + "transform-origin-x", "0%");
-		div.css(vP + "transform-origin-y", "0%");
+//		div.css(vP + "transform-origin-x", "0%");
+//		div.css(vP + "transform-origin-y", "0%");
 	} else {
 		if ( rota > 0) {
 			let x=0; let y=0;
