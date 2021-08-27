@@ -21,6 +21,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
 
 	title : "Configurar Opciones del Reporte",
 	width : 700,
+	height:'95%',
 	// ----------------------------------------------------------------------------------------------
 	buttons : [{
 				text : 'Guardar',
@@ -280,9 +281,9 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
                         labelSeparator : ' ',
                         showModes : false,
                         fieldLabel : 'Code',
-                        width:100,
+                        width:'100',
                         anchor : '100% 100%',
-                        editorHeight : 250,
+                        editorHeight : 300,
                         theme : "rubyblue",
 
                         mode : 'text/x-php',
@@ -292,7 +293,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
             }]
 		me.items = [{
 					xtype : "form",
-					height : 400,
+					height : 500,
 					items : [{
 								xtype : 'tabpanel',
 								items : itemsjose

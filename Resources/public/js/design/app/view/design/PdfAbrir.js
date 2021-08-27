@@ -11,8 +11,8 @@ Ext.define("AppDesign.view.design.PdfAbrir", {
 			modal : true,
 			closable : false,
 			title : "Seleccionar el Archivo para Abrir",
-			width : 220,
-			height : 400,
+			width : 400,
+			height : '80%',
 			initComponent : function() {
 				var me = this
 				this.stAbrir = Ext.getStore("st.pdfAbrir");
@@ -29,7 +29,7 @@ Ext.define("AppDesign.view.design.PdfAbrir", {
 				me.items = [{
 							region : 'west',
 							xtype : 'gridpanel',
-							width : 200,
+							width : '100%',
 							store : 'st.pdfAbrir',
 							columns : [{
 										text : 'Archivo',
