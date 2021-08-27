@@ -395,12 +395,21 @@ class PhpGenPdf {
         //----------------------------------------------------------------------
         $roto=false;
         if ( isset($obj->LabelRotacion) ){
-            $rota=(int)substr($obj->LabelRotacion, -2);
+            //$rota=(int)substr($obj->LabelRotacion , -2);
+            $rota=(int) str_replace("Rotacion_","",$obj->LabelRotacion );
             if ( $rota>0){
                 $pdf->StartTransform();
-                $this->pdf->SetY($this->pdf->GetY()+  $obj->PositionWidth );
-                $this->pdf->SetX($this->pdf->GetX()+ $obj->PositionLeft );
-                $this->pdf->Rotate(90);//,$this->pdf->GetX(),$this->pdf->GetY());
+                if ( $rota == 90 ) {
+                    $this->pdf->SetY($this->pdf->GetY()+ $obj->PositionLeft );
+                    $this->pdf->SetX($this->pdf->GetX()+ $obj->PositionWidth );
+                }elseif ($rota ==180){
+                    $this->pdf->SetY($this->pdf->GetY()+  $obj->PositionHeight );
+                    $this->pdf->SetX($this->pdf->GetX() +  $obj->PositionLeft  + $obj->PositionWidth);
+                }elseif ($rota ==270){
+                    $this->pdf->SetY($this->pdf->GetY() );
+                    $this->pdf->SetX($this->pdf->GetX() +  $obj->PositionLeft + $obj->PositionHeight  );
+                }
+                $this->pdf->Rotate($rota);
                 $roto=true;
             }
         }
@@ -495,11 +504,25 @@ class PhpGenPdf {
         
         $roto=false;
         if ( isset($obj->LabelRotacion) ){
-            $rota=(int)substr($obj->LabelRotacion, -2);
+            //$rota=(int)substr($obj->LabelRotacion, -2);
+            $rota=(int) str_replace("Rotacion_","",$obj->LabelRotacion );
+
             if ( $rota>0){
-                $this->pdf->SetY($this->pdf->GetY()+  $obj->PositionWidth );
-                $this->pdf->SetX($this->pdf->GetX()+ $obj->PositionLeft );
-                $this->pdf->Rotate(90);//,$this->pdf->GetX(),$this->pdf->GetY());
+//                $this->pdf->SetY($this->pdf->GetY()+  $obj->PositionWidth );
+  //              $this->pdf->SetX($this->pdf->GetX()+ $obj->PositionLeft );
+                if ( $rota == 90 ) {
+                    $this->pdf->SetY($this->pdf->GetY()+ $obj->PositionLeft );
+                    $this->pdf->SetX($this->pdf->GetX()+ $obj->PositionWidth );
+                }elseif ($rota ==180){
+                    $this->pdf->SetY($this->pdf->GetY()+  $obj->PositionHeight );
+                    $this->pdf->SetX($this->pdf->GetX() +  $obj->PositionLeft  + $obj->PositionWidth);
+                }elseif ($rota ==270){
+                    $this->pdf->SetY($this->pdf->GetY() );
+                    $this->pdf->SetX($this->pdf->GetX() +  $obj->PositionLeft + $obj->PositionHeight  );
+                }
+
+
+                $this->pdf->Rotate($rota);//,$this->pdf->GetX(),$this->pdf->GetY());
                 $roto=true;
             }
         }

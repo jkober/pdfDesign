@@ -696,7 +696,7 @@ Ext.define("AppDesign.view.design.GridPropety", {
         this.setValProp(record.data.name, record.data.value)
         if (this.setInObjectHtml == true) {
             kc.pdfStruc.GetRotacion(jQuery(this.objectRef),
-                this.objectPdf.my.PositionWidth, record.data.value)
+                this.objectPdf.my.PositionWidth,this.objectPdf.my.PositionHeight, record.data.value)
         }
 
     },
@@ -986,6 +986,7 @@ Ext.define("AppDesign.view.design.GridPropety", {
             null);
         kc.pdfStruc.GetRotacion(jQuery(this.objectRef),
             this.objectPdf.my.PositionWidth,
+            this.objectPdf.my.PositionHeight,
             this.objectPdf.my.LabelRotacion)
 		
     },

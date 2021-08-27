@@ -1,9 +1,20 @@
 // --------------------------------------------------------------------------------------------------
 Ext.define("kc.pdfStruc.Struct", {});
-Ext.require("kc.pdfStruc.section")
-Ext.require("kc.pdfStruc.element")
+Ext.require("kc.pdfStruc.section");
+Ext.require("kc.pdfStruc.element");
 // --------------------------------------------------------------------------------------------------
-kc.pdfStruc.GetRotacion = function(div, width, rotacion) {
+if (!String.prototype.rc_format) {
+	String.prototype.rc_format = function() {
+		var args = arguments;
+		return this.replace(/{(\d+)}/g, function(match, number) {
+			return typeof args[number] != 'undefined'
+				? args[number]
+				: match
+				;
+		});
+	};
+}//---------------------------------------------------------------------------------------------------
+kc.pdfStruc.GetRotacion = function(div, width,height, rotacion) {
 	var vP = "";
 	if (jQuery.browser.webkit) {
 		vP = "-webkit-";
@@ -12,12 +23,8 @@ kc.pdfStruc.GetRotacion = function(div, width, rotacion) {
 	} else if (jQuery.browser.opera) {
 		vP = "-o-";
 	}
-	// var div =jQuery(this.objectRef)
-	// div.css(vP+"transform","translateX(-"+this.objectPdf.my.PositionWidth+"mm)
-	// translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg)
-	// rotateZ(-90deg)");
-	var rota = parseInt(rotacion.substr(rotacion.length - 2));
-	if (isNaN(rota)) {
+	var rota = parseInt(rotacion.replaceAll("Rotacion_",""));
+	if (isNaN(rota) || rota==0) {
 		div
 				.css(
 						vP + "transform",
@@ -25,15 +32,16 @@ kc.pdfStruc.GetRotacion = function(div, width, rotacion) {
 		div.css(vP + "transform-origin-x", "0%");
 		div.css(vP + "transform-origin-y", "0%");
 	} else {
-		div
-				.css(
-						vP + "transform",
-						"translateX(-"
-								+ width
-								+ "mm) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(-"
-								+ rota + "deg)");
-		div.css(vP + "transform-origin-x", "100%");
-		div.css(vP + "transform-origin-y", "0%");
+		if ( rota > 0) {
+			let width2;
+			if (rota == 180 ) {
+				width2 = 0;
+			}else {
+				width2 = (width - height) / 2;
+			}
+			let xx = "translateX(-{0}mm) translateY({1}mm) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(-{2}deg)";
+			div.css(vP + "transform", xx.rc_format(width2,width2,rota) );
+		}
 	}
 }
 kc.pdfStrucRefActiva = null

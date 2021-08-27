@@ -420,7 +420,7 @@ Ext.define('kc.pdfStruc.element', {
             item.LabelRotacion = kc.pdfStruc.PdfPage.reportExtras.configDefault.LabelRotacion;
         }
         //----------------------------------------------------------------------
-        kc.pdfStruc.GetRotacion(jQuery(contex.my.Items[oldCount].refView),item.PositionWidth,item.LabelRotacion);
+        kc.pdfStruc.GetRotacion(jQuery(contex.my.Items[oldCount].refView),item.PositionWidth,item.PositionHeight,item.LabelRotacion);
         //----------------------------------------------------------------------
         switch (ref) {
             case "addTablet" :

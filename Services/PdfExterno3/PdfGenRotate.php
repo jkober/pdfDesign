@@ -37,23 +37,14 @@ class PdfGenRotate extends FPDF {
             $this->_out('Q');
         $this->angle = $angle;
         if ($angle != 0) {
-            //$angle*=M_PI / 180;
-            $c = cos(deg2rad($angle));
-            $s = sin(deg2rad($angle));
+            $angle *= M_PI / 180;
+            $c = cos($angle);
+            $s = sin($angle);
             $cx = $x * $this->k;
             $cy = ($this->h - $y) * $this->k;
             $this->_out(sprintf('q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm', $c, $s, -$s, $c, $cx, $cy, -$cx, -$cy));
         }
     }
-
-  /*  function _endpage() {
-//        if ($this->angle != 0) {
-  //          $this->angle = 0;
-            $this->_out('Q');
-    //    }
-        parent::_endpage();
-    }*/
-
 }
 
 ?>

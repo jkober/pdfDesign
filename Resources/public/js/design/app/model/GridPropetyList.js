@@ -109,7 +109,11 @@ Ext.create('Ext.data.Store', {
         name : 'Rotacion_0'
     }, {
         name : 'Rotacion_90'
-    }]
+    },{
+            name : 'Rotacion_180'
+        },{
+        name : 'Rotacion_270'
+    }    ]
 });
 // ------------------------------------------------------------------------------
 Ext.create('Ext.data.Store', {
