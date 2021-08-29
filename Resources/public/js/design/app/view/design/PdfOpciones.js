@@ -20,7 +20,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
 	closable : false,
 
 	title : "Configurar Opciones del Reporte",
-	width : 700,
+	width : '95%',
 	height:'95%',
 	// ----------------------------------------------------------------------------------------------
 	buttons : [{
@@ -89,6 +89,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
 					}, {
 						xtype : "fieldset",
 						title : "Pagina",
+						width : me.width,
 						autoHeight : true,
 						defaults : {
 							padding : 0,
@@ -290,7 +291,77 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
                         readOnly : false
                     }
                 	]
-            }]
+            },{
+				xtype : "fieldset",
+				title : "After read record",
+				autoHeight : true,
+				defaults : {
+					labelAlign : 'right',
+					allowBlank : false,
+					labelWidth : 50,
+					align : 'left'
+				},
+				items : [
+					{
+						value : 'Parametros $@, @ es equivalente al nombre del campo es pasado como referencia  " ',
+						xtype : 'displayfield',
+						labelSeparator : ' '
+					},
+					{
+						itemId : "postRead",
+						name : 'post_read',
+						xtype : 'codemirror',
+						pathModes : kcPatch.appDir + 'js/design/mzExt/CodeMirror-2.2/mode',
+						pathExtensions : kcPatch.appDir + 'js/design/mzExt/CodeMirror-2.2/lib/util',
+						labelSeparator : ' ',
+						showModes : false,
+						fieldLabel : 'Code',
+						width:'100',
+						anchor : '100% 100%',
+						editorHeight : 300,
+						theme : "rubyblue",
+
+						mode : 'text/x-php',
+						readOnly : false
+					}
+				]
+			},
+			{
+				xtype : "fieldset",
+				title : "Field json",
+				autoHeight : true,
+				defaults : {
+					labelAlign : 'right',
+					allowBlank : false,
+					labelWidth : 50,
+					align : 'left'
+				},
+				items : [
+					{
+						value : 'Json de field extras provenientes de json type field ' +
+							'["#id","int",6,"json->t_v"] [nombre field,tipodato,longitud,como accedo desde el registro]',
+						xtype : 'displayfield',
+						labelSeparator : ' '
+					},
+					{
+						itemId : "fieldJson",
+						name : 'field_json',
+						xtype : 'codemirror',
+						pathModes : kcPatch.appDir + 'js/design/mzExt/CodeMirror-2.2/mode',
+						pathExtensions : kcPatch.appDir + 'js/design/mzExt/CodeMirror-2.2/lib/util',
+						labelSeparator : ' ',
+						showModes : true,
+						fieldLabel : 'Code',
+						width:'100',
+						anchor : '100% 100%',
+						editorHeight : 300,
+						theme : "rubyblue",
+
+						mode : 'text/json',
+						readOnly : false
+					}
+				]
+			}]
 		me.items = [{
 					xtype : "form",
 					height : 500,

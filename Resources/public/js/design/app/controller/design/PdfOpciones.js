@@ -70,6 +70,16 @@ Ext.define('AppDesign.controller.design.PdfOpciones', {
 		}else {
             win.pdfStruc.wherecondicional 		= values.wherecondicional;
         }
+		if ( values.post_read == undefined ){
+			win.pdfStruc.post_read 		= win.items.getAt(0).items.getAt(0).items.getAt(4).items.getAt(1).value;
+		}else {
+			win.pdfStruc.post_read 		= values.post_read;
+		}
+		if ( values.field_json == undefined ){
+			win.pdfStruc.field_json 		= win.items.getAt(0).items.getAt(0).items.getAt(5).items.getAt(1).value;
+		}else {
+			win.pdfStruc.field_json 		= values.field_json;
+		}
 
 		win.pdfStruc.reportExtras.bdName= values.bdName;
 		win.pdfStruc.MarginBottom 		= values.MarginBottom;
@@ -105,10 +115,41 @@ Ext.define('AppDesign.controller.design.PdfOpciones', {
 				}
 			}
 		}
-		kc.pdfStruc.loadStruc(kc.pdfStrucRefActiva.reportExtras.configDefault)
+		let field=[];
+		if ( win.pdfStruc.reportExtras.field != "") {
+			if (typeof win.pdfStruc.reportExtras.field == "object") {
+				field = JSON.parse(JSON.stringify( win.pdfStruc.reportExtras.field));
+			}
+		}
+		if (typeof win.pdfStruc.field_json == "string") {
+			try {
+				if ( win.pdfStruc.field_json.trim()!="") {
+					let xx_f = JSON.parse("[" + win.pdfStruc.field_json + "]");
+					let o,a;
+					for (let i=0 ;i<xx_f.length ;i++){
+						o=xx_f[i];
+						try {
+							a 			= {};
+							a.name 		= o[0];
+							a.nameDisp 	= o[1];
+							a.extra = {"nameDisp": o[1], "name": o[0],"ff": o[3],"maxLength":o[2]};
+							field.push(a);
+						}catch (e) {
+							alert("errores al procesar el campo :" + i )
+						}
+					}
+				}
+			}catch (e) {
+				alert("errores al procesar los field extras")
+			}
+		}
+		let st=Ext.getStore("fieldJk");
+		st.loadData(field);
+		kc.pdfStruc.loadStruc(kc.pdfStrucRefActiva.reportExtras.configDefault);
 		//------------------------------------------------------------------------------------------		
-		this._setMargins(win.pdfStruc,win.pdfStruc.refView[0])
-		//------------------------------------------------------------------------------------------		
+		this._setMargins(win.pdfStruc,win.pdfStruc.refView[0]);
+		//------------------------------------------------------------------------------------------
+
 		win.close()
 		//------------------------------------------------------------------------------------------		
 	},

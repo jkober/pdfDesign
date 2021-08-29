@@ -12,6 +12,12 @@ class PhpGenPdfRecordSet {
     protected $fieldSeteados    = false;
     protected $addNew           = false;
     protected $nextRealizado    = false;
+    protected $usa_post_read    = false;
+    protected $post_read        = null;
+    public function setPostRead($post_read){
+        $this->usa_post_read=true;
+        $this->post_read=$post_read;
+    }
     //--------------------------------------------------------------------------
     protected $rowAfect         = 0;
     protected $typeResult       = "";
@@ -88,6 +94,11 @@ class PhpGenPdfRecordSet {
             $aux                    = $this->conn->next($this->recordSet, $this->typeResult);
             if ($aux == false) {return false;}
             $this->registro     = $aux;
+            if ( $this->usa_post_read){
+                unset($aux);
+                $func =$this->post_read;
+                $func ($this->registro);
+            }
             $this->registroOri  = $this->registro;
             if ($this->registro == false) {
                 return false;

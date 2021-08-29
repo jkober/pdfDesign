@@ -241,6 +241,8 @@ kc.pdfStruc.PdfPage = {
 		param : {}
 	},
     wherecondicional:"",
+	post_read:"",
+	field_json:"",
 	refView : null,
 	MarginTop : 10,
 	MarginLeft : 10,

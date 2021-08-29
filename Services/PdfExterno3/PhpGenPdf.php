@@ -10,7 +10,12 @@ if (!defined("_EBarra")) {
 }
 
 class PhpGenPdf {
-    public static $returnInBase64 = false;
+    //--------------------------------------------------------------------------
+    protected $field_json           = [];
+    protected $_field_json          = [];
+    protected $usa_post_read        = false;
+    protected $_post_read           = null;
+    public static $returnInBase64   = false;
     //--------------------------------------------------------------------------
     protected $isUtf8 = true;
     public $objExtraSection=null;
@@ -568,15 +573,22 @@ class PhpGenPdf {
                 break;
             case "F":
                 $obj->datasource = $obj->DataSource->name;
+
                 if (isset($this->reg[$obj->datasource])) {
                     $f = $this->reg[$obj->datasource];
                     $f = $this->pdfFormat($obj, $f);
                 } else {
                     if ($obj->datasource != "") {
-                        if (is_null($this->reg[$obj->datasource])) {
-                            $f = "";
+                        if ( substr($obj->datasource,0,1) == "#" ) {
+                            //if ()
+                            $xx = $this->_field_json[str_replace("#","_",$obj->datasource)];
+                            $f = $xx($this->reg);
                         } else {
-                            $f = "NoSeteado Error";
+                            if (is_null($this->reg[$obj->datasource])) {
+                                $f = "";
+                            } else {
+                                $f = "NoSeteado Error";
+                            }
                         }
                     } else {
                         $f = "NoSeteado Error";
@@ -856,6 +868,52 @@ class PhpGenPdf {
                 //$vv = preg_split("\$\$[A-Za-z]+\b" ,$funcion->Expression);
             }
         }
+
+        if ( property_exists($estruc,"field_json")){
+            if (trim($estruc->field_json ) != "" ) {
+                try {
+                    $estruc->field_json = "[".trim( str_replace("'","\"", str_replace("\n","", $estruc->field_json)))."]";
+                    $this->field_json = json_decode($estruc->field_json);
+                    if ( is_array( $this->field_json)==false){
+                        $this->field_json=[];
+                    }
+                    foreach ( $this->field_json as $k => $v) {
+                        $pos = strpos( $v[3],"->");
+                        if ( $pos === false ) {
+                            $this->_field_json[] =create_function('&$p', "return 'Error no se encontro el field: {$v[3]}");
+                        } else {
+                            $ff = " try{ return \$p[\"".substr($v[3],0,$pos)."\"]".substr($v[3],$pos).";}catch (\\Exception \$e){return \"error {$v[3]}\";}";
+                            $yy = str_replace("#","_",$v[0]);
+                            $this->_field_json[$yy] = create_function('&$p', $ff);
+                        }
+                    }
+                }catch (\Exception $e) {
+
+                }
+            }
+        }
+        if ( property_exists($estruc,"post_read")){
+            if (trim($estruc->post_read ) != "" ) {
+                //------------------------------------------------------------------------------------------------------
+                $this->usa_post_read = true;
+                $arr="";
+                //------------------------------------------------------------------------------------------------------
+                //preg_match_all('/(([\$][\@|\$])[A-Za-z_0-9]+)/', $funcion->Expression, $arr, PREG_PATTERN_ORDER);
+                preg_match_all('/(([\$][\@])[A-Za-z_0-9]+)/',  $estruc->post_read, $arr, PREG_PATTERN_ORDER);
+                if (is_array($arr)) {
+                    if (is_array($arr[0])) {
+                        foreach ($arr[0] as $k => $v) {
+                            $estruc->post_read = str_replace($v, "\$p[\"" . substr($v, 2) . "\"]", $estruc->post_read);
+                        }
+                        $this->_post_read = create_function('&$p', $estruc->post_read);
+                    }
+                }
+                //------------------------------------------------------------------------------------------------------
+                //$this->_post_read = create_function('&$p', $estruc->post_read );
+                //------------------------------------------------------------------------------------------------------
+
+            }
+        }
         //exit;
         //return;
         //----------------------------------------------------------------------
@@ -1043,6 +1101,9 @@ class PhpGenPdf {
             $this->Data = $data;
         } else {
             $this->RecordSet = $data;
+            if ( $this->usa_post_read ) {
+                $data->setPostRead($this->_post_read);
+            }
         }
         $v = $this->nextData();
         $this->headPage = new PhpGenPdfHead((object) $this->estruc->Header);

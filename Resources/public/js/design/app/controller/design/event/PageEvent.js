@@ -33,6 +33,10 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
 		if (this.pdfStruc.wherecondicional != undefined ) {
             wherecondicional = this.pdfStruc.wherecondicional;
 		}
+		var field_json = "";
+		if (this.pdfStruc.field_json != undefined ) {
+			field_json = this.pdfStruc.field_json;
+		}
 		var extras  = this.pdfStruc.reportExtras.param;
 		// -------------------------------------------------------------
 		if (Ext.util.Format.trim(sql) == "") {
@@ -47,6 +51,7 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
 					ssql : sql,
 					where: wherecondicional,
 					extras : extras,
+					field_json: field_json,
 					bdName : this.pdfStruc.reportExtras.bdName
 				}));
 		// -------------------------------------------------------------
@@ -69,9 +74,33 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
                     return false;
                 }
 		// -------------------------------------------------------------
-		this.storeField.loadData(result.data.def)
-		this.pdfStruc.reportExtras.sql      = sql
-		this.pdfStruc.reportExtras.field    = result.data.def
+		this.pdfStruc.reportExtras.sql      = sql;
+		this.pdfStruc.reportExtras.field    = result.data.def;
+		let field = result.data.def;
+		if (typeof this.pdfStruc.field_json == "string") {
+			try {
+				if ( this.pdfStruc.field_json.trim()!="") {
+					let xx_f = JSON.parse("[" + this.pdfStruc.field_json + "]");
+					let o,a;
+					for (let i=0 ;i<xx_f.length ;i++){
+						o=xx_f[i];
+						try {
+							a={};
+							a.name 		= o[0];
+							a.nameDisp 	= o[1];
+							a.extra = {"nameDisp": o[1], "name": o[0],"ff": o[3],"maxLength":o[2]};
+							field.push(a);
+						}catch (e) {
+							alert("errores al procesar el campo :" + i )
+						}
+					}
+				}
+			}catch (e) {
+				alert("errores al procesar los field extras")
+			}
+		}
+
+		this.storeField.loadData(field);
 		// -------------------------------------------------------------
 	},
 	pageAfterRender : function(me) {
