@@ -580,9 +580,9 @@ class PhpGenPdf {
                 } else {
                     if ($obj->datasource != "") {
                         if ( substr($obj->datasource,0,1) == "#" ) {
-                            //if ()
                             $xx = $this->_field_json[str_replace("#","_",$obj->datasource)];
                             $f = $xx($this->reg);
+                            $f = $this->pdfFormat($obj, $f);
                         } else {
                             if (is_null($this->reg[$obj->datasource])) {
                                 $f = "";
@@ -1228,12 +1228,34 @@ class PhpGenPdf {
                 }
                 $a = date_create($f);
                 $f = date_format($a, $obj->FormatMask);
-            } else {
-                if ($obj->FormatType == "Numero") {
-                    if ($f == "") {
-                        return "";
+            } else if ($obj->FormatType == "Numero") {
+                if ($f == "") {
+                    return "";
+                }
+                $f = number_format($f, $obj->FormatMask, ',', '.');
+            }else if ($obj->FormatType == "Documento") {
+                if ( trim($f)=="") {
+                    $f="";
+                }else {
+                    if (is_numeric($f)) {
+                        $f = number_format($f, 0, ',', '.');
+                    } else {
+                        if ( strlen($f)>1 ) {
+                            $p1 = strtoupper(substr($f, 0, 1));
+                            $p2 = substr($f, 1);
+                            if ( $p1=="F" || $p1=="M" ) {
+                                if ( is_numeric($p2)) {
+                                    $f = $p1.number_format($p2, 0, ',', '.');
+                                }else{
+                                    $f=trim($f);
+                                }
+                            }else{
+                                $f=trim($f);
+                            }
+                        }else{
+                            $f=trim($f);
+                        }
                     }
-                    $f = number_format($f, $obj->FormatMask, ',', '.');
                 }
             }
         }

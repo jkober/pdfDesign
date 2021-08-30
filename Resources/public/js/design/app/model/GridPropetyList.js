@@ -199,8 +199,8 @@ Ext.create('Ext.data.Store', {
         fN : 'Numero',
         fNd : 'Numero'
     }, {
-        fN : 'Documento??????? falta kober',
-        fNd : 'Documento???????? falta kober'
+        fN : 'Documento',
+        fNd : 'Documento'
     }]
 });
 
