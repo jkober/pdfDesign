@@ -76,7 +76,10 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
 		// -------------------------------------------------------------
 		this.pdfStruc.reportExtras.sql      = sql;
 		this.pdfStruc.reportExtras.field    = result.data.def;
-		let field = result.data.def;
+		//let field = result.data.def;
+		let field=kc.estructuro_field_json(result.data.def,this.pdfStruc.field_json);
+/*		let field = JSON.parse(JSON.stringify( result.data.def ));
+
 		if (typeof this.pdfStruc.field_json == "string") {
 			try {
 				if ( this.pdfStruc.field_json.trim()!="") {
@@ -99,7 +102,7 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
 				alert("errores al procesar los field extras")
 			}
 		}
-
+*/
 		this.storeField.loadData(field);
 		// -------------------------------------------------------------
 	},
@@ -254,7 +257,37 @@ Ext.define("AppDesign.controller.design.event.PageEvent", {
 		Ext.ComponentQuery.query("#sql")[0]
 				.setValue(this.pdfStruc.reportExtras.sql)
 		// ------------------------------------------------------------------------------------------
-		this.storeField.loadData(this.pdfStruc.reportExtras.field)
+		let field=kc.estructuro_field_json(this.pdfStruc.reportExtras.field,this.pdfStruc.field_json);
+/*		let field=[];
+		if ( this.pdfStruc.reportExtras.field != "") {
+			if (typeof this.pdfStruc.reportExtras.field == "object") {
+				field = JSON.parse(JSON.stringify( this.pdfStruc.reportExtras.field ));
+			}
+		}
+		if (typeof this.pdfStruc.field_json == "string") {
+			try {
+				if ( this.pdfStruc.field_json.trim()!="") {
+					let xx_f = JSON.parse("[" + this.pdfStruc.field_json + "]");
+					let o,a;
+					for (let i=0 ;i<xx_f.length ;i++){
+						o=xx_f[i];
+						try {
+							a 			= {};
+							a.name 		= o[0];
+							a.nameDisp 	= o[1];
+							a.extra = {"nameDisp": o[1], "name": o[0],"ff": o[3],"maxLength":o[2]};
+							field.push(a);
+						}catch (e) {
+							alert("errores al procesar el campo :" + i )
+						}
+					}
+				}
+			}catch (e) {
+				alert("errores al procesar los field extras")
+			}
+		}*/
+//		this.storeField.loadData(this.pdfStruc.reportExtras.field);
+		this.storeField.loadData(field);
 		// ------------------------------------------------------------------------------------------
 		var aux = new Array()
 		for (var ii in this.pdfStruc.TotalFields) {

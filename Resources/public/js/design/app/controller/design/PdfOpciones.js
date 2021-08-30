@@ -115,8 +115,9 @@ Ext.define('AppDesign.controller.design.PdfOpciones', {
 				}
 			}
 		}
-		let field=[];
-		if ( win.pdfStruc.reportExtras.field != "") {
+		//let field=[];
+		let field = kc.estructuro_field_json(win.pdfStruc.reportExtras.field,win.pdfStruc.field_json);
+/*		if ( win.pdfStruc.reportExtras.field != "") {
 			if (typeof win.pdfStruc.reportExtras.field == "object") {
 				field = JSON.parse(JSON.stringify( win.pdfStruc.reportExtras.field));
 			}
@@ -142,7 +143,7 @@ Ext.define('AppDesign.controller.design.PdfOpciones', {
 			}catch (e) {
 				alert("errores al procesar los field extras")
 			}
-		}
+		}*/
 		let st=Ext.getStore("fieldJk");
 		st.loadData(field);
 		kc.pdfStruc.loadStruc(kc.pdfStrucRefActiva.reportExtras.configDefault);

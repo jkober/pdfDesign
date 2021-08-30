@@ -937,7 +937,12 @@ class PhpGenPdf {
     public function setValueGroup() {
         if (is_array($this->group)) {
             foreach ($this->group as $k => $v) {
-                $this->groupAux[$k] = $this->reg[$k];
+                if ( substr($k,0,1) == "#" ) {
+                    $xx = $this->_field_json[str_replace("#","_",$k)];
+                    $this->groupAux[$k] = $xx($this->reg);
+                } else {
+                    $this->groupAux[$k] = $this->reg[$k];
+                }
             }
         }
     }
@@ -947,8 +952,15 @@ class PhpGenPdf {
             $igual = true;
             $auxReg = $this->RecordSet->getRegistro(false);
             foreach ($group1 as $k => $v) {
-                if ($this->groupAux[$v] != $auxReg[$v]) {
-                    return false;
+                if ( substr($v,0,1) == "#" ) {
+                    $xx = $this->_field_json[str_replace("#","_",$v)];
+                    if ( $this->groupAux[$v] != $xx($auxReg)) {
+                        return false;
+                    }
+                } else {
+                    if ($this->groupAux[$v] != $auxReg[$v]) {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -984,14 +996,26 @@ class PhpGenPdf {
                 $this->groupIgual = true;
                 if (is_array($this->groupAux)) {
                     foreach ($this->group as $k => $v) {
-                        if ($this->groupAux[$k] != $regAux[$k]) { // $this->Data[$this->idata][$k]) {
-                            $this->groupIgual = false;
+                        if ( substr($k,0,1) == "#" ) {
+                            $xx = $this->_field_json[str_replace("#","_",$k)];
+                            if ( $this->groupAux[$k] != $xx($regAux)) {
+                                $this->groupIgual = false;
+                            }
+                        } else {
+                            if ($this->groupAux[$k] != $regAux[$k]) { // $this->Data[$this->idata][$k]) {
+                                $this->groupIgual = false;
+                            }
                         }
                     }
                 } else {
                     $this->groupAux = array();
                     foreach ($this->group as $k => $v) {
-                        $this->groupAux[$k] = $this->reg[$k];
+                        if ( substr($k,0,1) == "#" ) {
+                            $xx = $this->_field_json[str_replace("#","_",$k)];
+                            $this->groupAux[$k] = $xx($this->reg);
+                        } else {
+                            $this->groupAux[$k] = $this->reg[$k];
+                        }
                     }
                 }
             }

@@ -10,6 +10,41 @@ kc.widthRelacion.k = 72 / 25.4;
 kc.widthRelacion.setFonts = function(fonts) {
 	this.fonts = fonts// Ext.decode( fonts)
 }
+kc.estructuro_field_json = function (report_field,field_json) {
+	let field=[];
+	if ( report_field != "") {
+		if (typeof report_field == "object") {
+			field = JSON.parse(JSON.stringify( report_field));
+		}
+	}
+	if (typeof field_json == "string") {
+		try {
+			if ( field_json.trim()!="") {
+				let xx_f = JSON.parse("[" + field_json + "]");
+				let o,a;
+				for (let i=0 ;i<xx_f.length ;i++){
+					o=xx_f[i];
+					try {
+						a 			= {};
+						a.name 		= o[0];
+						a.nameDisp 	= o[0];//+ " (" + o[1] +")";
+						//["#id","int",6,"json->t_v"]
+					    //   [0,   1,    2,3]
+						a.extra = {"nameDisp": o[0], "name": o[0],"ff": o[3],"maxLength":o[2]};
+						field.push(a);
+					}catch (e) {
+						alert("errores al procesar el campo :" + i );
+						return field;
+					}
+				}
+			}
+		}catch (e) {
+			alert("errores al procesar los field extras");
+			return field
+		}
+	}
+	return field
+};
 kc.widthRelacion.getWidthString = function(cantZ, name, size, bold, italc,
 		underLine, type) {
 	var nameFont;
