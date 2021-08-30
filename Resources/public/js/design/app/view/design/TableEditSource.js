@@ -176,10 +176,6 @@ Ext.define('AppDesign.view.design.TableEditSource', {
 									itemId : 'drop',
 									handler : Ext.Function.bind(
 											me.dropParamArray, me)
-								}, {
-									xtype : 'button',
-									iconCls : 'editBtn',
-									itemId : 'edit'
 								}]
 							}],
 							// hideHeaders:true,
@@ -377,7 +373,7 @@ Ext.define('AppDesign.view.design.TableEditSource', {
 	},
 	dropParam : function() {
 		if (this._veoRowSelect(this.grd)) {
-			alert("si")
+			this.stParamArray.remove(this._recordSelect);
 		} else {
 			alert("Usted no ha seleccionado un parametro para borrar")
 		}

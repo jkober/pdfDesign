@@ -3,7 +3,7 @@ Ext.define('AppDesign.view.design.TableEditHeadRow', {
 	alias : "widget.TableEditHeadRow",
 	bodyPadding : 5,
 	width : 420,
-	height : 500,
+	height : '90%',
 	layout : {
 		type : 'hbox',
 		align : 'stretch',
@@ -174,6 +174,67 @@ Ext.define('AppDesign.view.design.TableEditHeadRow', {
 		this.getIte()
 		// ----------------------------------------------------------------------------------
 	},
+	dropcol : function(name) {
+		// ----------------------------------------------------------------------------------
+		// ----------------------------------------------------------------------------------
+		let head =false;
+		if ( name.substr(0,3) == "col"  ) {
+			head=true;
+		}
+		let xc =null;
+		for ( let i =1;i<= this.meVal.refParent.TabletCount; i++ ) {
+			if ( head ) {
+				if ( this.meVal.refParent.TableHead.items[i].name == name ) {
+					xc=i;
+					break;
+				}
+			}else{
+				if ( this.meVal.refParent.TableRow.items[i].name == name ) {
+					xc=i;
+					break;
+				}
+			}
+		}
+		if ( xc == null  ) {
+			alert("No se pudo encontrar el registro para eliminar");
+		}else {
+			for ( let i =1;i<= this.meVal.refParent.TabletCount; i++ ) {
+				if ( i >= xc ) {
+					if ( i == this.meVal.refParent.TabletCount ) {
+						delete this.meVal.refParent.TableHead.items[i];
+						delete this.meVal.refParent.TableRow.items[i];
+						this.meVal.refParent.TabletCount--;
+						break;
+					}else{
+						this.meVal.refParent.TableHead.items[i] = this.meVal.refParent.TableHead.items[i + 1];
+						this.meVal.refParent.TableHead.items[i].name = "col" + i
+						this.meVal.refParent.TableRow.items[i] = this.meVal.refParent.TableRow.items[i + 1];
+						this.meVal.refParent.TableRow.items[i].name = "rowDef" + i
+					}
+				}
+			}
+		}
+		// ----------------------------------------------------------------------------------
+/*
+		this.meVal.refParent.TableHead.items[i] = Ext
+			.clone(kc.pdfStruc.TableRowH);
+		this.meVal.refParent.TableHead.refParent = this.meVal.refParent
+		this.meVal.refParent.TableHead.items[i].name = "col" + i
+		this.meVal.refParent.TableHead.items[i].Title = "col" + i
+		// ----------------------------------------------------------------------------------
+		this.meVal.refParent.TableRow.items[i] = Ext
+			.clone(kc.pdfStruc.TableRow);
+		this.meVal.refParent.TableRow.refParent = this.meVal.refParent
+		this.meVal.refParent.TableRow.items[i].name = "rowDef" + i
+		// ----------------------------------------------------------------------------------
+		this.meVal.refParent.TableRow.items[i].SourceName.refParent = this.meVal.refParent
+		this.meVal.refParent.TableRow.items[i].SourceCode.refParent = this.meVal.refParent
+		// ----------------------------------------------------------------------------------
+ */
+		this.getIte();
+		// ----------------------------------------------------------------------------------
+	},
+
 	addcolFoot : function() {
 		this.meVal.refParent.TabletFCount++
 		var i = this.meVal.refParent.TabletFCount;
@@ -194,7 +255,7 @@ Ext.define('AppDesign.view.design.TableEditHeadRow', {
 	},
 	addTableRow : function() {
 		if (confirm("Desea agregar una Columna nueva, para luego editar las propiedades de la FILA")) {
-			this.addcol()
+			this.addcol();
 		}
 		return false;
 	},
@@ -229,7 +290,13 @@ Ext.define('AppDesign.view.design.TableEditHeadRow', {
 		}
 	},
 	dropTable : function() {
-		alert("drop ")
+		if ( this._veoRowSelect() ) {
+			if (confirm("Desea Borrar la sellección")) {
+				this.dropcol(this._recordSelect.get("name"));
+			}
+		} else {
+			alert( "No ha seleccionado nada pora borrar" );
+		}
 	},
 	onAfterInit : function() {
 		this.customReadOnly = {
