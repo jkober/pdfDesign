@@ -54,7 +54,7 @@ class PhpGenPdfControll {
         $file = "report/" . $name;
         if (file_exists($file)) {
             $cont = file_get_contents($file);
-            return self::imprimir(con, $xtras);
+            return self::imprimir(con, $extras);
         } else {
             return false;
         }
