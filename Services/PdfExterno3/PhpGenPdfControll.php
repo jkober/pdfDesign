@@ -7,12 +7,17 @@ use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb as Db;
 use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfRecordSet as RecordSet;
 
 class PhpGenPdfControll {
-    protected static $returnInBase64= false;
-    protected static $rootDir = "";
-    protected static $db=null;
+    protected static $returnInBase64    = false;
+    protected static $usaFpdfVersion    = "17";
+    protected static $rootDir           = "";
+    protected static $db                = null;
     public static function setReturnInBase64() {
         self::$returnInBase64=true;
     }
+    public static function setUsaFpdfVersion ($usaFpdfVersion) {
+        self::$usaFpdfVersion=$usaFpdfVersion;
+    }
+
     function __construct($rootDir="",$db=null,$db2=null) {
         self::$rootDir = dirname($rootDir) . "/web/";
 
@@ -300,6 +305,7 @@ class PhpGenPdfControll {
         $genPdf->setDirRoot(self::$rootDir);
         $genPdf->setNameReportSal($name);
         $genPdf::$returnInBase64=self::$returnInBase64;
+        $genPdf::$usaFpdfVersion=self::$usaFpdfVersion;
         //--------------------------------------------------------------------------------------------------------------
         return $genPdf->creo($rs);
         //--------------------------------------------------------------------------------------------------------------
@@ -397,6 +403,7 @@ class PhpGenPdfControll {
         $genPdf->setDirRoot(self::$rootDir);
         $genPdf->setNameReportSal($name);
         $genPdf::$returnInBase64=self::$returnInBase64;
+        $genPdf::$usaFpdfVersion=self::$usaFpdfVersion;
         //--------------------------------------------------------------------------------------------------------------
         return $genPdf->creo($rs);
         //--------------------------------------------------------------------------------------------------------------

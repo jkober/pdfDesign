@@ -16,6 +16,7 @@ class PhpGenPdf {
     protected $usa_post_read        = false;
     protected $_post_read           = null;
     public static $returnInBase64   = false;
+    public static $usaFpdfVersion   = "17";
     //--------------------------------------------------------------------------
     protected $isUtf8 = true;
     public $objExtraSection=null;
@@ -40,6 +41,7 @@ class PhpGenPdf {
     protected $NameReportSal = "";
     protected $totalFieldRef = array();
     protected $tituloDefine  = null;
+
     public function setTituloDefine($tituloDefine=null) {
         $this->tituloDefine = $tituloDefine;
     }
@@ -1133,7 +1135,14 @@ class PhpGenPdf {
         $this->headPage = new PhpGenPdfHead((object) $this->estruc->Header);
         $this->footerPage = new PhpGenPdfFooter((object) $this->estruc->Footer);
         //----------------------------------------------------------------------
-        $this->pdf = new PhpGenPdfLibrary($Orienta, $Escala, $TipoHoja);
+        if ( self::$usaFpdfVersion === "17" ) {
+            $this->pdf = new PhpGenPdfLibrary($Orienta, $Escala, $TipoHoja);
+        }else{
+            if ( self::$usaFpdfVersion === "18" ) {
+                $this->pdf = new PhpGenPdfLibrary18($Orienta, $Escala, $TipoHoja);
+            }
+
+        }
         $this->pdf->setIsUtf8($this->getIsUtf8());
         $this->pdf->SetMargins($this->pageEstruc->Margin->Left, $this->pageEstruc->Margin->Top, $this->pageEstruc->Margin->Right);		
         //----------------------------------------------------------------------
