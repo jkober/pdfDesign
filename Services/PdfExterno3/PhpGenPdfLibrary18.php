@@ -4,8 +4,10 @@ use Design\DesignBundle\Services\PdfExterno3\fpdf18\FPDF;
 
 class PhpGenPdfLibrary18 extends FPDF
 {
+    
     use PdfTags;
     use PdfQrTrait;
+    use pdfAttach;
     var $angle = 0;
 
     function Rotate($angle, $x = -1, $y = -1) {

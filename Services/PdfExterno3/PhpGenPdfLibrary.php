@@ -11,6 +11,7 @@ use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfFPDF as fromImportClass;
 class PhpGenPdfLibrary extends fromImportClass {
     use PdfTags;
     use PdfQrTrait;
+    use pdfAttach;
     protected $isUtf8=true;
     var $fromTcpdf=true;
     var $phpGenPdfHead;
