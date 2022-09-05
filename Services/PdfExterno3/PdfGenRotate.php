@@ -3,7 +3,7 @@
 namespace Design\DesignBundle\Services\PdfExterno3;
 
 //------------------------------------------------------------------------------
-use Design\DesignBundle\Services\PdfExterno3\fpdf17\FPDF;
+use Design\DesignBundle\Services\PdfExterno3\fpdf18\FPDF;
 use Design\DesignBundle\Services\PdfExterno3\VariableStream as VariableStream;
 
 /*

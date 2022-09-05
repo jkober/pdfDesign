@@ -72,7 +72,7 @@ class PhpGenPdfFPDF extends PdfGenRotate {
             parent::Cell($w, $h, utf8_decode($txt), $border, $ln, $align, $fill, $link);
     }
 
-    public function AddPage($orientation = '', $size = '') {
+    public function KoberAddPage($orientation = '', $size = '') {
         // Start a new page
         if ($this->state == 0)
             $this->Open();
@@ -146,7 +146,7 @@ class PhpGenPdfFPDF extends PdfGenRotate {
         $this->ColorFlag = $cf;
     }
 
-    function _beginpage($orientation, $size) {
+    function Kober_beginpage($orientation, $size) {
         $this->page++;
         if (!isset($this->pages[$this->page])) // solves the problem of overwriting a page if it already exists
             $this->pages[$this->page] = '';
