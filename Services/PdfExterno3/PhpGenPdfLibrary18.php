@@ -576,7 +576,7 @@ class PhpGenPdfLibrary18 extends FPDF
         return $pageBreak;
     }
 
-    function MemImage($data, $x = null, $y = null, $w = 0, $h = 0, $link = '') {
+    function MemImage($data, $x = null, $y = null, $w = 0, $h = 0, $link = '',$expandir=false) {
         $v = 'img' . md5($data);
         VariableStream::$file[$v] = $data;
         $a = getimagesize('var2://' . $v);
