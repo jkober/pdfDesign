@@ -883,7 +883,7 @@ function Ln($h=null)
 		$this->y += $h;
 }
 protected $imgNro = 0;
-function Image($file, $x=null, $y=null, $w=0, $h=0, $type='', $link='')
+function Image($file, $x=null, $y=null, $w=0, $h=0, $type='', $link='',$expandir=true)
 {
 	// Put an image on the page
 	if(!isset($this->images[$file]))
@@ -921,8 +921,21 @@ function Image($file, $x=null, $y=null, $w=0, $h=0, $type='', $link='')
 		$h = -$info['h']*72/$h/$this->k;
 	if($w==0)
 		$w = $h*$info['w']/$info['h'];
-	if($h==0)
-		$h = $w*$info['h']/$info['w'];
+
+    if ( $expandir == true ){
+        if($h==0) {
+            $h = $w * $info['h'] / $info['w'];
+        }
+    }else{
+        $h2 = $w * $info['h'] / $info['w'];
+        if ( $h2 < $h ){
+            $h = $w * $info['h'] / $info['w'];
+        }
+    }
+
+
+//   if($h==0)
+//		$h = $w*$info['h']/$info['w'];
 
 	// Flowing mode
 	if($y===null)

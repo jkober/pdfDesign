@@ -576,14 +576,14 @@ class PhpGenPdfLibrary18 extends FPDF
         return $pageBreak;
     }
 
-    function MemImage($data, $x = null, $y = null, $w = 0, $h = 0, $link = '',$expandir=false) {
+    function MemImage($data, $x = null, $y = null, $w = 0, $h = 0, $link = '',$expandir=true) {
         $v = 'img' . md5($data);
         VariableStream::$file[$v] = $data;
         $a = getimagesize('var2://' . $v);
         if (!$a)
             $this->Error('Invalid image data');
         $type = substr(strstr($a['mime'], '/'), 1);
-        $this->Image('var2://' . $v, $x, $y, $w, $h, $type, $link);
+        $this->Image('var2://' . $v, $x, $y, $w, $h, $type, $link,$expandir);
         unset(VariableStream::$file[$v]);
     }
 
