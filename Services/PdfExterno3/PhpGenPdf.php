@@ -938,6 +938,11 @@ class PhpGenPdf {
         }
     }
 
+    /**
+     * se agrego 
+     * @param $retunData
+     * @return bool
+     */
     public function returnDataFromRecord($retunData) {
         $controGroup = false;
         if (is_array($this->group)) {
