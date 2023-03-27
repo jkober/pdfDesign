@@ -3,7 +3,7 @@
 namespace Design\DesignBundle\Services\PdfExterno3;
 
 class PhpGenPdfSections {
-
+    use CrearFuncionTrait;
     protected $pdfSec = null;
     protected $tMargin = 0;
     protected $section = null;
@@ -91,12 +91,12 @@ class PhpGenPdfSections {
             }
             if (!isset($this->pdfSec->Items[$this->section->i]->run->brakBefore)) {
                 if (trim($this->pdfSec->Items[$this->section->i]->PageBrakBefore->name) != "") {
-                    $this->pdfSec->Items[$this->section->i]->run->brakBefore = create_function('$GenPdf,$pdfReg,$obj', $this->pdfSec->Items[$this->section->i]->PageBrakBefore->name);
+                    $this->pdfSec->Items[$this->section->i]->run->brakBefore = self::create_function('$GenPdf,$pdfReg,$obj', $this->pdfSec->Items[$this->section->i]->PageBrakBefore->name);
                 }
             }
             if (!isset($this->pdfSec->Items[$this->section->i]->run->brakAfter)) {
                 if (trim($this->pdfSec->Items[$this->section->i]->PageBrakAfter->name) != "") {
-                    $this->pdfSec->Items[$this->section->i]->run->brakAfter = create_function('$GenPdf,$pdfReg,$obj', $this->pdfSec->Items[$this->section->i]->PageBrakAfter->name);
+                    $this->pdfSec->Items[$this->section->i]->run->brakAfter = self::create_function('$GenPdf,$pdfReg,$obj', $this->pdfSec->Items[$this->section->i]->PageBrakAfter->name);
                 }
             }
 
@@ -105,7 +105,7 @@ class PhpGenPdfSections {
 
             if (!isset($this->pdfSec->Items[$this->section->i]->ifPrint)) {
                 if (trim($this->pdfSec->Items[$this->section->i]->PrintIf->name) != "") {
-                    $this->pdfSec->Items[$this->section->i]->ifPrint = create_function('$GenPdf,$pdfReg,$obj', $this->pdfSec->Items[$this->section->i]->PrintIf->name);
+                    $this->pdfSec->Items[$this->section->i]->ifPrint = self::create_function('$GenPdf,$pdfReg,$obj', $this->pdfSec->Items[$this->section->i]->PrintIf->name);
                 }
             }
             $print = false;

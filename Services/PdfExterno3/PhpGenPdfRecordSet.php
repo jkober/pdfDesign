@@ -97,7 +97,7 @@ class PhpGenPdfRecordSet {
             if ( $this->usa_post_read){
                 unset($aux);
                 $func =$this->post_read;
-                $func ($this->registro);
+                $func($this->registro);
             }
             $this->registroOri  = $this->registro;
             if ($this->registro == false) {
