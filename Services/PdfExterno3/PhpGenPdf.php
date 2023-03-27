@@ -969,7 +969,11 @@ class PhpGenPdf {
                             $xx = $this->_field_json[str_replace("#","_",$k)];
                             $this->groupAux[$k] = $xx($this->reg);
                         } else {
-                            $this->groupAux[$k] = $this->reg[$k];
+                            if ($this->reg == null || isset($this->reg[$k])==false) {
+                                $this->groupAux[$k] = null;
+                            } else {
+                                $this->groupAux[$k] = $this->reg[$k];
+                            }
                         }
                     }
                 }
