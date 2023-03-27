@@ -1,5 +1,5 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.1b
+-- version 4.0.1
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
