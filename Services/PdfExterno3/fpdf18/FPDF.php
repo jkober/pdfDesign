@@ -1,4 +1,5 @@
 <?php
+namespace Design\DesignBundle\Services\PdfExterno3\fpdf18;
 /*******************************************************************************
 * tFPDF (based on FPDF 1.85)                                                   *
 *                                                                              *
