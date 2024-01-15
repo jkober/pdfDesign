@@ -2,19 +2,22 @@
 
 namespace Design\DesignBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Design\DesignBundle\Services\PdfExterno3\CrearFuncionTrait;
 use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfControll;
 use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb as Db;
+use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
 /**
  * Description of DesignController dfdf
  * @author JKober
- * @Template("DesignBundle:design:json.json.twig")
+ * @Template("@Design/design/json.json.twig")
  */
-class DesignController extends Controller {
+class DesignController extends AbstractController {
+    use CrearFuncionTrait;
     public function getRequest()
     {
 
@@ -24,8 +27,8 @@ class DesignController extends Controller {
     public function getGraficAction() {
         //----------------------------------------------------------------------
         $obj = json_decode($this->getRequest()->request->get('json'))->json;
-        $v = create_function('', 'return ' . $obj->Sources->fieldsArray[0]->value . ';');
-        $l = create_function('', 'return ' . $obj->Sources->fieldsArray[1]->value . ';');
+        $v = self::create_function('', 'return ' . $obj->Sources->fieldsArray[0]->value . ';');
+        $l = self::create_function('', 'return ' . $obj->Sources->fieldsArray[1]->value . ';');
         //----------------------------------------------------------------------
         $sal = array("data" => array("success" => false, "def" => null));
         //----------------------------------------------------------------------
@@ -33,7 +36,7 @@ class DesignController extends Controller {
             $dt = $v();
             $ly = $l();
             //------------------------------------------------------------------
-            $PhpGenGraph = $this->get("Design.PhpGenGraf");
+            $PhpGenGraph = $this->get("design_php_gen_graf");
             $graph = $PhpGenGraph->getPieGraph();
             $graph->title->Set($obj->GrafTitle);
             $p1 = $PhpGenGraph->getPiePlot3D($dt);
@@ -51,11 +54,16 @@ class DesignController extends Controller {
         return $sal;
     }
     public function abrirListarAction($bkp) {
+        /**
+         * @var $connRep \Doctrine\DBAL\Connection
+         */
         $connRep = $this->getDoctrine()->getConnection("pdfReport");
+        //$connRep->connect();
+        //$connRep=$connRep->getNativeConnection();
         if ($bkp == "false") {
-            $rep = $connRep->fetchAll("SELECT 0 as bkp, rep_id as id,rep_name as name ,rep_date FROM reportes  order by rep_name");
+            $rep = $connRep->fetchAllAssociative("SELECT 0 as bkp, rep_id as id,rep_name as name ,rep_date FROM reportes  order by rep_name");
         } else {
-            $rep = $connRep->fetchAll("SELECT 1 as bkp,rep_idH as id,rep_name || '_' || rep_date as name FROM reportesH order by rep_name,rep_idH");
+            $rep = $connRep->fetchAllAssociative("SELECT 1 as bkp,rep_idH as id,rep_name || '_' || rep_date as name FROM reportesH order by rep_name,rep_idH");
         }
         //----------------------------------------------------------------------
         $toOpen = array();
@@ -93,7 +101,7 @@ class DesignController extends Controller {
         $name = $json->reportExtras->name;
         try{
             $connRep = $this->getDoctrine()->getConnection("pdfReport");
-            $rep = $connRep->fetchAll("SELECT * FROM reportes where rep_name = '" . $name . "'");
+            $rep = $connRep->fetchAllAssociative("SELECT * FROM reportes where rep_name = '" . $name . "'");
             if ( count($rep) == 0 ) {
                 //------------------------------------------------------------------
                 $ssql = "insert into reportes (rep_id,rep_name,rep_data,rep_date ) values (null,:rep_name,:rep_data, :rep_date)";
@@ -104,7 +112,7 @@ class DesignController extends Controller {
                 $stmt->bindValue("rep_date",date("Y-m-d H:i:s"));
                 $stmt->execute();
                 //------------------------------------------------------------------
-                $rep = $connRep->fetchAll("SELECT * FROM reportes where rep_name = '" . $name . "'");
+                $rep = $connRep->fetchAllAssociative("SELECT * FROM reportes where rep_name = '" . $name . "'");
                 //------------------------------------------------------------------
                 $ssql = "insert into reportesH select null,reportes.* from reportes where rep_id=:rep_id";
                 $stmt =$connRep->prepare($ssql);
@@ -144,10 +152,10 @@ class DesignController extends Controller {
         try{
             //------------------------------------------------------------------
             $json                   = json_decode($this->getRequest()->request->get('json'));
-            if ($json->bkp == 1) {
-                $rep = $connRep->fetchAll("SELECT * FROM reportesH where rep_idH = " . $json->id );
+            if ($json!=null&&$json->bkp == 1) {
+                $rep = $connRep->fetchAllAssociative("SELECT * FROM reportesH where rep_idH = " . $json->id );
             }else{
-                $rep = $connRep->fetchAll("SELECT * FROM reportes where rep_id = " . $json->id );
+                $rep = $connRep->fetchAllAssociative("SELECT * FROM reportes where rep_id = " . $json->id );
             }
             //------------------------------------------------------------------
             $data->data->result = $rep[0]["rep_data"];
@@ -168,7 +176,7 @@ class DesignController extends Controller {
         $sal->data->success = false;
         //----------------------------------------------------------------------
         try {
-            $this->get("Design.PhpGenPdf");
+            $this->get("design_php_gen_pdf");
             //------------------------------------------------------------------
             $fs     = new Filesystem();
             $json   = json_decode($this->getRequest()->request->get('json'));
@@ -178,7 +186,7 @@ class DesignController extends Controller {
                 Db::getConexion()->setBD($db);
             }
             //------------------------------------------------------------------
-            $cc = dirname($this->get('kernel')->getRootDir()) . "/web";
+            $cc = $this->get('kernel')->getProjectDir() . "/public";
             //------------------------------------------------------------------
             if (! $fs->exists($cc . "/tmp/")) {
                 try{
@@ -252,7 +260,7 @@ class DesignController extends Controller {
             $sal->data->error   = "";
             //------------------------------------------------------------------
             $json               = json_decode($this->getRequest()->request->get('json'));
-            $r                  = $this->get("Design.PhpGenSqlDef");
+            $r                  = $this->get("design_php_gen_sql_def");
             //------------------------------------------------------------------
             $sal->data->def     =  $r->get($json);
             $sal->data->success = true;
@@ -267,7 +275,10 @@ class DesignController extends Controller {
         $dir = dirname(dirname(__DIR__) . "/Services/PdfExterno3/fpdf17/font/courier.php");
         $ruta = dirname(__DIR__) . "/Services/PdfExterno3/fpdf17/font/";
         $salida = array();
-        $loadFont = create_function('$fontNames', 'include ($fontNames); $ab = get_defined_vars();return $ab;');
+        //$loadFont = self::create_function('$fontNames', 'include ($fontNames); $ab = get_defined_vars();return $ab;');
+        //-----------------------------------------------------------------------------------------
+        $loadFont = function($fontNames) { include ($fontNames); $ab = get_defined_vars(); return $ab; };
+        //-----------------------------------------------------------------------------------------
         if ($dh = opendir($dir)) {
             while (($file = readdir($dh)) !== false) {
                 if (!is_dir($ruta . $file) && $file != "." && $file != ".." && $file != ".svn" && substr($file, -3) == "php") {
@@ -290,7 +301,7 @@ class DesignController extends Controller {
         }
         return $salida;
     }
-    /** @Template("DesignBundle:design:load_app.html.twig") */
+    /** @Template("@Design/design/load_app.html.twig") */
     public function loadAppAction() {
         return array("fonts" => json_encode($this->getFont()));
     }

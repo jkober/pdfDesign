@@ -1,53 +1,53 @@
 Design_reportGetGrafic:
     path:  /design/reporte/getGrafic
-    defaults: { _controller: DesignBundle:Design:getGrafic }
+    controller: Design\DesignBundle\Controller\DesignController::getGraficAction
     requirements:
         _methods: POST
 
 Design_reportListar:
     path:  /design/reporte/AbrirListar/{bkp}
-    defaults: { _controller: DesignBundle:Design:abrirListar ,bkp: false}
+    controller: Design\DesignBundle\Controller\DesignController::abrirListarAction
     requirements:
         bkp: false|true
         _methods: POST
 Design_reportAbrir:
     path:  /design/reporte/ReporteAbrir
-    defaults: { _controller: DesignBundle:Design:reporteAbrir }
+    controller: Design\DesignBundle\Controller\DesignController::reporteAbrirAction
     requirements:
         _methods: POST
 Design_reportSave:
     path:  /design/reporte/ReporteGuardar
-    defaults: { _controller: DesignBundle:Design:reporteGuardar }
+    controller: Design\DesignBundle\Controller\DesignController::reporteGuardarAction
     requirements:
         _methods: POST
 Design_reporteVer:
     path:  /design/reporte/ReporteVer
-    defaults: { _controller: DesignBundle:Design:reporteVer }
+    controller: Design\DesignBundle\Controller\DesignController::reporteVerAction
     requirements:
         _methods: POST
 Design_imagenListar:
     path:  /design/imagen/listar
-    defaults: { _controller: DesignBundle:Design:imagenListar }
+    controller: Design\DesignBundle\Controller\DesignController::imagenListarAction
     requirements:
         _methods: POST
 Design_ProcesarSql:
     path:  /design/sql/ProcesarSql
-    defaults: { _controller: DesignBundle:Design:procesarSql }
+    controller: Design\DesignBundle\Controller\DesignController::procesarSqlAction
     requirements:
         _methods: POST
-Design_getFont:
-    path:  /design/font/getFont
-    defaults: { _controller: DesignBundle:Design:getFont }
-    requirements:
-        _methods: POST
+#Design_getFont:
+#    path:  /design/font/getFont
+#    controller: Design\DesignBundle\Controller\DesignController::getFont
+#    requirements:
+#        _methods: POST
         
-Design_app:
-    path:  /design/{controler}
-    defaults: { _controller: DesignBundle:Design:design }
+#Design_app:
+#    path:  /design/{controler}
+#    controller: Design\DesignBundle\Controller\DesignController::design
 Design_ingreso:
-    path:  /design
-    defaults: { _controller: DesignBundle:Design:loadApp }
+    path:  /pdf_diseño
+    controller: Design\DesignBundle\Controller\DesignController::loadAppAction
     
 Design_ingreso2:
     path:  /
-    defaults: { _controller: DesignBundle:Design:loadApp }    
+    controller: Design\DesignBundle\Controller\DesignController::loadAppAction

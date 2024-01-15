@@ -1,14 +1,27 @@
 services:
-    Design.PhpGenPdfDb:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    Design\DesignBundle\Controller\DesignController:
+        calls:
+            - [setContainer, ["@service_container"]]
+    design_php_gen_pdf_db:
         class: Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb
+        public: true
         arguments: ["@doctrine.dbal.default_connection" ]
 #        arguments: [@doctrine.orm.entity_manager ]
-    Design.PhpGenPdf:
+#    Design.PhpGenPdf:
+    design_php_gen_pdf:
+        
         class: Design\DesignBundle\Services\PdfExterno3\PhpGenPdfControll
-        arguments: [%kernel.root_dir%,"@doctrine.dbal.default_connection","@doctrine.dbal.pdfReport_connection"]
-    Design.PhpGenGraf:
+        public: true
+        arguments: ["%kernel.project_dir%","@doctrine.dbal.default_connection","@doctrine.dbal.pdfReport_connection"]
+    design_php_gen_graf:
         class: Design\DesignBundle\Services\PdfExterno3\PhpGenGraf
-    Design.PhpGenSqlDef:
+        public: true
+    design_php_gen_sql_def:
         class: Design\DesignBundle\Services\PdfExterno3\PhpGenDefinitionSql
-        arguments: [ "@Design.PhpGenPdfDb" ]
+        public: true
+        arguments: [ "@design_php_gen_pdf_db" ]
         

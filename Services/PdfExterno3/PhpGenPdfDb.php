@@ -9,7 +9,7 @@ class PhpGenPdfDb {
         }
         if (! isset( self::$instancia[$name] ) ) {
             if ( get_class ($db) == "Doctrine\DBAL\Connection" ) {
-                self::$instancia[$name] = new BdPdo($db);
+                self::$instancia[$name] = new BdPdo($db->getNativeConnection());
             } else{
                 self::$instancia[$name] = new BdPdo($db->getConnection());
             }

@@ -2,13 +2,14 @@
 
 namespace Design\DesignBundle\Services\PdfExterno3;
 
-use Design\DesignBundle\Services\PdfExterno3;
+use Design\DesignBundle\Services\PdfExterno3\CrearFuncionTrait;
 use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb as Db;
 use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfRecordSet as RecordSet;
 
 class PhpGenPdfControll {
+    use CrearFuncionTrait;
     protected static $returnInBase64    = false;
-    protected static $usaFpdfVersion    = "17";
+    protected static $usaFpdfVersion    = "18";
     protected static $rootDir           = "";
     protected static $db                = null;
     public static function setReturnInBase64() {
@@ -19,7 +20,7 @@ class PhpGenPdfControll {
     }
 
     function __construct($rootDir="",$db=null,$db2=null) {
-        self::$rootDir = dirname($rootDir) . "/web/";
+        self::$rootDir = $rootDir . "/public/";
 
         $dbs = new PhpGenPdfDb($db);
         $dbs = new PhpGenPdfDb($db2,"design");
@@ -105,7 +106,7 @@ class PhpGenPdfControll {
                 }
             }
 
-            $FunctionVuelo = create_function('$p,$titulo', $json->wherecondicional);
+            $FunctionVuelo = self::create_function('$p,$titulo', $json->wherecondicional);            $returns = $FunctionVuelo($parametrosX,$tituloDefine);
             $returns = $FunctionVuelo($parametrosX,$tituloDefine);
             if (is_array($returns) && count($returns) > 0) {
                 if ( isset($returns["Sql"])){
@@ -218,7 +219,7 @@ class PhpGenPdfControll {
             }
             //----------------------------------------------------------------------------------------------------------
             if ($cont->wherecondicional != "" ) {
-                $FunctionVuelo = create_function('$p,$titulo', $cont->wherecondicional);
+                $FunctionVuelo = self::create_function('$p,$titulo', $cont->wherecondicional);
                 $returns = $FunctionVuelo($filter,$tituloDefine);
                 if (is_array($returns) && count($returns) > 0) {
                     if ( isset($returns["Sql"])){
@@ -332,7 +333,7 @@ class PhpGenPdfControll {
             }
             //----------------------------------------------------------------------------------------------------------
             if ($cont->wherecondicional != "" ) {
-                $FunctionVuelo = create_function('$p,$titulo', $cont->wherecondicional);
+                $FunctionVuelo = self::create_function('$p,$titulo', $cont->wherecondicional);
                 $returns = $FunctionVuelo($filter,$tituloDefine);
                 if (is_array($returns) && count($returns) > 0) {
                     if ( isset($returns["Sql"])){

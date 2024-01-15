@@ -10,13 +10,14 @@ if (!defined("_EBarra")) {
 }
 
 class PhpGenPdf {
+    use CrearFuncionTrait;
     //--------------------------------------------------------------------------
     protected $field_json           = [];
     protected $_field_json          = [];
     protected $usa_post_read        = false;
     protected $_post_read           = null;
     public static $returnInBase64   = false;
-    public static $usaFpdfVersion   = "17";
+    public static $usaFpdfVersion   = "18";
     //--------------------------------------------------------------------------
     protected $isUtf8 = true;
     public $objExtraSection=null;
@@ -69,7 +70,7 @@ class PhpGenPdf {
                 if (trim($v->SourceCode->name) != "") {
                     //----------------------------------------------------------
                     $fun = $v->SourceCode->name;
-                    $v->SourceCode->runf = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                    $v->SourceCode->runf = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
                     //----------------------------------------------------------
                 }
             }
@@ -81,7 +82,7 @@ class PhpGenPdf {
                 if (trim($v->SourceCode->name) != "") {
                     //----------------------------------------------------------
                     $fun = $v->SourceCode->name;
-                    $v->SourceCode->runf = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                    $v->SourceCode->runf = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
                     //----------------------------------------------------------
                 }
             }
@@ -91,7 +92,8 @@ class PhpGenPdf {
             if (trim($obj->PrintHead->name) != "") {
                 //--------------------------------------------------------------
                 $fun = $obj->PrintHead->name;
-                $obj->isProcesHead = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                $obj->isProcesHead = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+
                 //--------------------------------------------------------------
             }
         }
@@ -99,7 +101,7 @@ class PhpGenPdf {
             if (trim($obj->ProcesaFoot->name) != "") {
                 //----------------------------------------------------------
                 $fun = $obj->ProcesaFoot->name;
-                $obj->isProcesaFoot = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                $obj->isProcesaFoot = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
                 //----------------------------------------------------------
             }
         }
@@ -110,7 +112,7 @@ class PhpGenPdf {
                 if (trim($v->SourceCode->name) != "") {
                     //----------------------------------------------------------
                     $fun = $v->SourceCode->name;
-                    $v->SourceCode->runf = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                    $v->SourceCode->runf = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
                     //----------------------------------------------------------
                 }
             }
@@ -124,25 +126,25 @@ class PhpGenPdf {
         if (isset($obj->TableInit)) {
             if (trim($obj->TableInit->name) != "") {
                 $fun = $obj->TableInit->name;
-                $obj->runIf->Init = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                $obj->runIf->Init = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
             }
         }
         if (isset($obj->TableAfterRead)) {
             if (trim($obj->TableAfterRead->name) != "") {
                 $fun = $obj->TableAfterRead->name;
-                $obj->runIf->AfterRead = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                $obj->runIf->AfterRead = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
             }
         }
         if (isset($obj->TableBeforeRead)) {
             if (trim($obj->TableBeforeRead->name) != "") {
                 $fun = $obj->TableBeforeRead->name;
-                $obj->runIf->BeforeRead = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                $obj->runIf->BeforeRead = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
             }
         }
         if (isset($obj->TableFinishRead)) {
             if (trim($obj->TableFinishRead->name) != "") {
                 $fun = $obj->TableFinishRead->name;
-                $obj->runIf->FinishRead = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+                $obj->runIf->FinishRead = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
             }
         }
         //----------------------------------------------------------------------
@@ -163,55 +165,6 @@ class PhpGenPdf {
         } else {
             return $this->pdf->GetY();
         }
-        //falta: borrar este comentario
-        /*
-          if ($obj->Sources->sourceName == 1) {
-          if ($obj->Sources->code == "") {
-          return false;
-          }
-          //            $a = $regGene["cuota"];
-          //            $b = GJson::decode($a);
-
-          $fun = $obj->Sources->code;
-          $ff = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
-          if (isset($obj->runIf->BeforeRead)) {
-          $runf = $obj->runIf->BeforeRead;
-          $title = $runf($this, $regGene, null, $obj, $objRef);
-          }
-
-          $rs = new PdfGenLeoRecordTable($ff($this, $regGene, null, $obj, $objRef));
-          $reg = $rs->next(false);
-          if ($reg == false) {
-          if ($obj->PrintIfEmpyReg == false) {
-          return $this->pdf->GetY();
-          }
-          }
-          //-code
-          } else {
-          if ($obj->Sources->sourceName == 2) {
-          //-sql
-          $ssql = $obj->Sources->sql;
-          if (is_array($obj->Sources->params)) {
-          foreach ($obj->Sources->params as $k => $v) {
-          $ssql = str_replace("{" . $v->name . "}", $regGene[$v->name], $ssql);
-          }
-          }
-
-          //                $rs = new RecordSet($obj->Sources->sql);
-          $rs = new RecordSet($ssql);
-          if (isset($obj->runIf->BeforeRead)) {
-          $runf = $obj->runIf->BeforeRead;
-          $title = $runf($this, $regGene, null, $obj, $objRef);
-          }
-
-          $reg = $rs->next(false);
-          if ($reg == false) {
-          if ($obj->PrintIfEmpyReg == false) {
-          return $this->pdf->GetY();
-          }
-          }
-          }
-          } */
         //----------------------------------------------------------------------
         //----------------------------------------------------------------------
         $procHead = true;
@@ -695,7 +648,7 @@ class PhpGenPdf {
             }
             //------------------------------------------------------------------
             $fun = $obj->Sources->code;
-            $ff = create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
+            $ff = self::create_function('$GenPdf,$pdfReg,$reg,$row,$obj', $fun);
             //------------------------------------------------------------------
             if (isset($obj->runIf->BeforeRead)) {
                 $runf = $obj->runIf->BeforeRead;
@@ -837,7 +790,7 @@ class PhpGenPdf {
                                 $funcion->Expression = str_replace($v, "\$pdfReg[\"" . substr($v, 2) . "\"]", $funcion->Expression);
                             }
                         }
-                        $this->FunctionVuelo[$funcion->FieldName] = create_function('$pdfReg,$Fagre,$GenPdf,$obj=null', $funcion->Expression);
+                        $this->FunctionVuelo[$funcion->FieldName] = self::create_function('$pdfReg,$Fagre,$GenPdf,$obj=null', $funcion->Expression);
                     }
                 }
             } else {
@@ -862,7 +815,7 @@ class PhpGenPdf {
                                 $funcion->Expression = str_replace($v, "\$pdfReg[\"" . substr($v, 2) . "\"]", $funcion->Expression);
                             }
                         }
-                        $this->FunctionVuelo[$funcion->FieldName] = create_function('$pdfReg,$Fagre,$GenPdf,$obj=null', $funcion->Expression);
+                        $this->FunctionVuelo[$funcion->FieldName] = self::create_function('$pdfReg,$Fagre,$GenPdf,$obj=null', $funcion->Expression);
                     }
                 }
 
@@ -882,11 +835,11 @@ class PhpGenPdf {
                     foreach ( $this->field_json as $k => $v) {
                         $pos = strpos( $v[3],"->");
                         if ( $pos === false ) {
-                            $this->_field_json[] =create_function('&$p', "return 'Error no se encontro el field: {$v[3]}");
+                            $this->_field_json[] =self::create_function('&$p', "return 'Error no se encontro el field: {$v[3]}");
                         } else {
                             $ff = " try{ return \$p[\"".substr($v[3],0,$pos)."\"]".substr($v[3],$pos).";}catch (\\Exception \$e){return \"error {$v[3]}\";}";
                             $yy = str_replace("#","_",$v[0]);
-                            $this->_field_json[$yy] = create_function('&$p', $ff);
+                            $this->_field_json[$yy] = self::create_function('&$p', $ff);
                         }
                     }
                 }catch (\Exception $e) {
@@ -907,11 +860,11 @@ class PhpGenPdf {
                         foreach ($arr[0] as $k => $v) {
                             $estruc->post_read = str_replace($v, "\$p[\"" . substr($v, 2) . "\"]", $estruc->post_read);
                         }
-                        $this->_post_read = create_function('&$p', $estruc->post_read);
+                        $this->_post_read = self::create_function('&$p', $estruc->post_read);
                     }
                 }
                 //------------------------------------------------------------------------------------------------------
-                //$this->_post_read = create_function('&$p', $estruc->post_read );
+                //$this->_post_read = self::create_function('&$p', $estruc->post_read );
                 //------------------------------------------------------------------------------------------------------
 
             }
@@ -1016,7 +969,11 @@ class PhpGenPdf {
                             $xx = $this->_field_json[str_replace("#","_",$k)];
                             $this->groupAux[$k] = $xx($this->reg);
                         } else {
-                            $this->groupAux[$k] = $this->reg[$k];
+                            if ($this->reg==null) {
+                                $this->groupAux[$k]=null;
+                            }else {
+                                $this->groupAux[$k] = $this->reg[$k];
+                            }
                         }
                     }
                 }
