@@ -46,6 +46,12 @@ class PhpGenDefinitionSql {
                         $json->ssql=$returns["Sql"];
                     }
                 }
+                if ( isset($returns["preSql"])){
+                    if ( trim($returns["preSql"])!="") {
+                        $json->preSql=$returns["preSql"];
+                    }
+                }
+
                 $a= implode(",", $returns);
                 $pattern = '/:[a-z0-9]*/';
                 $pattern = '/:[a-z_A-Z]+[a-z-0-9_A-Z]{1,30}/';
@@ -102,6 +108,12 @@ class PhpGenDefinitionSql {
         $sqlLiteTable   = false;//----------------------------------------------
         //----------------------------------------------------------------------
         try {
+            if ( property_exists($json, "preSql")) {
+                if ( trim($json->preSql)  !="") {
+                    $db->query($json->preSql);
+
+                }
+            }
             $sqlTempo = "create temporary table veoEstruc {$json->ssql} limit 0,0";
             $db->ejecuteParams($sqlTempo,$parametrosX);
             //$db->ejecute($sqlTempo);

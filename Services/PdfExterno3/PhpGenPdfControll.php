@@ -90,6 +90,7 @@ class PhpGenPdfControll {
 
     public static function imprimirFromDesign($json, $obj = null,$rs=null) {
         $cont = $json;
+        $preSql="";
         //----------------------------------------------------------------------
         $sql = $cont->reportExtras->sql;
         if(stristr($sql, 'select ') === FALSE) {
@@ -112,6 +113,11 @@ class PhpGenPdfControll {
                 if ( isset($returns["Sql"])){
                     if ( trim($returns["Sql"])!="") {
                         $sql=$returns["Sql"];
+                    }
+                }
+                if ( isset($returns["preSql"])){
+                    if ( trim($returns["preSql"])!="") {
+                        $preSql=$returns["preSql"];
                     }
                 }
 
@@ -156,6 +162,10 @@ class PhpGenPdfControll {
                     //$sql = str_replace("{" . $v->name . "}", $v->value, $sql);
                 }
             }
+        }
+        if ( trim($preSql)  !="") {
+            $db=PhpGenPdfDb::getConexion();
+            $db->query($preSql);
         }
         if ($rs == null) {
             $rs = new RecordSet($sql,$parametrosX);
@@ -205,6 +215,7 @@ class PhpGenPdfControll {
     public  function getPdfSymfony2019($name,$filter){
 
         $connRep = self::$db;
+        $preSql         = "";
         $tituloDefine= new \StdClass();
         try{
             //------------------------------------------------------------------
@@ -227,6 +238,12 @@ class PhpGenPdfControll {
                             $sql=$returns["Sql"];
                         }
                     }
+                    if ( isset($returns["preSql"])){
+                        if ( trim($returns["preSql"])!="") {
+                            $preSql=$returns["preSql"];
+                        }
+                    }
+
                     //--------------------------------------------------------------------------------------------------
                     $a = implode(",", $returns);
                     $pattern = '/:[a-z0-9]{2,30}/';
@@ -263,6 +280,10 @@ class PhpGenPdfControll {
                         $sql = str_replace("{$k}", $v, $sql);
                     }
                 }
+            }
+            if ( trim($preSql)  !="") {
+                $db=PhpGenPdfDb::getConexion();
+                $db->query($preSql);
             }
             //----------------------------------------------------------------------------------------------------------
             $rs = new RecordSet($sql,$filter);
@@ -317,7 +338,7 @@ class PhpGenPdfControll {
 
     }
     public  function getPdfSymfony2020($name,$filter,$extrasToPdfGen){
-
+        $preSql     = "";
         $connRep = self::$db;
         $tituloDefine= new \StdClass();
         try{
@@ -339,6 +360,11 @@ class PhpGenPdfControll {
                     if ( isset($returns["Sql"])){
                         if ( trim($returns["Sql"])!="") {
                             $sql=$returns["Sql"];
+                        }
+                    }
+                    if ( isset($returns["preSql"])){
+                        if ( trim($returns["preSql"])!="") {
+                            $preSql=$returns["preSql"];
                         }
                     }
                     //--------------------------------------------------------------------------------------------------
@@ -377,6 +403,11 @@ class PhpGenPdfControll {
                         $sql = str_replace("{$k}", $v, $sql);
                     }
                 }
+            }
+            //----------------------------------------------------------------------------------------------------------
+            if ( trim($preSql)  !="") {
+                $db=PhpGenPdfDb::getConexion();
+                $db->query($preSql);
             }
             //----------------------------------------------------------------------------------------------------------
             $rs = new RecordSet($sql,$filter);
