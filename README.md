@@ -1,7 +1,7 @@
 pdfDesign.
 =========
 Orientado a diseñar reportes de forma dinamica, mediante una interface web realizada en Extjs y Jquery.
-luego para generar los pdf utiliza fpdf y en los graficos jpgraph
+luego para generar los pdf utiliza fpdf y en los graficos jpgraph.
 
 http://jpgraph.net/
 
