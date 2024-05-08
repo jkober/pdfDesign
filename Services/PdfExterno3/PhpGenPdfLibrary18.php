@@ -8,6 +8,7 @@ class PhpGenPdfLibrary18 extends FPDF
     use PdfTags;
     use PdfQrTrait;
     use pdfAttach;
+    use PdfSignUbica;
     var $angle = 0;
 
     function Rotate($angle, $x = -1, $y = -1) {

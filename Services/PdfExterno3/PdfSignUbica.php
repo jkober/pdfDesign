@@ -6,7 +6,7 @@ namespace Design\DesignBundle\Services\PdfExterno3;
 
 trait PdfSignUbica
 {
-    var $sing_ubica=null;
+    protected $sing_ubica=null;
     protected function get_sign_ubica_std() {
         if ($this->sing_ubica==null) {
             $s = new \stdClass();
