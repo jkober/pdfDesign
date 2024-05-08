@@ -146,6 +146,13 @@ Ext.define('kc.pdfStruc.element', {
                 contex.my.Items[oldCount] 			= Ext.clone(kc.pdfStruc.Label);
                 textos = contex.my.Items[oldCount].Text;
                 break;
+            case "SU" :
+                textos = contex.my.Items[oldCount].Text;
+                break;
+            case "addSign" :
+                contex.my.Items[oldCount] 			= Ext.clone(kc.pdfStruc.Sign);
+                textos = contex.my.Items[oldCount].Text;
+                break;
             case "L" :
                 textos = contex.my.Items[oldCount].Text;
                 break;               
@@ -166,6 +173,9 @@ Ext.define('kc.pdfStruc.element', {
             case "T" :
                 var tt = kc.pdfStrucRefActiva.TotalFields[contex.my.Items[oldCount].TotalFieldName];
                 textos = tt.Type.substring(0,1) + "::" + contex.my.Items[oldCount].TotalFieldName;
+                break;
+            case "A":
+                textos = contex.my.Items[oldCount].Text;
                 break;
             case "addNroPage":
                 contex.my.Items[oldCount] = Ext.clone(kc.pdfStruc.NroPage);

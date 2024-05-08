@@ -430,7 +430,17 @@ class PhpGenPdf {
                     $this->pdf->Cell($conCodigo ? $wN : $obj->PositionWidth, $obj->PositionHeight, $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
                 }
             }else{
-                $this->pdf->Cell($obj->PositionWidth, $obj->PositionHeight, $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
+                if ( $obj->TypeObj == "SU") {
+                    $x1=$this->pdf->getX();
+                    $y1=$this->pdf->getY();
+                    $this->pdf->Cell($obj->PositionWidth, $obj->PositionHeight, "", strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
+                    $p = $this->pdf->getPage();
+                    $x2=$this->pdf->getX()+$obj->PositionWidth;
+                    $y2=$this->pdf->getY() + $obj->PositionHeight;
+                    $this->pdf->set_sign_ubica($p,$x1,$y1,$x2,$y2,$obj->FontFamily, $style, $obj->FontSize);
+                }else {
+                    $this->pdf->Cell($obj->PositionWidth, $obj->PositionHeight, $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
+                }
             }
             $this->pdf->SetY($this->pdf->GetY() + $obj->PositionHeight);
         } else {
@@ -522,6 +532,9 @@ class PhpGenPdf {
         switch (strtoupper($obj->TypeObj)) {
             case "S";
                 return $this->printPdfTable($obj, $top, $left);
+                break;
+            case "SU":
+                return $this->printPdfLabel($obj, $obj->Text, $top, $left);
                 break;
             case "L":
                 return $this->printPdfLabel($obj, $obj->Text, $top, $left);

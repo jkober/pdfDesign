@@ -525,9 +525,25 @@ kc.pdfStruc.loadStruc = function(defaults) {
 		CodigoBarraCalc : false
 
 	}
+	kc.pdfStruc.Sign = {
+		TypeObj : "SU", //sign ubicacion
+		Text : 'Ubicaciòn de la Firma',
+		MultiLine : false,
+		CodigoBarra : 0,
+		CodigoBarraH : 'H',
+		CodigoBarraWid : 0.6,
+		CodigoBarraCalc : false
+
+	}
+
 	// ------------------------------------------------------------------------------
 	jQuery.extend(kc.pdfStruc.Label, kc.pdfStruc._baseStruc,
 			kc.pdfStruc._baseLabel)
+	jQuery.extend(kc.pdfStruc.Sign, kc.pdfStruc._baseStruc,
+		kc.pdfStruc._baseLabel)
+	kc.pdfStruc.Sign.PositionWidth=90;
+	kc.pdfStruc.Sign.PositionHeight=10;
+
 	// ------------------------------------------------------------------------------
 	kc.pdfStruc.ObjectGroup = {
 		TypeObj : "GS",

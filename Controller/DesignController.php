@@ -272,8 +272,8 @@ class DesignController extends AbstractController {
     }
 
     protected function getFont() {
-        $dir = dirname(dirname(__DIR__) . "/Services/PdfExterno3/fpdf17/font/courier.php");
-        $ruta = dirname(__DIR__) . "/Services/PdfExterno3/fpdf17/font/";
+        $dir = dirname(dirname(__DIR__) . "/Services/PdfExterno3/fpdf18/font/courier.php");
+        $ruta = dirname(__DIR__) . "/Services/PdfExterno3/fpdf18/font/";
         $salida = array();
         //$loadFont = self::create_function('$fontNames', 'include ($fontNames); $ab = get_defined_vars();return $ab;');
         //-----------------------------------------------------------------------------------------

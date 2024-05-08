@@ -27,35 +27,6 @@ class PhpGenPdfControll {
 
         self::$db=Db::getConexion("design");
     }
-    public static function imprimirV3($name, $obj = null) {
-        $baseDir=dirname(dirname(dirname(__DIR__)))."/comercial/";
-        self::$rootDir=$baseDir."/web/";
-        //dirname(dirname(dirname(__DIR__)))."/comercial/
-        $fileToOpen=$baseDir."/src/Design/DesignBundle/report/".$name;
-        if (is_file($fileToOpen)) {
-            $cont=  json_decode(file_get_contents($fileToOpen));
-        }
-        //----------------------------------------------------------------------
-        $sql = $cont->reportExtras->sql;
-        if (is_object($obj)) {
-            foreach ($obj as $k => $v) {
-                $sql = str_replace("{" . $k . "}", $v, $sql);
-            }
-        }
-        //if ($rs == null) {
-        $rs = new \RecordSet($sql);
-        $rs->setResultAsociativo();
-        //}
-        //----------------------------------------------------------------------
-        try {
-            //return self::version3symfo($cont, $rs); //, $rs, $name);
-            return self::version3Local($cont, $rs); //, $rs, $name);
-        } catch (Exceptions $e) {
-            echo $e->getMessage();
-            exit;
-        }
-
-    }
     public static function getPdf($name, $extras = null) {
         $file = "report/" . $name;
         if (file_exists($file)) {
@@ -180,37 +151,6 @@ class PhpGenPdfControll {
         }
     }
 
-    private static function version3Local($objPdf, $rs, $name = "") {
-        /*
-        ojo falta incluir las librerias para el manejo del tcppdf
-
-        */
-        importClass("PdfExterno3.PdfGenLeoRecordTable"	,F);
-        importClass("PdfExterno3.PhpGenPdf"		,F);
-        importClass("PdfExterno3.PhpGenPdfSections"	,F);
-        importClass("PdfExterno3.VariableStream"	,F);
-        importClass("PdfExterno3.fpdf17/FPDF"	,F);
-        importClass("PdfExterno3.PdfGenRotate"	,F);
-        importClass("PdfExterno3.PhpGenPdfFPDF"		,F);
-        importClass("PdfExterno3.PhpGenPdfLibrary"	,F);
-        importClass("PdfExterno3.PhpGenPdfBody"		,F);
-        //importClass("PdfExterno3.PhpGenPdfDbLocal"		,F);
-        importClass("PdfExterno3.PhpGenPdfFooter"	,F);
-        importClass("PdfExterno3.PhpGenPdfFooterDocu"	,F);
-        importClass("PdfExterno3.PhpGenPdfHead"		,F);
-        importClass("PdfExterno3.PhpGenPdfHeadDocu"	,F);
-        importClass("ClassAux.TmpGen"			,F);
-
-//		importClass("PdfExterno3.PhpGenPdfRecordSet"	,F);
-
-
-        $genPdf = new PhpGenPdf($objPdf);
-        $genPdf->setDirRoot(\Path::getServer(A)."img/" );
-        $genPdf->setDirSalida(\Path::getServer(B));
-        $genPdf->setNameReportSal($name);
-        //$genPdf->setIsUtf8(false);
-        return $genPdf->creo($rs,"mm",true);
-    }
 
     public  function getPdfSymfony2019($name,$filter){
 

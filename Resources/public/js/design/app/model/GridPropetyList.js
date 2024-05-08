@@ -11,7 +11,7 @@ Ext.create('Ext.data.Store', {
         convert : function(value, record) {
             var ref = record.get('refIndiceInterno');
             var type = record.get('TypeObj');
-            if (type == "L") {
+            if (type == "L" || type =="SU") {
                 return "Label (" + ref + ") "
                 + record.get('Text')
             }
@@ -84,7 +84,10 @@ Ext.create('Ext.data.Store', {
         name : 'Tabla'
     }, {
         name : 'Grafico Torta'
-    }]
+    },{
+        name : 'Firma Ubica'
+    }
+    ]
 });
 
 

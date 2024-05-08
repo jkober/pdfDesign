@@ -556,6 +556,9 @@ Ext.define("AppDesign.view.design.GridPropety", {
                     case "L" :
                         return "Label"
                         break;
+                    case "SU" :
+                        return "Firma Ubicación"
+                        break;
                     case "A" :
                         return "Nro Pagina"
                         break;

@@ -259,7 +259,14 @@ Ext.define('kc.pdfStruc.section', {
 											})
 									return true
 								}
-                                                                
+								if (data.records[0].get("name") == "Firma Ubica") {
+									kc.pdfStruc.element.add({
+										position : _positions,
+										ref : "addSign",
+										contex : event.target.pdfRef
+									})
+									return true
+								}
 								alert("componente no implementado")
 								return false
 							} else {
