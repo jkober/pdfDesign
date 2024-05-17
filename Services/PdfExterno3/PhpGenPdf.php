@@ -11,6 +11,7 @@ if (!defined("_EBarra")) {
 
 class PhpGenPdf {
     use CrearFuncionTrait;
+    use PdfSignUbica;
     //--------------------------------------------------------------------------
     protected $field_json           = [];
     protected $_field_json          = [];
@@ -42,7 +43,9 @@ class PhpGenPdf {
     protected $NameReportSal = "";
     protected $totalFieldRef = array();
     protected $tituloDefine  = null;
-
+    protected function set_sign ($firma) {
+        $this->sing_ubica = $firma;
+    }
     public function setTituloDefine($tituloDefine=null) {
         $this->tituloDefine = $tituloDefine;
     }
@@ -435,7 +438,7 @@ class PhpGenPdf {
                     $y1=$this->pdf->getY();
                     $this->pdf->Cell($obj->PositionWidth, $obj->PositionHeight, "", strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
                     $p = $this->pdf->getPage();
-                    $x2=$this->pdf->getX()+$obj->PositionWidth;
+                    $x2=$this->pdf->getX();//+$obj->PositionWidth;
                     $y2=$this->pdf->getY() + $obj->PositionHeight;
                     $this->pdf->set_sign_ubica($p,$x1,$y1,$x2,$y2,$obj->FontFamily, $style, $obj->FontSize);
                 }else {
@@ -1145,6 +1148,7 @@ class PhpGenPdf {
         $fdoc->write($this);
         if ( self::$returnInBase64 == true ) {
             $aux = $this->pdf->Output("sale","s");
+            $this->set_sign($this->pdf->get_sign_ubica());
             //---------------------------------------------------------------------------------
             $this->pdf->Close();
             return base64_encode($aux);
@@ -1153,6 +1157,7 @@ class PhpGenPdf {
             if ($usaTmpFile) {
                 $sale = \TmpGen::getNameFile(usr_id, $this->nameReport, "pdf");
                 $this->pdf->Output($sale->getFile(), "F");
+                $this->set_sign($this->pdf->get_sign_ubica());
                 //---------------------------------------------------------------------------------
                 $this->pdf->Close();
                 //---------------------------------------------------------------------------------
@@ -1164,6 +1169,7 @@ class PhpGenPdf {
                 $nameY = date("U") . ".pdf";
                 $file = $this->dirSalida . "tmp/" . $nameY;
                 $this->pdf->Output($file, "F");
+                $this->set_sign($this->pdf->get_sign_ubica());
                 //----------------------------------------------------------------------
                 $this->pdf->Close();
                 //----------------------------------------------------------------------

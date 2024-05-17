@@ -30,10 +30,10 @@ trait PdfSignUbica
         $s = $this->get_sign_ubica_std();
         $s->setea=false;
         $s->page=$page;
-        $s->x1=$x1;
-        $s->y1=$y1;
-        $s->x2=$x2;
-        $s->y2=$y2;
+        $s->x1= $x1;
+        $s->y1= $this->DefPageSize[1] - $y1;
+        $s->x2= $x2;
+        $s->y2= $this->DefPageSize[1] - $y2;
         $s->font_name=$font;
         $s->font_style=$style;
         $s->font_size=$size;

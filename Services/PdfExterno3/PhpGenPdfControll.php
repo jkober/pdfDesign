@@ -12,6 +12,13 @@ class PhpGenPdfControll {
     protected static $usaFpdfVersion    = "18";
     protected static $rootDir           = "";
     protected static $db                = null;
+    protected static $last_firma        = null;
+    private static function set_sign($firma) {
+        self::$last_firma=$firma;
+    }
+    public static function get_sign() {
+        return self::$last_firma;
+    }
     public static function setReturnInBase64() {
         self::$returnInBase64=true;
     }
@@ -377,7 +384,9 @@ class PhpGenPdfControll {
         $genPdf::$returnInBase64=self::$returnInBase64;
         $genPdf::$usaFpdfVersion=self::$usaFpdfVersion;
         //--------------------------------------------------------------------------------------------------------------
-        return $genPdf->creo($rs);
+        $re=  $genPdf->creo($rs);
+        self::set_sign($genPdf->get_sign_ubica());
+        return $re;
         //--------------------------------------------------------------------------------------------------------------
         //$cc = $genPdf->creo($rs);
         //echo memory_get_usage() / 1048576 ."\n";
