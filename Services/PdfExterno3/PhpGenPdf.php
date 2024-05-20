@@ -440,7 +440,7 @@ class PhpGenPdf {
                     $p = $this->pdf->getPage();
                     $x2=$this->pdf->getX();//+$obj->PositionWidth;
                     $y2=$this->pdf->getY() + $obj->PositionHeight;
-                    $this->pdf->set_sign_ubica($p,$x1,$y1,$x2,$y2,$obj->FontFamily, $style, $obj->FontSize);
+                    $this->pdf->set_sign_ubica($p,$x1,$y1,$x2,$y2,$this->pdf->getDefPageSize(), $obj->FontFamily, $style, $obj->FontSize);
                 }else {
                     $this->pdf->Cell($obj->PositionWidth, $obj->PositionHeight, $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
                 }
