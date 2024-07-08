@@ -35,7 +35,7 @@ trait PdfSignUbica
         $s->x1= $x1;
         $s->y1= $this->DefPageSize[1] - $y1;
         $s->x2= $x2;
-        $s->y2= $this->DefPageSize[1] - $y2;
+        $s->y2= $this->DefPageSize[1] - $y2 - $sing_margin_top;
         $s->font_name=$font;
         $s->font_style=$style;
         $s->font_size=$size;
