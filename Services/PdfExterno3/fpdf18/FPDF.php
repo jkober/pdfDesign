@@ -274,7 +274,7 @@ function AliasNbPages($alias='{nb}')
 function Error($msg)
 {
 	// Fatal error
-	throw new Exception('tFPDF error: '.$msg);
+	throw new \Exception('tFPDF error: '.$msg);
 }
 
 function Close()

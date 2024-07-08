@@ -12,6 +12,7 @@ trait PdfSignUbica
             $s = new \stdClass();
             $s->setea = false;
             $s->page = null;
+            $s->sing_margin_top=null;
             $s->x1 = null;
             $s->y1 = null;
             $s->x2 = null;
@@ -26,10 +27,11 @@ trait PdfSignUbica
     public function get_sign_ubica() {
         return $this->get_sign_ubica_std();
     }
-    public function set_sign_ubica($page,$x1,$y1,$x2,$y2,$font,$style,$size) {
+    public function set_sign_ubica($page,$x1,$y1,$x2,$y2,$font,$style,$size,$sing_margin_top=0) {
         $s = $this->get_sign_ubica_std();
         $s->setea=false;
         $s->page=$page;
+        $s->sing_margin_top=$sing_margin_top;
         $s->x1= $x1;
         $s->y1= $this->DefPageSize[1] - $y1;
         $s->x2= $x2;
