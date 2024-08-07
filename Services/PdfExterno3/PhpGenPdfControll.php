@@ -327,6 +327,10 @@ class PhpGenPdfControll {
         $genPdf::$usaFpdfVersion=self::$usaFpdfVersion;
         
         //--------------------------------------------------------------------------------------------------------------
+        if ( is_null(self::$services_firma) ) {
+            $re=  $genPdf->creo($rs);
+            return $re;
+        }
         $re= self::$services_firma->firma_pdf_report($genPdf, $rs,self::$sign);
         return $re;
 
