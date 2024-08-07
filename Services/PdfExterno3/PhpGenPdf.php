@@ -18,6 +18,7 @@ class PhpGenPdf {
     protected $usa_post_read        = false;
     protected $_post_read           = null;
     public static $returnInBase64   = false;
+    
     public static $usaFpdfVersion   = "18";
     //--------------------------------------------------------------------------
     protected $isUtf8 = true;
@@ -43,9 +44,25 @@ class PhpGenPdf {
     protected $NameReportSal = "";
     protected $totalFieldRef = array();
     protected $tituloDefine  = null;
+    protected $extra_info_process  = null;
     protected function set_sign ($firma) {
         $this->sing_ubica = $firma;
     }
+    public function getExtra_info_proces() {
+        return $this->extra_info_process;
+    }
+
+    public function setExtra_info_proces($extra_info_proces) {
+        if ($extra_info_proces == null ){
+            $this->extra_info_process= new \stdClass();
+            $this->extra_info_process->datos=false;
+            $this->extra_info_process->error=false;
+            $this->extra_info_process->extras=[];
+        }else{
+            $this->extra_info_process = $extra_info_proces;
+        }
+    }
+
     public function setTituloDefine($tituloDefine=null) {
         $this->tituloDefine = $tituloDefine;
     }
@@ -440,7 +457,7 @@ class PhpGenPdf {
                     $p = $this->pdf->getPage();
                     $x2=$this->pdf->getX();//+$obj->PositionWidth;
                     $y2=$this->pdf->getY() + $obj->PositionHeight;
-                    $this->pdf->set_sign_ubica($p,$x1,$y1,$x2,$y2,$this->pdf->getDefPageSize(), $obj->FontFamily, $style, $obj->FontSize);
+                    $this->pdf->set_sign_ubica($p,$x1,$y1,$x2,$y2, $obj->FontFamily, $style, $obj->FontSize);
                 }else {
                     $this->pdf->Cell($obj->PositionWidth, $obj->PositionHeight, $text, strtoupper($obj->BorderType->type), 0, substr($obj->FontAlign, 0, 1), $fill, $saltaPage);
                 }
@@ -777,8 +794,9 @@ class PhpGenPdf {
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    public function __construct($estruc,$titulo=null) {
+    public function __construct($estruc,$titulo=null,$extra_info_proces=null) {
         $this->setTituloDefine($titulo);
+        $this->setExtra_info_proces($extra_info_proces);
         $this->nameReport = $estruc->reportExtras->name;
         //----------------------------------------------------------------------
         $tieneGrupos = false;

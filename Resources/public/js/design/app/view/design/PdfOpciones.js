@@ -269,7 +269,7 @@ Ext.define("AppDesign.view.design.PdfOpciones", {
                 },
                 items : [
                     {
-                        value : 'Parametros $p[:xx], :xx = valor de entrada de filtro . Debera retornar array ejemplo: array("$w1$"=>"tableName.id = :id or tableName.name=:nombre" <br> opcionalmente pude devolver otro elemento del array("Sql"=>"select cc from xxxxx" << esta sera la nueva sql a ejecutar) " ',
+                        value : 'Parametros $p[:xx], :xx = valor de entrada de filtro . Debera retornar array ejemplo: array("$w1$"=>"tableName.id = :id or tableName.name=:nombre" <br> opcionalmente pude devolver otro elemento del <br>array("Sql"=>"select cc from xxxxx","preSql"=>"sql a ejecutar antes de ejecutar el select","Extras"=>"un array de valores que estan disponibles en el objeto pdf" ) "<br> throw new \\Exception(\'Error X\',418); ',
                         xtype : 'displayfield',
                         labelSeparator : ' '
                     },

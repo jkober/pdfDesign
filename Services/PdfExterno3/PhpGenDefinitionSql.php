@@ -29,6 +29,12 @@ class PhpGenDefinitionSql {
         //--------------------------------------------------------------------------------------------------------------
         $db->beginTransaction();
         //--------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        $extra_info_proces= new \stdClass();
+        $extra_info_proces->datos=false;
+        $extra_info_proces->error=false;
+        $extra_info_proces->extras=[];
+        //----------------------------------------------------------------------------------------------------------
         if ($json->where != "" ) {
             $parametrosX = array();
             if (is_array($json->extras)) {
@@ -44,6 +50,14 @@ class PhpGenDefinitionSql {
                 if ( isset($returns["Sql"])){
                     if ( trim($returns["Sql"])!="") {
                         $json->ssql=$returns["Sql"];
+                    }
+                }
+                if ( isset($returns["Extras"])){
+                    if ( is_array($returns["Extras"])) {
+                        $extra_info_proces->datos=true;
+                        $extra_info_proces->extras=$returns["Extras"];
+                    }else{
+                        $extra_info_proces->error=true;
                     }
                 }
                 if ( isset($returns["preSql"])){

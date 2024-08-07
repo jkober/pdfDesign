@@ -2,6 +2,7 @@
 
 namespace Design\DesignBundle\Services\PdfExterno3;
 
+use App\Services\RcBase\Firma\FirmaElectronicaServices;
 use Design\DesignBundle\Services\PdfExterno3\CrearFuncionTrait;
 use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb as Db;
 use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfRecordSet as RecordSet;
@@ -9,12 +10,23 @@ use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfRecordSet as RecordSet;
 class PhpGenPdfControll {
     use CrearFuncionTrait;
     protected static $returnInBase64    = false;
+    protected static $sing_pdf         = false;
     protected static $usaFpdfVersion    = "18";
     protected static $rootDir           = "";
     protected static $db                = null;
     protected static $last_firma        = null;
+    protected static $sign              = "Sin datos";
+    /**
+     * @var FirmaElectronicaServices
+     */
+    protected static $services_firma    = null;
     private static function set_sign($firma) {
         self::$last_firma=$firma;
+    }
+    public static function setSignPDF($firma,FirmaElectronicaServices $services_firma) {
+        self::$sign=$firma;
+        self::$services_firma = $services_firma;
+        self::$sing_pdf=true;
     }
     public static function get_sign() {
         return self::$last_firma;
@@ -69,7 +81,12 @@ class PhpGenPdfControll {
     public static function imprimirFromDesign($json, $obj = null,$rs=null) {
         $cont = $json;
         $preSql="";
-        //----------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        $extra_info_proces= new \stdClass();
+        $extra_info_proces->datos=false;
+        $extra_info_proces->error=false;
+        $extra_info_proces->extras=[];
+        //----------------------------------------------------------------------------------------------------------
         $sql = $cont->reportExtras->sql;
         if(stristr($sql, 'select ') === FALSE) {
             $sql =" select * from $sql ";
@@ -92,6 +109,15 @@ class PhpGenPdfControll {
                     if ( trim($returns["Sql"])!="") {
                         $sql=$returns["Sql"];
                     }
+                }
+                if ( isset($returns["Extras"])){
+                    if ( is_array($returns["Extras"])) {
+                        $extra_info_proces->datos=true;
+                        $extra_info_proces->extras=$returns["Extras"];
+                    }else{
+                        $extra_info_proces->error=true;
+                    }
+                    unset($returns["Extras"]);
                 }
                 if ( isset($returns["preSql"])){
                     if ( trim($returns["preSql"])!="") {
@@ -151,7 +177,7 @@ class PhpGenPdfControll {
         }
         //----------------------------------------------------------------------
         try {
-            return self::version3symfo($cont, $rs,"",$tituloDefine); //, $rs, $name);
+            return self::version3symfo($cont, $rs,"",$tituloDefine,$extra_info_proces); //, $rs, $name);
         } catch (Exceptions $e) {
             echo $e->getMessage();
             exit;
@@ -176,15 +202,39 @@ class PhpGenPdfControll {
                 return false;
             }
             //----------------------------------------------------------------------------------------------------------
+            $extra_info_proces= new \stdClass();
+            $extra_info_proces->datos=false;
+            $extra_info_proces->error=false;
+            $extra_info_proces->extras=[];
+            //----------------------------------------------------------------------------------------------------------
             if ($cont->wherecondicional != "" ) {
                 $FunctionVuelo = self::create_function('$p,$titulo', $cont->wherecondicional);
-                $returns = $FunctionVuelo($filter,$tituloDefine);
+                try {
+                    $returns = $FunctionVuelo($filter, $tituloDefine);
+                }catch (\Exception $e){
+                    if ( $e->getCode()==418 ) {
+                        throw $e;
+                    }
+                    throw new \Exception("error no controlado en reportes: " . $e->getMessage());
+                }
+
                 if (is_array($returns) && count($returns) > 0) {
                     if ( isset($returns["Sql"])){
                         if ( trim($returns["Sql"])!="") {
                             $sql=$returns["Sql"];
                         }
                     }
+                    if ( isset($returns["Extras"])){
+                        if ( is_array($returns["Extras"])) {
+                            $extra_info_proces->datos=true;
+                            $extra_info_proces->extras=$returns["Extras"];
+                        }else{
+                            $extra_info_proces->error=true;
+                        }
+                        unset($returns["Extras"]);
+                    }
+
+
                     if ( isset($returns["preSql"])){
                         if ( trim($returns["preSql"])!="") {
                             $preSql=$returns["preSql"];
@@ -237,7 +287,7 @@ class PhpGenPdfControll {
             $rs->setResultAsociativo();
             //----------------------------------------------------------------------------------------------------------
             try {
-                return self::version3symfo($cont, $rs,"",$tituloDefine);
+                return self::version3symfo($cont, $rs,"",$tituloDefine,$extra_info_proces);
             }catch (Exceptions $e) {
                 throw $e;
             }
@@ -265,18 +315,21 @@ class PhpGenPdfControll {
             //throw new \Exception("12","Error generando reporte");
         }
     }
-    private static function version3symfo($objPdf, $rs, $name = "",$tituloDefine=null) {
+    private static function version3symfo($objPdf, $rs, $name = "",$tituloDefine=null,$extra_info_proces=null) {
         //echo memory_get_usage() / 1048576 ."\n";
         //--------------------------------------------------------------------------------------------------------------
-        $genPdf = new PhpGenPdf($objPdf,$tituloDefine);
+        $genPdf = new PhpGenPdf($objPdf,$tituloDefine,$extra_info_proces);
         //--------------------------------------------------------------------------------------------------------------
         //--------------------------------------------------------------------------------------------------------------
         $genPdf->setDirRoot(self::$rootDir);
         $genPdf->setNameReportSal($name);
         $genPdf::$returnInBase64=self::$returnInBase64;
         $genPdf::$usaFpdfVersion=self::$usaFpdfVersion;
+        
         //--------------------------------------------------------------------------------------------------------------
-        return $genPdf->creo($rs);
+        $re= self::$services_firma->firma_pdf_report($genPdf, $rs,self::$sign);
+        return $re;
+
         //--------------------------------------------------------------------------------------------------------------
         //$cc = $genPdf->creo($rs);
         //echo memory_get_usage() / 1048576 ."\n";
