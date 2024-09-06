@@ -103,9 +103,9 @@ trait PdfQrTrait
         }
         // get max dimensions
 //ko        if ($this->rtl) {
-        $maxw = $x - $this->lMargin;
+//        $maxw = $x - $this->lMargin;
 //ko        } else {
-//ko            $maxw = $this->w - $this->rMargin - $x;
+        $maxw = $this->w - $this->rMargin - $x;
 //ko        }
         $maxh = ($this->h - $this->tMargin - $this->bMargin);
         $ratioHW = ((($rows * $mh) + $hpad) / (($cols * $mw) + $vpad));
