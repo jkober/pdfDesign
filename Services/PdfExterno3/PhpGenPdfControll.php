@@ -346,6 +346,10 @@ class PhpGenPdfControll {
         $preSql     = "";
         $connRep = self::$db;
         $tituloDefine= new \StdClass();
+        $extra_info_proces= new \stdClass();
+        $extra_info_proces->datos=false;
+        $extra_info_proces->error=false;
+        $extra_info_proces->extras=[];
         try{
             //------------------------------------------------------------------
             $rep = $connRep->query("SELECT * FROM reportes where rep_name = '{$name}' " )->fetchAll();
@@ -367,6 +371,16 @@ class PhpGenPdfControll {
                             $sql=$returns["Sql"];
                         }
                     }
+                    if ( isset($returns["Extras"])){
+                        if ( is_array($returns["Extras"])) {
+                            $extra_info_proces->datos=true;
+                            $extra_info_proces->extras=$returns["Extras"];
+                        }else{
+                            $extra_info_proces->error=true;
+                        }
+                        unset($returns["Extras"]);
+                    }
+
                     if ( isset($returns["preSql"])){
                         if ( trim($returns["preSql"])!="") {
                             $preSql=$returns["preSql"];
@@ -419,7 +433,7 @@ class PhpGenPdfControll {
             $rs->setResultAsociativo();
             //----------------------------------------------------------------------------------------------------------
             try {
-                return self::version3symfo2020($cont, $rs,"",$tituloDefine,$extrasToPdfGen);
+                return self::version3symfo2020($cont, $rs,"",$tituloDefine,$extra_info_proces,$extrasToPdfGen);
             }catch (Exceptions $e) {
                 throw $e;
             }
@@ -430,10 +444,10 @@ class PhpGenPdfControll {
             //----------------------------------------------------------------------------------------------------------
         }
     }
-    private static function version3symfo2020($objPdf, $rs, $name = "",$tituloDefine=null,$extrasToPdfGen=null) {
+    private static function version3symfo2020($objPdf, $rs, $name = "",$tituloDefine=null,$extra_info_proces,$extrasToPdfGen=null) {
         //echo memory_get_usage() / 1048576 ."\n";
         //--------------------------------------------------------------------------------------------------------------
-        $genPdf = new PhpGenPdf($objPdf,$tituloDefine);
+        $genPdf = new PhpGenPdf($objPdf,$tituloDefine,$extra_info_proces);
         $genPdf->pdfGenExtras = $extrasToPdfGen;
         //--------------------------------------------------------------------------------------------------------------
         //--------------------------------------------------------------------------------------------------------------
