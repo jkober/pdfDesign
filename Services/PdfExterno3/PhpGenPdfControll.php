@@ -185,7 +185,7 @@ class PhpGenPdfControll {
     }
 
 
-    public  function getPdfSymfony2019($name,$filter){
+    public  function getPdfSymfony2019($name,$filter,$extrasToPdfGen){
 
         $connRep = self::$db;
         $preSql         = "";
@@ -287,7 +287,7 @@ class PhpGenPdfControll {
             $rs->setResultAsociativo();
             //----------------------------------------------------------------------------------------------------------
             try {
-                return self::version3symfo($cont, $rs,"",$tituloDefine,$extra_info_proces);
+                return self::version3symfo($cont, $rs,"",$tituloDefine,$extra_info_proces,$extrasToPdfGen);
             }catch (Exceptions $e) {
                 throw $e;
             }
