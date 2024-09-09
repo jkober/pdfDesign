@@ -8,6 +8,7 @@ use Design\DesignBundle\Services\PdfExterno3\PhpGenPdfDb as Db;
 use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -167,7 +168,7 @@ class DesignController extends AbstractController {
         return array("data" => $data);
     }
 
-    public function reporteVerAction() {
+    public function reporteVerAction(ContainerInterface $container) {
         //----------------------------------------------------------------------
         $sal                = (object)array();
         $sal->success       = true;
@@ -197,8 +198,9 @@ class DesignController extends AbstractController {
             }
             //------------------------------------------------------------------
             $cc = $this->getRequest()->getBasePath();
+            $extrasToPdfGen = $container->get("rc_parameter_bag_to_desgin")->get();
             //------------------------------------------------------------------
-            $sal->data->result  = $cc . "/tmp/" . PhpGenPdfControll::imprimirFromDesign($json, $json->reportExtras->param);
+            $sal->data->result  = $cc . "/tmp/" . PhpGenPdfControll::imprimirFromDesign($json, $json->reportExtras->param,null,$extrasToPdfGen);
             $sal->data->success = true;
             //------------------------------------------------------------------
         }catch(\Exception  $e){

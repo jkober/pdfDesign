@@ -78,7 +78,7 @@ class PhpGenPdfControll {
         }
     }
 
-    public static function imprimirFromDesign($json, $obj = null,$rs=null) {
+    public static function imprimirFromDesign($json, $obj = null,$rs=null,$extrasToPdfGen) {
         $cont = $json;
         $preSql="";
         //----------------------------------------------------------------------------------------------------------
@@ -177,7 +177,7 @@ class PhpGenPdfControll {
         }
         //----------------------------------------------------------------------
         try {
-            return self::version3symfo($cont, $rs,"",$tituloDefine,$extra_info_proces); //, $rs, $name);
+            return self::version3symfo($cont, $rs,"",$tituloDefine,$extra_info_proces,$extrasToPdfGen); //, $rs, $name);
         } catch (Exceptions $e) {
             echo $e->getMessage();
             exit;
@@ -315,11 +315,12 @@ class PhpGenPdfControll {
             //throw new \Exception("12","Error generando reporte");
         }
     }
-    private static function version3symfo($objPdf, $rs, $name = "",$tituloDefine=null,$extra_info_proces=null) {
+    private static function version3symfo($objPdf, $rs, $name = "",$tituloDefine=null,$extra_info_proces=null,$extrasToPdfGen=null) {
         //echo memory_get_usage() / 1048576 ."\n";
         //--------------------------------------------------------------------------------------------------------------
         $genPdf = new PhpGenPdf($objPdf,$tituloDefine,$extra_info_proces);
         //--------------------------------------------------------------------------------------------------------------
+        $genPdf->pdfGenExtras = $extrasToPdfGen;
         //--------------------------------------------------------------------------------------------------------------
         $genPdf->setDirRoot(self::$rootDir);
         $genPdf->setNameReportSal($name);
