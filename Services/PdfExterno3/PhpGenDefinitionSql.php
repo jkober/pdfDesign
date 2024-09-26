@@ -59,6 +59,7 @@ class PhpGenDefinitionSql {
                     }else{
                         $extra_info_proces->error=true;
                     }
+                    unset($returns["Extras"]);
                 }
                 if ( isset($returns["preSql"])){
                     if ( trim($returns["preSql"])!="") {
