@@ -10,6 +10,9 @@ class PhpGenPdfLibrary18 extends FPDF
     use pdfAttach;
     use PdfSignUbica;
     var $angle = 0;
+    public function getK() {
+        return $this->k;
+    }
 
     function Rotate($angle, $x = -1, $y = -1) {
         if ($x == -1)

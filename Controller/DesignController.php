@@ -198,7 +198,8 @@ class DesignController extends AbstractController {
             }
             //------------------------------------------------------------------
             $cc = $this->getRequest()->getBasePath();
-            $extrasToPdfGen = $container->get("rc_parameter_bag_to_desgin")->get();
+            $extrasToPdfGen = new \Stdclass();
+            $extrasToPdfGen->textos = $container->get("rc_parameter_bag_to_desgin")->get();
             //------------------------------------------------------------------
             $sal->data->result  = $cc . "/tmp/" . PhpGenPdfControll::imprimirFromDesign($json, $json->reportExtras->param,null,$extrasToPdfGen);
             $sal->data->success = true;
