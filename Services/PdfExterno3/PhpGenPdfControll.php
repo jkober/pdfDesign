@@ -78,7 +78,7 @@ class PhpGenPdfControll {
         }
     }
 
-    public static function imprimirFromDesign($json, $obj = null,$rs=null,$extrasToPdfGen) {
+    public static function imprimirFromDesign($json, $obj = null,$rs=null,$extrasToPdfGen=null) {
         $cont = $json;
         $preSql="";
         //----------------------------------------------------------------------------------------------------------
@@ -444,7 +444,7 @@ class PhpGenPdfControll {
             //----------------------------------------------------------------------------------------------------------
         }
     }
-    private static function version3symfo2020($objPdf, $rs, $name = "",$tituloDefine=null,$extra_info_proces,$extrasToPdfGen=null) {
+    private static function version3symfo2020($objPdf, $rs, $name = "",$tituloDefine=null,$extra_info_proces=null,$extrasToPdfGen=null) {
         //echo memory_get_usage() / 1048576 ."\n";
         //--------------------------------------------------------------------------------------------------------------
         $genPdf = new PhpGenPdf($objPdf,$tituloDefine,$extra_info_proces);
