@@ -519,7 +519,7 @@ function AddFont($family, $style='', $file='', $uni=false)
 			$s.='$ut='.$ut.";\n";
 			$s.='$ttffile=\''.$ttffile."';\n";
 			$s.='$originalsize='.$originalsize.";\n";
-			$s.='$fontkey=\''.$fontkey."';\n";
+			$s.='$fontkey_name=\''.$fontkey."';\n";
 			$s.="?>";
 			if (is_writable(dirname($this->fontpath.'unifont/'.'x'))) {
 				$fh = fopen($unifilename.'.mtx.php',"w");
