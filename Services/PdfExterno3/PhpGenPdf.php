@@ -1230,6 +1230,9 @@ class PhpGenPdf {
                     return "";
                 }
                 $a = date_create($f);
+                if ($a === false ) {
+                    return "";
+                }
                 $f = date_format($a, $obj->FormatMask);
             } else if ($obj->FormatType == "Numero") {
                 if ($f == "") {
