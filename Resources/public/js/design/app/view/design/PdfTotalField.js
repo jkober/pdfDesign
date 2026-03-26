@@ -4,6 +4,15 @@ Ext.create('Ext.data.Store', {
 			data : [{
 						name : 'Sum',
 						value : 'Sum'
+					},{
+						name : 'TSum',
+						value : 'TSum'
+					}, {
+						name : 'TCount',
+						value : 'TCount'
+					}, {
+						name : 'TAvg',
+						value : 'TAvg'
 					}, {
 						name : 'Count',
 						value : 'Count'
@@ -120,7 +129,7 @@ Ext.define("AppDesign.view.design.PdfTotalField", {
 						xtype : "combo",
 						name : 'TypeRef',
 						displayField : 'name',
-						valueField : 'name',
+						valueField : 'value',
 						selectOnFocus : true,
 						forceSelection : true,
 						itemId : 'tipo',

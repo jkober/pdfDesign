@@ -43,7 +43,9 @@ Ext.define('AppDesign.controller.design.PdfTotalField', {
 				values.FieldSummarize = values.FieldSummarizeAux.substring(0,values.FieldSummarizeAux.length - 4)
 				values.FieldSummarize = Ext.String.trim(values.FieldSummarize)
 				if ( values.FieldSummarizeAux.substr(values.FieldSummarizeAux.length - 3).indexOf("(t)") > -1 ) {
-					values.Type = "T" + values.Type;			
+					if (values.Type != "TSum" && values.Type != "TCount" && values.Type != "TAvg") {
+						values.Type = "T" + values.Type;
+					}
 				}				
 			}
 		}
